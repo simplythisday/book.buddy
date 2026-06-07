@@ -1,0 +1,2329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="BookBuddy">
+<title>BookBuddy</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='2' width='18' height='26' rx='3' fill='%23e8d4f8' stroke='%23c9a0dc' stroke-width='1.5'/><rect x='3' y='2' width='6' height='26' rx='2' fill='%23c9a0dc' opacity='0.6'/><line x1='12' y1='9' x2='19' y2='9' stroke='%23c9a0dc' stroke-width='1.5' stroke-linecap='round'/><line x1='12' y1='14' x2='19' y2='14' stroke='%23c9a0dc' stroke-width='1.5' stroke-linecap='round'/><line x1='12' y1='19' x2='16' y2='19' stroke='%23c9a0dc' stroke-width='1.5' stroke-linecap='round'/><circle cx='26' cy='8' r='3' fill='%23ffd97d'/><circle cx='28' cy='16' r='2' fill='%23f4a7c3'/><circle cx='26' cy='24' r='3' fill='%23a0c4e8'/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+
+/* ── THEMES ── */
+body{font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .3s}
+body.theme-forest  #screen-room{background:#e8f5ee}
+body.theme-forest  #screen-room::before{}
+body.theme-bookshop #screen-room::before{}
+body.theme-sunny #screen-room::before{}
+body.theme-midnight #screen-room::before{}
+body.theme-bookshop #screen-room{background:#fdf0f5}
+body.theme-sunny   #screen-room{background:#fdf8e8}
+body.theme-midnight #screen-room{background:#080820}
+
+/* wisteria */
+body.theme-forest   .wisteria-bar{background:linear-gradient(180deg,#d4eee0,transparent)}
+body.theme-bookshop .wisteria-bar{background:linear-gradient(180deg,#fce4ee,transparent)}
+body.theme-sunny    .wisteria-bar{background:linear-gradient(180deg,#fef5d0,transparent)}
+body.theme-midnight .wisteria-bar{background:linear-gradient(180deg,#100828,transparent)}
+
+body.theme-forest   .wisteria-bar::before{background-image:
+  radial-gradient(ellipse 14px 42px at 8% 0%,#b8dfc8 60%,transparent 100%),
+  radial-gradient(ellipse 16px 55px at 18% 0%,#a8d8c0 60%,transparent 100%),
+  radial-gradient(ellipse 12px 38px at 28% 0%,#c8e8d4 60%,transparent 100%),
+  radial-gradient(ellipse 18px 60px at 38% 0%,#a0d0b8 60%,transparent 100%),
+  radial-gradient(ellipse 14px 44px at 48% 0%,#b8e0cc 60%,transparent 100%),
+  radial-gradient(ellipse 16px 50px at 58% 0%,#c0e8d0 60%,transparent 100%),
+  radial-gradient(ellipse 12px 38px at 68% 0%,#a8d8c0 60%,transparent 100%),
+  radial-gradient(ellipse 18px 58px at 78% 0%,#b0dcc8 60%,transparent 100%),
+  radial-gradient(ellipse 14px 40px at 88% 0%,#c8e8d4 60%,transparent 100%),
+  radial-gradient(ellipse 12px 48px at 96% 0%,#a8d8c0 60%,transparent 100%)}
+body.theme-bookshop .wisteria-bar::before{background-image:
+  radial-gradient(ellipse 14px 42px at 8% 0%,#e8c0f0 60%,transparent 100%),
+  radial-gradient(ellipse 16px 55px at 18% 0%,#d4a8e8 60%,transparent 100%),
+  radial-gradient(ellipse 12px 38px at 28% 0%,#e0b8f0 60%,transparent 100%),
+  radial-gradient(ellipse 18px 60px at 38% 0%,#c9a0dc 60%,transparent 100%),
+  radial-gradient(ellipse 14px 44px at 48% 0%,#e8c0f4 60%,transparent 100%),
+  radial-gradient(ellipse 16px 50px at 58% 0%,#d8b0ec 60%,transparent 100%),
+  radial-gradient(ellipse 12px 38px at 68% 0%,#e4b8f0 60%,transparent 100%),
+  radial-gradient(ellipse 18px 58px at 78% 0%,#c9a0dc 60%,transparent 100%),
+  radial-gradient(ellipse 14px 40px at 88% 0%,#e0b8f0 60%,transparent 100%),
+  radial-gradient(ellipse 12px 48px at 96% 0%,#d4a8e8 60%,transparent 100%)}
+body.theme-sunny .wisteria-bar::before{background-image:
+  radial-gradient(ellipse 14px 42px at 8% 0%,#fde8a0 60%,transparent 100%),
+  radial-gradient(ellipse 16px 55px at 18% 0%,#fad880 60%,transparent 100%),
+  radial-gradient(ellipse 12px 38px at 28% 0%,#fce090 60%,transparent 100%),
+  radial-gradient(ellipse 18px 60px at 38% 0%,#f8d070 60%,transparent 100%),
+  radial-gradient(ellipse 14px 44px at 48% 0%,#fde898 60%,transparent 100%),
+  radial-gradient(ellipse 16px 50px at 58% 0%,#fad880 60%,transparent 100%),
+  radial-gradient(ellipse 12px 38px at 68% 0%,#fce090 60%,transparent 100%),
+  radial-gradient(ellipse 18px 58px at 78% 0%,#f8d070 60%,transparent 100%),
+  radial-gradient(ellipse 14px 40px at 88% 0%,#fde8a0 60%,transparent 100%),
+  radial-gradient(ellipse 12px 48px at 96% 0%,#fad880 60%,transparent 100%)}
+body.theme-midnight .wisteria-bar::before{background-image:
+  radial-gradient(ellipse 14px 42px at 8% 0%,#4040a0 60%,transparent 100%),
+  radial-gradient(ellipse 16px 55px at 18% 0%,#5050b8 60%,transparent 100%),
+  radial-gradient(ellipse 12px 38px at 28% 0%,#3838a0 60%,transparent 100%),
+  radial-gradient(ellipse 18px 60px at 38% 0%,#6060c0 60%,transparent 100%),
+  radial-gradient(ellipse 14px 44px at 48% 0%,#4848b0 60%,transparent 100%),
+  radial-gradient(ellipse 16px 50px at 58% 0%,#5858c0 60%,transparent 100%),
+  radial-gradient(ellipse 12px 38px at 68% 0%,#4040a8 60%,transparent 100%),
+  radial-gradient(ellipse 18px 58px at 78% 0%,#5050b0 60%,transparent 100%),
+  radial-gradient(ellipse 14px 40px at 88% 0%,#6060c8 60%,transparent 100%),
+  radial-gradient(ellipse 12px 48px at 96% 0%,#4848b8 60%,transparent 100%)}
+
+/* nav colours per theme */
+body.theme-forest   .room-nav{background:rgba(232,245,238,.97);border-top-color:rgba(168,216,185,.4)}
+body.theme-bookshop .room-nav{background:rgba(253,240,245,.97);border-top-color:rgba(244,167,195,.4)}
+body.theme-sunny    .room-nav{background:rgba(253,248,232,.97);border-top-color:rgba(255,217,125,.4)}
+body.theme-midnight .room-nav{background:rgba(8,8,32,.97);border-top-color:rgba(100,80,200,.3)}
+body.theme-forest   .room-nav-btn{color:#8ab8a0}
+body.theme-bookshop .room-nav-btn{color:#e0a0b8}
+body.theme-sunny    .room-nav-btn{color:#c8a060}
+body.theme-midnight .room-nav-btn{color:#5050a0}
+body.theme-forest   .room-nav-btn.active{color:#3a6a4a}
+body.theme-bookshop .room-nav-btn.active{color:#c06080}
+body.theme-sunny    .room-nav-btn.active{color:#b87820}
+body.theme-midnight .room-nav-btn.active{color:#c0c0f0}
+
+/* ── FOREST theme UI ── */
+body.theme-forest .new-case-room-btn{border-color:rgba(50,120,70,.6);background:rgba(255,255,255,.85);color:#2a5a3a}
+body.theme-forest .case-label-name{color:#2a5a3a;text-shadow:0 1px 3px rgba(255,255,255,0.5)}
+body.theme-forest .case-label-count{color:#4a8a5a}
+body.theme-forest .carousel-arrow{color:#2a5a3a;border-color:rgba(50,120,70,.4);background:rgba(255,255,255,.6)}
+body.theme-forest .carousel-dot{background:rgba(50,120,70,.2)}
+body.theme-forest .carousel-dot.active{background:#5a9a6a}
+body.theme-forest .room-icon-btn{background:rgba(255,255,255,.5);border-color:rgba(50,120,70,.3);color:#2a5a3a}
+
+/* ── BOOKSHOP theme UI ── */
+body.theme-bookshop .new-case-room-btn{border-color:rgba(200,80,120,.5);background:rgba(255,255,255,.85);color:#a04060}
+body.theme-bookshop .case-label-name{color:#a04060;text-shadow:0 1px 3px rgba(255,255,255,0.5)}
+body.theme-bookshop .case-label-count{color:#c06080}
+body.theme-bookshop .carousel-arrow{color:#a04060;border-color:rgba(200,80,120,.4);background:rgba(255,255,255,.6)}
+body.theme-bookshop .carousel-dot{background:rgba(200,80,120,.2)}
+body.theme-bookshop .carousel-dot.active{background:#d07090}
+body.theme-bookshop .room-icon-btn{background:rgba(255,255,255,.5);border-color:rgba(200,80,120,.3);color:#a04060}
+
+/* ── SUNNY theme UI ── */
+body.theme-sunny .new-case-room-btn{border-color:rgba(180,130,20,.5);background:rgba(255,255,255,.85);color:#8a6010}
+body.theme-sunny .case-label-name{color:#8a6010;text-shadow:0 1px 3px rgba(255,255,255,0.5)}
+body.theme-sunny .case-label-count{color:#b08030}
+body.theme-sunny .carousel-arrow{color:#8a6010;border-color:rgba(180,130,20,.4);background:rgba(255,255,255,.6)}
+body.theme-sunny .carousel-dot{background:rgba(180,130,20,.2)}
+body.theme-sunny .carousel-dot.active{background:#c8a030}
+body.theme-sunny .room-icon-btn{background:rgba(255,255,255,.5);border-color:rgba(180,130,20,.3);color:#8a6010}
+
+/* ── MIDNIGHT theme UI ── */
+body.theme-midnight .new-case-room-btn{border-color:rgba(160,140,255,.5);background:rgba(100,80,200,.2);color:#c0c0f0}
+body.theme-midnight .case-label-name{color:#c0c0f0;text-shadow:0 1px 4px rgba(0,0,0,.8)}
+body.theme-midnight .case-label-count{color:rgba(200,180,255,.7)}
+body.theme-midnight .carousel-dot{background:rgba(100,80,200,.3)}
+body.theme-midnight .carousel-dot.active{background:#8080e0}
+body.theme-midnight .carousel-arrow{color:#c0c0f0;border-color:rgba(100,80,200,.4);background:rgba(100,80,200,.2)}
+body.theme-midnight .room-icon-btn{background:rgba(100,80,200,.2);border-color:rgba(160,140,255,.3);color:#c0c0f0}
+
+/* room title per theme */
+body.theme-forest   .room-title{color:#3a6a4a}
+body.theme-bookshop .room-title{color:#c06080}
+body.theme-sunny    .room-title{color:#b87820}
+body.theme-midnight .room-title{color:#c0c0f0;text-shadow:0 0 20px rgba(160,140,255,.5)}
+body.theme-forest   .room-sub{color:#8ab8a0}
+body.theme-bookshop .room-sub{color:#e0a0b8}
+body.theme-sunny    .room-sub{color:#c8a060}
+body.theme-midnight .room-sub{color:#7070c0}
+
+/* ── SCREENS ── */
+.screen{display:none;min-height:100vh;flex-direction:column;padding-bottom:70px}
+.screen.active{display:flex}
+
+/* ── ROOM SCREEN ── */
+#screen-room{position:relative;overflow:hidden}
+.wisteria-bar{position:absolute;top:0;left:0;right:0;height:110px;z-index:2;pointer-events:none}
+.wisteria-bar::before{content:'';position:absolute;top:0;left:0;right:0;height:80px}
+.moon{position:absolute;top:20px;right:28px;width:40px;height:40px;border-radius:50%;background:#fff8e8;z-index:1}
+body.theme-midnight .moon{background:#c0b8f8;box-shadow:0 0 24px rgba(160,140,255,.6)}
+.room-header{position:relative;z-index:10;padding:16px 18px 10px;display:flex;align-items:center;justify-content:space-between}
+.room-title{font-family:Pacifico,cursive;font-size:24px;font-weight:400;letter-spacing:.5px}
+.room-sub{font-size:11px;margin-top:2px}
+.room-icon-btn{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);width:36px;height:36px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.room-carousel-wrap{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0 20px}
+.room-carousel{width:100%;display:flex;align-items:center;justify-content:center;position:relative}
+.carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.carousel-arrow.left{left:12px}
+.carousel-arrow.right{right:12px}
+.carousel-dots{display:flex;gap:6px;justify-content:center;margin-top:14px}
+.carousel-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:all .2s}
+.carousel-dot.active{width:18px;border-radius:3px;background:rgba(255,255,255,.7)}
+.new-case-room-btn{margin:10px auto 8px;padding:10px 24px;border:2px solid #2a5a3a;border-radius:20px;background:rgba(255,255,255,.85);font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:#2a5a3a;cursor:pointer;display:flex;align-items:center;gap:6px}
+.room-case-card{width:230px;flex-shrink:0;cursor:pointer;position:relative;user-select:none}
+.room-case-card:active{transform:scale(.96)}
+.case-frame{border-radius:16px;padding:10px 10px 6px;box-shadow:3px 3px 0 rgba(0,0,0,.2);position:relative}
+.mini-books-row{display:flex;align-items:flex-end;gap:2px;padding:4px 4px 0;min-height:48px;overflow:hidden;border-radius:3px}
+.mini-shelf-row{height:7px;border-radius:2px;margin-bottom:3px;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+.mini-book{border-radius:2px 2px 0 0;flex-shrink:0}
+.case-label{text-align:center;margin-top:8px}
+.case-label-name{font-family:'Pacifico',cursive;font-size:15px;font-weight:700;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.5)}
+.case-label-count{font-size:10px;color:rgba(255,255,255,.8);margin-top:2px;text-shadow:0 1px 3px rgba(0,0,0,0.5)}
+.room-nav{position:fixed;bottom:0;left:0;right:0;z-index:1000;display:flex;border-top:1px solid rgba(255,255,255,.2);padding-bottom:env(safe-area-inset-bottom,0px)}
+.room-nav-btn{flex:1;border:none;background:none;padding:10px 4px 8px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;text-transform:uppercase;letter-spacing:.3px;transition:color .2s}
+.room-nav-btn svg{transition:transform .2s}
+.room-nav-btn.active svg{transform:scale(1.15)}
+
+/* ── BOOKCASE SCREEN ── */
+#screen-bookcase{background:#f8e8f5}
+.bookcase-header{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,#f4a7c3,#c9a0dc);padding:14px 16px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 16px rgba(200,120,160,.25)}
+.bookcase-back,.bookcase-header-edit{background:rgba(255,255,255,.3);border:none;color:white;width:34px;height:34px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bookcase-header-title{font-family:'Pacifico',cursive;font-size:20px;font-weight:900;color:white;flex:1}
+.bookcase-header-count{font-size:11px;color:rgba(255,255,255,.8)}
+.bookcase-wrap{padding:14px 14px 90px;position:relative;z-index:1;overflow-y:auto;max-height:calc(100vh - 120px)}
+.bookcase-body{border-radius:12px;padding:8px 8px 4px;box-shadow:4px 4px 0 rgba(0,0,0,.12)}
+.shelf-row-3d{margin-bottom:4px}
+.shelf-books-area{border-radius:4px 4px 0 0;padding:5px 5px 0;min-height:140px;display:flex;align-items:flex-end;gap:3px;overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}
+.shelf-books-area::-webkit-scrollbar{display:none}
+.shelf-plank-3d{height:14px;border-radius:0 0 4px 4px;box-shadow:0 3px 8px rgba(0,0,0,.2)}
+.book-spine-pastel{flex-shrink:0;cursor:pointer;transition:transform .2s;transform-origin:bottom center;border-radius:3px 3px 0 0;box-shadow:2px 0 4px rgba(0,0,0,.15)}
+.book-spine-pastel:hover,.book-spine-pastel:active{transform:translateY(-12px)}
+.spine-inner{width:100%;height:100%;border-radius:3px 3px 0 0;display:flex;align-items:center;justify-content:center;padding:4px 2px;position:relative;overflow:hidden}
+.spine-inner::after{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:rgba(0,0,0,.12);border-radius:3px 0 0 0}
+.spine-label{writing-mode:vertical-rl;transform:rotate(180deg);font-family:'Nunito',sans-serif;font-size:8px;font-weight:800;color:white;text-align:center;line-height:1.2;word-break:break-word;max-height:90px;overflow:hidden;background:rgba(0,0,0,0.45);padding:3px 4px;border-radius:6px}
+.spine-img{width:100%;height:100%;object-fit:cover;border-radius:3px 3px 0 0;display:block}
+.deco-on-shelf{flex-shrink:0;align-self:flex-end;font-size:22px;line-height:1;cursor:grab;padding:0 2px;user-select:none;touch-action:none}
+.deco-on-shelf svg{display:block}
+.add-slot{flex-shrink:0;width:26px;cursor:pointer;align-self:flex-end}
+.add-slot-inner{width:26px;height:55px;border-radius:3px 3px 0 0;background:rgba(255,255,255,.2);border:2px dashed rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:16px;color:rgba(255,255,255,.6)}
+.drop-zone{flex-shrink:0;width:12px;min-height:50px;align-self:stretch;border-radius:4px;transition:all .15s}
+.drop-zone.drag-active{background:rgba(244,167,195,.35);width:24px;border:1px dashed rgba(244,167,195,.7)}
+.shelf-empty-msg{padding:10px 8px 4px;font-size:12px;font-style:italic;color:rgba(255,255,255,.45)}
+.bookcase-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(252,232,243,.97);display:flex;border-top:1px solid rgba(200,120,160,.2);box-shadow:0 -4px 20px rgba(200,120,160,.12);padding-bottom:env(safe-area-inset-bottom,0px);z-index:50}
+.bookcase-nav-btn{flex:1;border:none;background:none;padding:10px 4px 8px;font-family:'Nunito',sans-serif;font-size:10px;font-weight:700;color:#c0a0b8;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;text-transform:uppercase;letter-spacing:.3px}
+.bookcase-nav-btn.active{color:#e07fa0}
+.bookcase-nav-btn svg{transition:transform .2s}
+.bookcase-nav-btn.active svg{transform:scale(1.15)}
+
+/* ── INNER SCREENS ── */
+.inner-screen{background:#fce8f3;min-height:100vh;padding-bottom:80px}
+.inner-header{background:linear-gradient(135deg,#f4a7c3,#c9a0dc);padding:14px 16px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 16px rgba(200,120,160,.2);position:sticky;top:0;z-index:100}
+.inner-back{background:rgba(255,255,255,.3);border:none;color:white;width:34px;height:34px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.inner-title{font-family:'Pacifico',cursive;font-size:20px;font-weight:900;color:white;flex:1}
+.inner-body{padding:14px}
+
+/* ── SHARED ── */
+.btn{border:none;border-radius:14px;padding:12px 20px;font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:transform .15s}
+.btn:active{transform:scale(.96)}
+.btn-pink{background:linear-gradient(135deg,#f4a7c3,#c9a0dc);color:white;box-shadow:0 4px 14px rgba(200,120,160,.3)}
+.btn-outline{background:rgba(255,255,255,.6);border:1px solid rgba(180,120,200,.2);color:#4a3060}
+.btn-danger{background:rgba(220,80,80,.1);color:#e07090;border:1px solid rgba(220,80,80,.2)}
+.btn-full{width:100%;margin-bottom:8px}
+.form-group{margin-bottom:13px}
+.form-group label{display:block;font-size:11px;font-weight:800;margin-bottom:5px;color:#8a6090;text-transform:uppercase;letter-spacing:.8px}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:11px 14px;border:1.5px solid rgba(180,120,200,.25);border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;background:rgba(255,255,255,.8);color:#4a3060;outline:none}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:#f4a7c3}
+.form-group textarea{resize:vertical;min-height:75px}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(61,20,80,.55);z-index:200;align-items:flex-end}
+.modal-overlay.open{display:flex}
+.modal{background:#fff0f8;border-radius:26px 26px 0 0;padding:16px 18px 44px;width:100%;max-height:93vh;overflow-y:auto;animation:slideUp .3s cubic-bezier(.22,1,.36,1);border-top:2px solid rgba(244,167,195,.3)}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:38px;height:4px;background:rgba(200,120,160,.2);border-radius:2px;margin:0 auto 16px}
+.modal-title{font-family:'Pacifico',cursive;font-size:20px;font-weight:700;margin-bottom:16px;color:#4a3060}
+.divider{height:1px;background:rgba(200,120,160,.15);margin:14px 0}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}
+.chip{padding:7px 13px;border-radius:20px;border:1.5px solid rgba(200,120,160,.2);background:rgba(255,255,255,.7);font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;color:#8a6090;cursor:pointer;transition:all .15s}
+.chip.active{background:linear-gradient(135deg,#f4a7c3,#c9a0dc);color:white;border-color:transparent}
+.stars{display:flex;gap:4px;margin:10px 0 6px}
+.star{font-size:28px;cursor:pointer;color:rgba(200,120,160,.2);transition:transform .1s}
+.star.active{color:#ffd97d}
+.star:active{transform:scale(1.3)}
+.swatch-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.cswatch{width:40px;height:40px;border-radius:10px;cursor:pointer;border:3px solid transparent;transition:transform .15s;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.cswatch.sel{border-color:#f4a7c3;transform:scale(1.15)}
+.sswatch{height:14px;width:68px;border-radius:4px;cursor:pointer;border:3px solid transparent;transition:transform .15s;box-shadow:0 2px 5px rgba(0,0,0,.15)}
+.sswatch.sel{border-color:#f4a7c3;transform:scale(1.05)}
+.deco-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.deco-opt{width:52px;height:52px;border-radius:12px;background:rgba(255,255,255,.6);border:2px solid rgba(200,120,160,.2);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:18px;transition:all .15s;position:relative}
+.deco-opt.sel{border-color:#f4a7c3;background:rgba(244,167,195,.15)}
+.deco-opt.locked{opacity:.35;cursor:not-allowed}
+.deco-lbl{font-size:8px;font-weight:700;color:#8a6090;margin-top:2px;text-align:center}
+.stat-card{background:rgba(255,255,255,.7);border:1.5px solid rgba(200,120,160,.15);border-radius:18px;padding:16px;margin-bottom:12px}
+.stat-big{font-family:'Pacifico',cursive;font-size:44px;font-weight:900;color:#e07fa0;line-height:1}
+.stat-label{font-size:12px;color:#8a6090;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.5px}
+.stat-row-2{display:flex;gap:12px}
+.stat-row-2 .stat-card{flex:1}
+.progress-bar{height:10px;background:rgba(200,120,160,.12);border-radius:5px;overflow:hidden;margin-top:10px}
+.progress-fill{height:100%;background:linear-gradient(90deg,#f4a7c3,#c9a0dc);border-radius:5px;transition:width .6s ease}
+.book-li{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid rgba(200,120,160,.12);cursor:pointer;align-items:center}
+.book-li:last-child{border-bottom:none}
+.mini-cov{width:38px;height:54px;border-radius:5px;flex-shrink:0;background:rgba(244,167,195,.2);display:flex;align-items:center;justify-content:center;font-size:16px;overflow:hidden}
+.mini-cov img{width:100%;height:100%;object-fit:cover;border-radius:5px}
+.unlock-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.unlock-card{background:rgba(255,255,255,.65);border:1.5px solid rgba(200,120,160,.15);border-radius:14px;padding:12px 6px;text-align:center;position:relative}
+.unlock-card.unlocked{border-color:rgba(244,167,195,.5);background:rgba(244,167,195,.1)}
+.unlock-card.locked{opacity:.4}
+.u-icon{font-size:28px;margin-bottom:4px;display:block}
+.u-name{font-size:9px;font-weight:700;color:#8a6090;text-transform:uppercase}
+.u-req{font-size:9px;color:#e07fa0;margin-top:2px}
+.ubadge{position:absolute;top:-5px;right:-5px;background:#f4a7c3;color:white;font-size:9px;font-weight:900;padding:2px 5px;border-radius:8px}
+.settings-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:rgba(255,255,255,.7);border:1.5px solid rgba(200,120,160,.15);border-radius:14px;margin-bottom:8px;cursor:pointer}
+.settings-row-label{font-size:14px;font-weight:700;color:#4a3060}
+.settings-row-sub{font-size:11px;color:#8a6090;margin-top:2px}
+.tog-wrap{position:relative;width:46px;height:26px;flex-shrink:0}
+.tog-wrap input{opacity:0;width:0;height:0}
+.tog-slider{position:absolute;inset:0;background:rgba(200,120,160,.2);border-radius:26px;transition:.3s;cursor:pointer}
+.tog-slider:before{content:'';position:absolute;height:20px;width:20px;left:3px;top:3px;background:white;border-radius:50%;transition:.3s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+input:checked + .tog-slider{background:linear-gradient(135deg,#f4a7c3,#c9a0dc)}
+input:checked + .tog-slider:before{transform:translateX(20px)}
+.theme-picker{display:flex;gap:8px;margin-top:10px}
+.theme-sw{flex:1;padding:12px 6px;border-radius:14px;border:2px solid transparent;cursor:pointer;text-align:center;font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;transition:all .2s}
+.theme-sw.active{border-color:#e07fa0;transform:scale(1.05)}
+.tab-row{display:flex;background:rgba(200,120,160,.1);border-radius:12px;padding:3px;margin-bottom:14px}
+.tab-btn{flex:1;border:none;background:none;padding:8px 4px;border-radius:10px;font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;color:#8a6090;cursor:pointer;transition:all .2s}
+.tab-btn.active{background:white;color:#4a3060;box-shadow:0 1px 4px rgba(200,120,160,.15)}
+.search-box{display:flex;gap:8px;margin-bottom:14px}
+.search-box input{flex:1;padding:12px 14px;border:1.5px solid rgba(200,120,160,.2);border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;background:rgba(255,255,255,.8);color:#4a3060;outline:none}
+.search-box input:focus{border-color:#f4a7c3}
+.search-box button{background:linear-gradient(135deg,#f4a7c3,#c9a0dc);color:white;border:none;border-radius:12px;padding:0 16px;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;cursor:pointer}
+.search-result{display:flex;gap:13px;background:rgba(255,255,255,.8);border:1.5px solid rgba(200,120,160,.12);border-radius:16px;padding:13px;margin-bottom:10px;cursor:pointer;transition:all .15s}
+.search-result:active{transform:scale(.98)}
+.res-cover{width:54px;height:78px;border-radius:6px;flex-shrink:0;background:rgba(244,167,195,.2);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden}
+.res-cover img{width:100%;height:100%;object-fit:cover}
+.res-title{font-family:'Pacifico',cursive;font-size:15px;font-weight:700;margin-bottom:3px;color:#4a3060}
+.res-author{font-size:12px;color:#8a6090;font-weight:600}
+.res-hint{font-size:11px;color:#e07fa0;font-weight:700;margin-top:6px}
+.book-detail-header{display:flex;gap:16px;margin-bottom:16px;align-items:flex-start}
+.book-detail-cover{width:78px;height:112px;border-radius:8px;flex-shrink:0;background:rgba(244,167,195,.2);display:flex;align-items:center;justify-content:center;font-size:34px;box-shadow:4px 4px 16px rgba(200,120,160,.2);overflow:hidden}
+.book-detail-cover img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.book-detail-title{font-family:'Pacifico',cursive;font-size:17px;font-weight:700;margin-bottom:4px;line-height:1.25;color:#4a3060}
+.book-detail-author{font-size:13px;color:#8a6090;font-weight:600}
+.goal-ring-wrap{display:flex;justify-content:center;margin:12px 0 8px}
+.goal-ring{position:relative;width:120px;height:120px}
+.goal-ring svg{transform:rotate(-90deg)}
+.goal-ring-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.goal-num{font-family:'Pacifico',cursive;font-size:26px;font-weight:900;color:#e07fa0;line-height:1}
+.goal-denom{font-size:11px;color:#8a6090;font-weight:700}
+.goal-edit-btn{background:rgba(244,167,195,.15);border:1.5px solid rgba(244,167,195,.3);color:#e07fa0;padding:6px 14px;border-radius:20px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+#toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#4a3060;color:#f5e6ff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;z-index:999;transition:opacity .3s;white-space:nowrap;opacity:0;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.loading{text-align:center;padding:22px;color:#8a6090;font-style:italic;font-size:14px}
+.empty{text-align:center;padding:28px 20px;color:#8a6090}
+.empty-icon{font-size:38px;margin-bottom:8px}
+.section-title{font-family:'Pacifico',cursive;font-size:16px;font-weight:700;color:#e07fa0;margin-bottom:10px;margin-top:4px}
+.drop-zone{width:0!important;min-width:0!important;padding:0!important;overflow:hidden}.shelf-books-area{gap:0!important}.spine-img{width:100%;height:100%;object-fit:cover;display:block}
+</style>
+</head>
+<body class="theme-forest">
+
+<!-- SCREEN: ROOM -->
+<div class="screen active" id="screen-room">
+  <div class="wisteria-bar"></div>
+  <div class="moon"></div>
+  <div class="room-header">
+    <div>
+      <div class="room-title" style="display:flex;align-items:center;gap:8px">
+        <svg width="28" height="28" viewBox="0 0 28 28">
+          <rect x="4" y="3" width="16" height="22" rx="3" fill="#e8d4f8" stroke="#c9a0dc" stroke-width="1.2"/>
+          <rect x="4" y="3" width="5" height="22" rx="2" fill="#c9a0dc" opacity="0.5"/>
+          <line x1="12" y1="9" x2="18" y2="9" stroke="#c9a0dc" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="12" y1="13" x2="18" y2="13" stroke="#c9a0dc" stroke-width="1.2" stroke-linecap="round"/>
+          <line x1="12" y1="17" x2="16" y2="17" stroke="#c9a0dc" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M18 3 Q24 8 24 14 Q24 20 18 25" fill="none" stroke="#f4a7c3" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
+          <circle cx="22" cy="7" r="1.5" fill="#ffd97d" opacity="0.8"/>
+          <circle cx="24" cy="14" r="1" fill="#f4a7c3" opacity="0.7"/>
+          <circle cx="22" cy="21" r="1.5" fill="#a0c4e8" opacity="0.8"/>
+        </svg>
+        BookBuddy</div>
+      <div class="room-sub" id="room-sub">Your magical library</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="room-icon-btn" onclick="showThemePicker()" title="Change theme" id="theme-btn">
+        <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="#e8d4f8" stroke="#c9a0dc" stroke-width="1.5"/><circle cx="10" cy="10" r="4" fill="#c9a0dc"/><circle cx="10" cy="5" r="2" fill="#ffd97d"/><circle cx="15" cy="13" r="2" fill="#f4a7c3"/><circle cx="5" cy="13" r="2" fill="#a0c4e8"/></svg>
+      </button>
+      
+      <button class="room-icon-btn" onclick="goTo('screen-settings')" title="Settings">
+        <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6" fill="#e8f4fc" stroke="#a0c4e8" stroke-width="1.5"/><circle cx="10" cy="10" r="2.5" fill="#a0c4e8"/><line x1="10" y1="3" x2="10" y2="5.5" stroke="#a0c4e8" stroke-width="1.8" stroke-linecap="round"/><line x1="10" y1="14.5" x2="10" y2="17" stroke="#a0c4e8" stroke-width="1.8" stroke-linecap="round"/><line x1="3" y1="10" x2="5.5" y2="10" stroke="#a0c4e8" stroke-width="1.8" stroke-linecap="round"/><line x1="14.5" y1="10" x2="17" y2="10" stroke="#a0c4e8" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="room-carousel-wrap">
+    <div class="room-carousel" id="room-carousel">
+      <button class="carousel-arrow left" id="arr-l" onclick="carPrev()">&#8249;</button>
+      <div id="car-wrap" style="width:230px;position:relative"></div>
+      <button class="carousel-arrow right" id="arr-r" onclick="carNext()">&#8250;</button>
+    </div>
+    <div class="carousel-dots" id="car-dots"></div>
+    <button class="new-case-room-btn" onclick="openNewCase()">&#10024; New Bookcase</button>
+  </div>
+  
+</div>
+
+<!-- SCREEN: BOOKCASE -->
+<div class="screen" id="screen-bookcase">
+  <div class="bookcase-header">
+    <button class="bookcase-back" onclick="goTo('screen-room')">&#8592;</button>
+    <div style="flex:1">
+      <div class="bookcase-header-title" id="bc-title">My Bookcase</div>
+      <div class="bookcase-header-count" id="bc-count">0 books</div>
+    </div>
+    <button class="bookcase-header-edit" onclick="editCurrentCase()">&#9998;</button>
+  </div>
+  <div class="bookcase-wrap"><div id="bc-body"></div></div>
+  <nav class="bookcase-nav">
+    <button class="bookcase-nav-btn" onclick="goTo('screen-room')">
+      <svg width="26" height="26" viewBox="0 0 26 26"><path d="M3 13L13 5L23 13V23H16V17H10V23H3Z" fill="#e8d4f8" stroke="#c9a0dc" stroke-width="1.2" stroke-linejoin="round"/><rect x="10" y="17" width="6" height="6" rx="1" fill="#c9a0dc" opacity="0.6"/><circle cx="13" cy="12" r="1.5" fill="#c9a0dc"/></svg>
+      Library</button>
+    <button class="bookcase-nav-btn active" onclick="goTo('screen-search')">
+      <svg width="26" height="26" viewBox="0 0 26 26"><rect x="3" y="5" width="14" height="18" rx="3" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><line x1="7" y1="10" x2="13" y2="10" stroke="#f4a7c3" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="14" x2="11" y2="14" stroke="#f4a7c3" stroke-width="1.5" stroke-linecap="round"/><circle cx="20" cy="20" r="5" fill="#f4a7c3"/><line x1="20" y1="17.5" x2="20" y2="22.5" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="17.5" y1="20" x2="22.5" y2="20" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      Add book</button>
+    <button class="bookcase-nav-btn" onclick="goTo('screen-unlocks')">
+      <svg width="26" height="26" viewBox="0 0 26 26"><path d="M13 3L15.8 9.5H22.5L17.2 13.5L19.5 20L13 16.5L6.5 20L8.8 13.5L3.5 9.5H10.2Z" fill="#fff8e0" stroke="#ffd97d" stroke-width="1.2" stroke-linejoin="round"/><path d="M10 12.5L12 14.5L16 10.5" fill="none" stroke="#ffd97d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Unlocks</button>
+    <button class="bookcase-nav-btn" onclick="goTo('screen-stats')">
+      <svg width="26" height="26" viewBox="0 0 26 26"><rect x="3" y="17" width="5" height="7" rx="2" fill="#a8d8b9"/><rect x="10" y="12" width="5" height="12" rx="2" fill="#a0c4e8"/><rect x="17" y="7" width="5" height="17" rx="2" fill="#c9a0dc"/><circle cx="5.5" cy="14" r="2" fill="white" opacity="0.6"/><circle cx="12.5" cy="9" r="2" fill="white" opacity="0.6"/><circle cx="19.5" cy="5" r="2" fill="white" opacity="0.6"/></svg>
+      Stats</button>
+  </nav>
+</div>
+
+<!-- SCREEN: SEARCH -->
+<div class="screen" id="screen-search">
+  <div class="inner-screen">
+    <div class="inner-header">
+      <button class="inner-back" onclick="goTo('screen-room')">&#8592;</button>
+      <div class="inner-title">Add a Book</div>
+    </div>
+    <div class="inner-body">
+      <div class="tab-row">
+        <button class="tab-btn active" id="tsearch" onclick="switchTab('search')">&#128269; Search</button>
+        <button class="tab-btn" id="tisbn" onclick="switchTab('isbn')">&#128247; ISBN</button>
+        <button class="tab-btn" id="tmanual" onclick="switchTab('manual')">&#9998; Manual</button>
+      </div>
+      <div id="tab-search">
+        <div class="search-box">
+          <input type="text" id="sq" placeholder="Title or author..." onkeydown="if(event.key==='Enter')doSearch()">
+          <button onclick="doSearch()">Search</button>
+        </div>
+        <div id="search-results"></div>
+      </div>
+      <div id="tab-isbn" style="display:none">
+        <div class="search-box">
+          <input type="number" id="isbnq" placeholder="Enter ISBN...">
+          <button onclick="doISBN()">Look up</button>
+        </div>
+        <div id="isbn-results"></div>
+      </div>
+      <div id="tab-manual" style="display:none">
+        <div class="form-group"><label>Title *</label><input type="text" id="mtitle" placeholder="Book title"></div>
+      <div id="tab-add" style="display:none">
+        <div style="display:flex;gap:12px;padding:12px;align-items:flex-start">
+          <img id="ab-cover" style="width:60px;height:85px;object-fit:cover;border-radius:8px;display:none" src="">
+          <div style="flex:1">
+            <div id="ab-title" style="font-weight:800;color:#4a3060;font-size:15px;margin-bottom:4px"></div>
+            <div id="ab-author" style="font-size:13px;color:#8a6090"></div>
+          </div>
+        </div>
+        <div class="form-group"><label>Add to Bookcase</label>
+          <select id="add-case-select" onchange="addCaseId=this.value" style="width:100%;padding:10px;border-radius:10px;border:1.5px solid rgba(200,120,160,0.3);font-size:14px;color:#4a3060"></select>
+        </div>
+        <div class="form-group"><label>Status</label>
+          <div style="display:flex;gap:8px">
+            <div onclick="addStatus='read';document.querySelectorAll('.status-btn').forEach(function(b){b.classList.remove('active')});this.classList.add('active')" class="status-btn" style="flex:1;padding:8px;border-radius:10px;text-align:center;cursor:pointer;border:1.5px solid rgba(200,120,160,0.3);font-size:12px;font-weight:700">✅ Read</div>
+            <div onclick="addStatus='reading';document.querySelectorAll('.status-btn').forEach(function(b){b.classList.remove('active')});this.classList.add('active')" class="status-btn active" style="flex:1;padding:8px;border-radius:10px;text-align:center;cursor:pointer;border:1.5px solid rgba(200,120,160,0.3);font-size:12px;font-weight:700">📖 Reading</div>
+            <div onclick="addStatus='want';document.querySelectorAll('.status-btn').forEach(function(b){b.classList.remove('active')});this.classList.add('active')" class="status-btn" style="flex:1;padding:8px;border-radius:10px;text-align:center;cursor:pointer;border:1.5px solid rgba(200,120,160,0.3);font-size:12px;font-weight:700">🔖 Want</div>
+          </div>
+        </div>
+        <div class="form-group"><label>Rating</label>
+          <div style="display:flex;gap:6px">
+            <div onclick="addRating=1;renderStars()" data-r="1" class="star-btn" style="font-size:24px;cursor:pointer">⭐</div>
+            <div onclick="addRating=2;renderStars()" data-r="2" class="star-btn" style="font-size:24px;cursor:pointer">⭐</div>
+            <div onclick="addRating=3;renderStars()" data-r="3" class="star-btn" style="font-size:24px;cursor:pointer">⭐</div>
+            <div onclick="addRating=4;renderStars()" data-r="4" class="star-btn" style="font-size:24px;cursor:pointer">⭐</div>
+            <div onclick="addRating=5;renderStars()" data-r="5" class="star-btn" style="font-size:24px;cursor:pointer">⭐</div>
+          </div>
+        </div>
+        <div class="form-group"><label>Genre</label>
+          <select id="ab-genre-sel" style="width:100%;padding:10px;border-radius:10px;border:1.5px solid rgba(200,120,160,0.3);font-size:14px;color:#4a3060">
+            <option>Fantasy</option><option>Romance</option><option>Mystery</option>
+            <option>Thriller</option><option>Science Fiction</option><option>Horror</option>
+            <option>Historical Fiction</option><option>Literary Fiction</option>
+            <option>Non-Fiction</option><option>Biography</option><option>Self-Help</option>
+            <option>Children</option><option>Young Adult</option><option>Other</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Notes</label>
+          <textarea id="ab-notes" placeholder="Your thoughts..." style="width:100%;padding:10px;border-radius:10px;border:1.5px solid rgba(200,120,160,0.3);font-size:13px;min-height:80px;resize:vertical;color:#4a3060"></textarea>
+        </div>
+        <div class="form-group" style="background:rgba(244,167,195,0.08);border-radius:12px;padding:12px;border:1px solid rgba(244,167,195,0.2)">
+          <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin:0">
+            <input type="checkbox" id="ab-prereader" style="width:20px;height:20px;accent-color:#e07fa0;flex-shrink:0">
+            <div>
+              <div style="font-weight:800;color:#4a3060;font-size:13px">📚 Pre-reader book</div>
+              <div style="font-size:11px;color:#8a6090;margin-top:2px">Read before using BookBuddy — won't count toward rewards</div>
+            </div>
+          </label>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="confirmAdd()">Add to my shelf ✨</button>
+        <button class="btn btn-outline btn-full" onclick="switchTab('search')">← Back to search</button>
+      </div>
+        <div class="form-group"><label>Author</label><input type="text" id="mauthor" placeholder="Author name"></div>
+        <div class="form-group"><label>Cover URL</label><input type="url" id="mcover" placeholder="https://..."></div>
+        <div class="form-group"><label>Bookcase</label><select id="mcase"></select></div>
+        <div class="form-group"><label>Genre</label><select id="mgenre"><option value="Fantasy">Fantasy</option><option value="Romance">Romance</option><option value="Mystery">Mystery</option><option value="Thriller">Thriller</option><option value="Science Fiction">Science Fiction</option><option value="Horror">Horror</option><option value="Historical Fiction">Historical Fiction</option><option value="Literary Fiction">Literary Fiction</option><option value="Non-Fiction">Non-Fiction</option><option value="Biography">Biography</option><option value="Self-Help">Self-Help</option><option value="Young Adult">Young Adult</option><option value="Children">Children</option><option value="Crime">Crime</option><option value="Other">Other</option></select></div>
+        <div class="form-group"><label>Status</label>
+          <select id="mstatus">
+            <option value="read">Read</option>
+            <option value="reading">Currently Reading</option>
+            <option value="want">Want to Read</option>
+            <option value="dnf">Did Not Finish</option>
+            <option value="fav">Favourite</option>
+          </select>
+        </div>
+        <button class="btn btn-pink btn-full" onclick="addManual()">Add to BookBuddy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: UNLOCKS -->
+<div class="screen" id="screen-unlocks">
+  <div class="inner-screen">
+    <div class="inner-header">
+      <button class="inner-back" onclick="goTo('screen-room')">&#8592;</button>
+      <div class="inner-title">&#127942; Unlocks</div>
+    </div>
+    <div class="inner-body" id="unlocks-body"></div>
+  </div>
+</div>
+
+<!-- SCREEN: STATS -->
+<div class="screen" id="screen-stats">
+  <div class="inner-screen">
+    <div class="inner-header">
+      <button class="inner-back" onclick="goTo('screen-room')">&#8592;</button>
+      <div class="inner-title">&#128202; Stats</div>
+    </div>
+    <div class="inner-body" id="stats-body"></div>
+  </div>
+</div>
+
+<!-- SCREEN: SETTINGS -->
+<div class="screen" id="screen-settings">
+  <div class="inner-screen">
+    <div class="inner-header">
+      <button class="inner-back" onclick="goTo('screen-room')">&#8592;</button>
+      <div class="inner-title">&#9881; Settings</div>
+    </div>
+    <div class="inner-body" id="settings-body"></div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-case">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="mc-title">New Bookcase</div>
+    <div class="form-group"><label>🌸 Home Screen Background</label><div id="mc-bgtheme" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px;max-height:180px;overflow-y:auto;padding:2px"></div></div>
+    <div class="form-group"><label>Name *</label><input type="text" id="mc-name" placeholder="e.g. Romance, Fantasy..." oninput="renderCaseEditor()"></div>
+    <div class="form-group"><label>Emoji</label><input type="text" id="mc-emoji" placeholder="&#128218;" maxlength="2"></div>
+    <div class="form-group"><label>Bookcase Style</label><div id="mc-style" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:8px"></div></div>
+    <div class="form-group"><label>Background colour</label><div class="swatch-grid" id="mc-bg"></div></div>
+    <div class="form-group"><label>Shelf colour</label><div class="swatch-grid" id="mc-shelf"></div></div>
+    <div class="form-group"><label>Shelf pattern</label><div class="swatch-grid" id="mc-pattern"></div></div>
+    <div class="form-group"><label>Decorations</label><div class="deco-grid" id="mc-decos"></div></div>
+    <div class="divider"></div>
+    <button class="btn btn-pink btn-full" onclick="saveCase()">Save Bookcase</button>
+    <button class="btn btn-outline btn-full" onclick="closeModal('modal-case')">Cancel</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-add-book">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Add to BookBuddy</div>
+    <div id="ab-info"></div>
+    <div class="form-group"><label>Bookcase</label><div class="chips" id="ab-cases"></div></div>
+    <div class="form-group"><label>Status</label>
+      <div class="chips" id="ab-status">
+        <div class="chip active" data-v="reading">Reading</div>
+        <div class="chip" data-v="read">Read</div>
+        <div class="chip" data-v="want">Want</div>
+        <div class="chip" data-v="dnf">DNF</div>
+        <div class="chip" data-v="fav">Fav</div>
+      </div>
+    </div>
+    <div class="form-group"><label>Rating</label>
+      <div class="stars" id="ab-stars">
+        <span class="star" data-v="1">&#9733;</span>
+        <span class="star" data-v="2">&#9733;</span>
+        <span class="star" data-v="3">&#9733;</span>
+        <span class="star" data-v="4">&#9733;</span>
+        <span class="star" data-v="5">&#9733;</span>
+      </div>
+    </div>
+    <div class="form-group"><label>Genre</label><div id="ab-genre"></div></div>
+    <div class="form-group" style="background:rgba(244,167,195,0.08);border-radius:12px;padding:12px;border:1px solid rgba(244,167,195,0.2)">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin:0">
+        <input type="checkbox" id="ab-prereader" style="width:20px;height:20px;accent-color:#e07fa0;flex-shrink:0">
+        <div>
+          <div style="font-weight:800;color:#4a3060;font-size:13px">📚 Pre-reader book</div>
+          <div style="font-size:11px;color:#8a6090;margin-top:2px">Read before using BookBuddy — won't count toward rewards</div>
+        </div>
+      </label>
+    </div>
+    <div class="form-group"><label>Notes</label><textarea id="ab-notes" placeholder="Your thoughts..."></textarea></div>
+    <div class="divider"></div>
+    <button class="btn btn-pink btn-full" onclick="confirmAdd()">Add to Shelf</button>
+    <button class="btn btn-outline btn-full" onclick="closeModal('modal-add-book')">Cancel</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-book">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div id="modal-book-body"></div>
+    <div class="divider"></div>
+    <button class="btn btn-outline btn-full" onclick="closeModal('modal-book')">Close</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-goal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Reading Goal</div>
+    <div class="form-group"><label>Books this year</label><input type="number" id="goal-input" placeholder="e.g. 24" min="1"></div>
+    <div class="divider"></div>
+    <button class="btn btn-pink btn-full" onclick="saveGoal()">Set Goal</button>
+    <button class="btn btn-outline btn-full" onclick="closeModal('modal-goal')">Cancel</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<div id="unlock-popup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;align-items:center;justify-content:center">
+  <div style="background:#fff0f8;border-radius:24px;padding:32px 24px;text-align:center;max-width:280px;width:90%;border:2px solid rgba(244,167,195,.3)">
+    <div id="pop-icon" style="font-size:64px;margin-bottom:12px"></div>
+    <div id="pop-title" style="font-family:'Pacifico',cursive;font-size:22px;color:#4a3060;margin-bottom:6px"></div>
+    <div id="pop-sub" style="font-size:14px;color:#8a6090;margin-bottom:20px;line-height:1.5"></div>
+    <button onclick="closePopup()" style="background:linear-gradient(135deg,#f4a7c3,#c9a0dc);color:white;border:none;border-radius:14px;padding:12px 28px;font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;cursor:pointer">Awesome!</button>
+  </div>
+</div>
+
+<script>var BG_THEMES=[
+  {id:'starry-night',label:'✨ Starry Night',dark:true,req:0,bg:'linear-gradient(135deg,#1a0838,#2a1060,#1a0838)'},
+  {id:'floating-hearts',label:'💕 Floating Hearts',dark:false,req:0,bg:'linear-gradient(135deg,#fce4ee,#f8d0e8,#fce4ee)'},
+  {id:'flower-garden',label:'🌸 Flower Garden',dark:false,req:0,bg:'linear-gradient(135deg,#f0f8e8,#e8f5d8,#f0f8e8)'},
+  {id:'watercolour',label:'🎨 Watercolour',dark:false,req:0,bg:'linear-gradient(135deg,#fff8ff,#f8e8ff,#fce4f8)'},
+  {id:'sparkle-night',label:'✨ Sparkle Night',dark:true,req:10,bg:'linear-gradient(135deg,#0c0820,#180838,#0c0820)'},
+  {id:'sunshine',label:'☀️ Sunshine',dark:false,req:15,bg:'linear-gradient(160deg,#fff8d0,#ffd97d,#ffb830)'},
+  {id:'orange',label:'🍊 Orange',dark:false,req:20,bg:'linear-gradient(160deg,#fff0e0,#ffa860,#ff7830)'},
+  {id:'cotton-candy',label:'🩷 Cotton Candy',dark:false,req:25,bg:'linear-gradient(135deg,#ffd6e8,#ffb3d1,#e8b3ff)'},
+  {id:'lemon',label:'🍋 Lemon',dark:false,req:30,bg:'linear-gradient(160deg,#fffff0,#ffff80,#ffee00)'},
+  {id:'lavender',label:'💜 Lavender',dark:false,req:35,bg:'linear-gradient(135deg,#e8d8f8,#c9a0dc,#b888d0)'},
+  {id:'blush',label:'🌷 Blush',dark:false,req:40,bg:'linear-gradient(160deg,#fff0f4,#ffd8e4,#ff80a8)'},
+  {id:'teal',label:'🩵 Teal',dark:false,req:45,bg:'linear-gradient(160deg,#e0fff8,#60d8c8,#20b8a8)'},
+  {id:'galaxy',label:'🌌 Galaxy',dark:true,req:50,bg:'radial-gradient(ellipse at 30% 40%,#2a1060,#100828,#080820)'},
+  {id:'ocean',label:'🌊 Ocean',dark:true,req:55,bg:'linear-gradient(160deg,#001830,#002850,#004890)'},
+  {id:'coral',label:'🪸 Coral',dark:false,req:60,bg:'linear-gradient(160deg,#fff4f0,#ffaa88,#ff7744)'},
+  {id:'midnight',label:'🔮 Midnight',dark:true,req:65,bg:'linear-gradient(160deg,#100828,#080820,#180838)'},
+  {id:'red',label:'❤️ Red',dark:false,req:70,bg:'linear-gradient(160deg,#fff0f0,#ff9090,#ff4040)'},
+  {id:'forest',label:'🌳 Forest',dark:false,req:75,bg:'linear-gradient(160deg,#f0fff0,#60c060,#208020)'},
+  {id:'rose-gold',label:'✨ Rose Gold',dark:false,req:80,bg:'linear-gradient(135deg,#fff0e8,#f8d0c0,#d88878)'},
+  {id:'indigo',label:'🔵 Indigo',dark:true,req:85,bg:'linear-gradient(160deg,#e8e8ff,#5050d0,#1010a0)'},
+  {id:'hot-pink',label:'💗 Hot Pink',dark:false,req:90,bg:'linear-gradient(160deg,#fff0ff,#ff60d0,#ff00a0)'},
+  {id:'aurora',label:'🌌 Aurora',dark:true,req:95,bg:'linear-gradient(160deg,#020810,#040c18,#060e20)'}
+];
+
+function showConfirm(title,msg,onYes){
+  document.getElementById('confirm-title').textContent=title;
+  document.getElementById('confirm-msg').textContent=msg;
+  document.getElementById('confirm-yes-btn').onclick=function(){closeModal('modal-confirm');onYes();};
+  openModal('modal-confirm');
+}
+
+
+
+// ─── AUTH ─────────────────────────────────────────
+
+
+
+// ─── FRIENDS ──────────────────────────────────────
+var recToUserId=null;
+
+
+
+
+// ─── SUPABASE CONFIG ─────────────────────────────
+var SUPA_URL='https://fsxevykimglavfhcheqy.supabase.co';
+var SUPA_KEY='sb_publishable_m1s_rSj7ikyzobK18RwiLw_4dey8cfu';
+var supaUser=null;
+var supaSession=null;
+
+
+var cases=JSON.parse(localStorage.getItem('bb_cases')||'[]');
+var books=JSON.parse(localStorage.getItem('bb_books')||'[]');
+var _ds={theme:'forest',goal:0,userName:'Reader',reminder:false,reminderTime:'20:00'};
+var settings=JSON.parse(localStorage.getItem('bb_settings')||'null')||_ds;
+var activeCaseId=null,currentCaseIdx=0,editingCaseId=null;
+var selBg=0,selShelf=0,selDecos=[],selPattern=0,selStyle=0,selGap=0,selBgTheme=0;
+var pendingBook=null,addRating=0,addCaseId=null,addStatus='reading';
+var popQueue=[];
+
+var BOOKCASE_PATTERNS=[
+  {l:'None',v:'none'},
+  {l:'Soft checkers',v:'linear-gradient(45deg,rgba(255,255,255,0.12) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,0.12) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,0.12) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,0.12) 75%)'},
+  {l:'Gingham',v:'linear-gradient(rgba(255,255,255,0.15) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.15) 1px,transparent 1px),linear-gradient(45deg,rgba(255,255,255,0.1) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,0.1) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,0.1) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,0.1) 75%)'},
+  {l:'Two-tone',v:'linear-gradient(45deg,rgba(255,255,255,0.18) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,0.08) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,0.08) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,0.18) 75%)'},
+  {l:'Dots+checks',v:'radial-gradient(circle,rgba(255,255,255,0.25) 1.5px,transparent 1.5px),linear-gradient(45deg,rgba(255,255,255,0.1) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,0.1) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,0.1) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,0.1) 75%)'}
+];
+var BOOKCASE_STYLES=[
+  {id:'cosy-wood',name:'Cosy Wood',icon:'🪵',req:0,
+   outer:'linear-gradient(135deg,#f5ede0,#ede0c8,#f0e8d0)',
+   border:'#c8a060',
+   cornice:'linear-gradient(90deg,#c8a060,#e8c880,#d4b070,#e8c880,#c8a060)',
+   shelf:'rgba(200,160,100,0.15)',
+   sideColor:'#c8a060',
+   plank:'linear-gradient(90deg,#b89050,#d4b070,#c8a060,#d4b070,#b89050)',
+   arch:false},
+  {id:'pink-fantasy',name:'Pink Fantasy',icon:'🌸',req:0,
+   outer:'linear-gradient(135deg,#fdf0f8,#f8e0f0,#fce8f4)',
+   border:'#f4a7c3',
+   cornice:'linear-gradient(90deg,#e07090,#f4a7c3,#e8b0c8,#f4a7c3,#e07090)',
+   shelf:'rgba(244,167,195,0.12)',
+   sideColor:'#f4a7c3',
+   plank:'linear-gradient(90deg,#e07090,#f4a7c3,#e8b0c8,#f4a7c3,#e07090)',
+   arch:false},
+  {id:'gothic-dark',name:'Gothic Dark',icon:'🔮',req:0,
+   outer:'linear-gradient(180deg,#1a0e06,#2a1810,#1e1208)',
+   border:'#5a3018',
+   cornice:'linear-gradient(90deg,#3a1808,#6a4020,#3a1808)',
+   shelf:'rgba(30,15,5,0.7)',
+   sideColor:'#4a2810',
+   plank:'linear-gradient(90deg,#4a2810,#6a4020,#4a2810)',
+   arch:false,dark:true},
+  {id:'amber-cottage',name:'Amber Cottage',icon:'☕',req:10,
+   outer:'linear-gradient(180deg,#fef0c0,#fde8a0)',
+   border:'#e8b840',
+   cornice:'linear-gradient(90deg,#c8a040,#e8c060,#c8a040)',
+   shelf:'rgba(200,160,60,0.15)',
+   sideColor:'#c8a040',
+   plank:'linear-gradient(90deg,#b89040,#d4b060,#b89040)',
+   arch:false},
+  {id:'scifi-glow',name:'Sci-Fi Glow',icon:'⚡',req:10,
+   outer:'linear-gradient(180deg,#0c1e34,#0a1828)',
+   border:'#4080c0',
+   cornice:'linear-gradient(90deg,#1040a0,#4080e0,#1040a0)',
+   shelf:'rgba(20,60,140,0.4)',
+   sideColor:'#1a4080',
+   plank:'linear-gradient(90deg,#60a0f0,#80c0ff,#60a0f0)',
+   plankH:4,
+   arch:false,dark:true},
+  {id:'forest-moss',name:'Forest Moss',icon:'🌿',req:10,
+   outer:'linear-gradient(180deg,#1e3412,#162808)',
+   border:'#3a6818',
+   cornice:'linear-gradient(90deg,#2a5010,#4a8020,#2a5010)',
+   shelf:'rgba(40,90,20,0.4)',
+   sideColor:'#2a5010',
+   plank:'linear-gradient(90deg,#2a5010,#4a8020,#2a5010)',
+   arch:false,dark:true},
+  {id:'marble-luxury',name:'Marble Luxury',icon:'🏛️',req:25,
+   outer:'linear-gradient(135deg,#f8f4ff,#ede8f8,#f4f0fc)',
+   border:'#c9a0dc',
+   cornice:'linear-gradient(90deg,#c9a0dc,#e8d0f8,#c9a0dc)',
+   shelf:'rgba(200,160,220,0.1)',
+   sideColor:'#c9a0dc',
+   plank:'linear-gradient(90deg,#c9a0dc,#e8d4f8,#d4b8e8,#c9a0dc)',
+   arch:false},
+  {id:'ocean-teal',name:'Ocean Teal',icon:'🌊',req:25,
+   outer:'linear-gradient(180deg,#d0f4f0,#c0e8e4)',
+   border:'#60c8c0',
+   cornice:'linear-gradient(90deg,#208080,#40c0b8,#208080)',
+   shelf:'rgba(40,160,152,0.15)',
+   sideColor:'#40a098',
+   plank:'linear-gradient(90deg,#208080,#40c0b8,#208080)',
+   arch:false},
+  {id:'rose-gold',name:'Rose Gold',icon:'✨',req:25,
+   outer:'linear-gradient(135deg,#fff0e8,#ffe0d0,#fff0e8)',
+   border:'#e09060',
+   cornice:'linear-gradient(90deg,#c07040,#e8a870,#d08050,#e8a870,#c07040)',
+   shelf:'rgba(200,120,60,0.1)',
+   sideColor:'#d08060',
+   plank:'linear-gradient(90deg,#c07040,#e8a870,#d08050,#e8a870,#c07040)',
+   arch:false},
+  {id:'celestial-night',name:'Celestial Night',icon:'🌌',req:50,
+   outer:'linear-gradient(180deg,#0c0c28,#080820)',
+   border:'#4040a0',
+   cornice:'linear-gradient(90deg,#3030a0,#6060c8,#3030a0)',
+   shelf:'rgba(60,60,160,0.3)',
+   sideColor:'#3040a0',
+   plank:'linear-gradient(90deg,#3030a0,#8080d0,#3030a0)',
+   plankH:4,
+   arch:false,dark:true},
+  {id:'crystal-palace',name:'Crystal Palace',icon:'❄️',req:50,
+   outer:'linear-gradient(135deg,#e8f4ff,#f0f8ff,#e0f0ff)',
+   border:'#80c0f0',
+   cornice:'linear-gradient(90deg,#60a0e0,#a0d0f8,#60a0e0)',
+   shelf:'rgba(100,180,240,0.12)',
+   sideColor:'#80c0f0',
+   plank:'linear-gradient(90deg,#60a0e0,#a0d0f8,#80b8f0,#a0d0f8,#60a0e0)',
+   arch:false},
+  {id:'rainbow-dream',name:'Rainbow Dream',icon:'🌈',req:50,
+   outer:'linear-gradient(135deg,#fff0f8,#f8f0ff,#f0f8ff)',
+   border:'#f4a7c3',
+   cornice:'linear-gradient(90deg,#f4a7c3,#ffd97d,#a0c4e8,#a8d8b9,#c9a0dc)',
+   shelf:'rgba(244,167,195,0.1)',
+   sideColor:'#f4a7c3',
+   plank:'linear-gradient(90deg,#f4a7c3,#ffd97d,#a0c4e8,#a8d8b9,#c9a0dc)',
+   arch:false},
+  {id:'pink-blossom',name:'Pink Blossom',icon:'🌸',req:50,
+   outer:'linear-gradient(135deg,#fce4ee,#f8d0e8,#fce4ee)',
+   border:'#e07090',
+   cornice:'linear-gradient(90deg,#e07090,#f4a7c3,#f8b8cc,#f4a7c3,#e07090)',
+   shelf:'rgba(244,167,195,0.15)',
+   sideColor:'#e07090',
+   plank:'linear-gradient(90deg,#e07090,#f4a7c3,#f8c0d0,#f4a7c3,#e07090)',
+   arch:false}
+];
+
+var BG_COLORS=[
+  {l:'Mint',v:'#a8d8c8',i:'rgba(60,30,80,0.55)'},
+  {l:'Lavender',v:'#c9a0dc',i:'rgba(50,20,70,0.55)'},
+  {l:'Pink',v:'#f4a7c3',i:'rgba(80,20,60,0.55)'},
+  {l:'Blush',v:'#e8b4c8',i:'rgba(70,20,50,0.55)'},
+  {l:'Sky',v:'#a0c4e8',i:'rgba(20,40,80,0.55)'},
+  {l:'Peach',v:'#ffb8a0',i:'rgba(80,30,10,0.55)'},
+  {l:'Yellow',v:'#ffd97d',i:'rgba(60,40,0,0.55)'},
+  {l:'Sage',v:'#b8d8a8',i:'rgba(20,50,20,0.55)'},
+  {l:'Mauve',v:'#d4a0c8',i:'rgba(60,20,60,0.55)'},
+  {l:'Teal',v:'#80c8c0',i:'rgba(10,50,50,0.55)'},
+  {l:'Lilac',v:'#d0b8e8',i:'rgba(40,20,70,0.55)'},
+  {l:'Coral',v:'#f4a080',i:'rgba(80,20,10,0.55)'}
+];
+var SHELF_COLORS=[
+  {l:'Oak',v:'#c8a060'},{l:'Walnut',v:'#8b5a2b'},{l:'White',v:'#f0ece8'},
+  {l:'Pink',v:'#f4b8c8'},{l:'Mint',v:'#90c8b8'},{l:'Lav',v:'#b890d0'},
+  {l:'Grey',v:'#a0a0b0'},{l:'Ebony',v:'#3a2a1a'}
+];
+var SPINE_COLORS=[
+  '#f4a7c3','#c9a0dc','#a0c4e8','#a8d8b9','#ffd97d','#ffb8a0',
+  '#e8b4d8','#b8d4f4','#d4f4b8','#f4d4b8','#b8f4e8','#f4b8d4'
+];
+var ALL_DECOS=[
+  {id:'candle',icon:'🕯️',name:'Candle',req:0,theme:'cozy'},
+  {id:'hangingplant',icon:'🌿',name:'Leafy Cascade',req:0,theme:'nature',hang:true},
+  {id:'fern',icon:'🌿',name:'Fern',req:0,theme:'nature'},
+  {id:'star',icon:'⭐',name:'Star',req:0,theme:'celestial'},
+  {id:'dragon',icon:'🐉',name:'Dragon',req:5,theme:'fantasy',milestone:true},
+  {id:'cat',icon:'🐱',name:'Cat',req:5,theme:'animals'},
+  {id:'mushroom',icon:'🍄',name:'Mushroom',req:5,theme:'nature'},
+  {id:'wizard',icon:'🧙',name:'Wizard',req:10,theme:'fantasy',milestone:true},
+  {id:'lantern',icon:'🏮',name:'Lantern',req:10,theme:'cozy'},
+  {id:'variegated',icon:'🌿',name:'Variegated Plant',req:10,theme:'nature',hang:true},
+  {id:'teacup',icon:'☕',name:'Tea Cup',req:10,theme:'cozy'},
+  {id:'succulent',icon:'🪴',name:'Succulent',req:15,theme:'nature'},
+  {id:'owl',icon:'🦉',name:'Owl',req:15,theme:'animals'},
+  {id:'moon',icon:'🌙',name:'Moon',req:15,theme:'celestial'},
+  {id:'tulip',icon:'🌷',name:'Tulip',req:15,theme:'nature'},
+  {id:'butterfly',icon:'🦋',name:'Butterfly',req:20,theme:'nature'},
+  {id:'purpleplant',icon:'🌿',name:'Purple Passion',req:20,theme:'nature',hang:true},
+  {id:'fox',icon:'🦊',name:'Fox',req:20,theme:'animals'},
+  {id:'potion',icon:'⚗️',name:'Potion',req:20,theme:'fantasy'},
+  {id:'unicorn',icon:'🦄',name:'Unicorn',req:25,theme:'fantasy',milestone:true},
+  {id:'clock',icon:'🕰️',name:'Clock',req:25,theme:'cozy'},
+  {id:'crystal',icon:'💎',name:'Crystal',req:25,theme:'fantasy'},
+  {id:'fairy',icon:'🧚',name:'Fairy',req:25,theme:'fantasy'},
+  {id:'spellbook',icon:'📖',name:'Spell Book',req:35,theme:'fantasy'},
+  {id:'hedgehog',icon:'🦔',name:'Hedgehog',req:35,theme:'animals'},
+  {id:'cactus',icon:'🌵',name:'Cactus',req:35,theme:'nature'},
+  {id:'orchid',icon:'🌸',name:'Orchid',req:35,theme:'nature'},
+  {id:'phoenix',icon:'🔥',name:'Phoenix',req:50,theme:'fantasy',milestone:true},
+  {id:'cushion',icon:'🛋️',name:'Cushion',req:50,theme:'cozy'},
+  {id:'mermaid',icon:'🧜',name:'Mermaid',req:50,theme:'fantasy'},
+  {id:'bonsai',icon:'🌳',name:'Bonsai',req:50,theme:'nature'},
+  {id:'hourglass',icon:'⏳',name:'Hourglass',req:65,theme:'cozy'},
+  {id:'bamboo',icon:'🎋',name:'Bamboo',req:65,theme:'nature'},
+  {id:'sunflower',icon:'🌻',name:'Sunflower',req:65,theme:'nature'},
+  {id:'rosebush',icon:'🌹',name:'Rose Bush',req:65,theme:'nature'},
+  {id:'kitsune',icon:'🦊',name:'Kitsune',req:80,theme:'magical'},
+  {id:'pegasus',icon:'🐴',name:'Pegasus',req:80,theme:'magical'},
+  {id:'kirin',icon:'🦌',name:'Kirin',req:80,theme:'magical'},
+  {id:'tanuki',icon:'🦝',name:'Tanuki',req:80,theme:'magical'},
+  {id:'galaxy2',icon:'🌌',name:'Galaxy',req:100,theme:'celestial',milestone:true},
+  {id:'phoenix2',icon:'🔥',name:'Firebird',req:100,theme:'magical'}
+];
+var MILESTONE_MSGS={
+  5:{t:'Dragon Tamer!',s:'5 books! The Dragon is yours.'},
+  10:{t:'Bookish Wizard!',s:'10 books! A wizard joins your shelf.'},
+  25:{t:'Unicorn Reader!',s:'25 books! The Unicorn appears!'},
+  50:{t:'Phoenix Scholar!',s:'50 books! You rose like a phoenix!'},
+  100:{t:'Galaxy Brain!',s:'100 books! You conquered the galaxy!'}
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(function(){
+  var sx=0;
+  var cw=document.getElementById('car-wrap');
+  cw.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+  cw.addEventListener('touchend',function(e){
+    var dx=e.changedTouches[0].clientX-sx;
+    if(Math.abs(dx)>40){if(dx<0)carNext();else carPrev();}
+  });
+})();
+
+
+
+
+
+
+
+
+
+var dragSrc=null;
+
+
+
+
+
+var tSrc=null,tClone=null;
+
+
+
+document.addEventListener('touchmove',tsMove,{passive:false});
+document.addEventListener('touchend',tsEnd);
+
+
+
+
+
+
+function renderUnlocks(){
+  var read=getBooksRead();
+  var el=document.getElementById('unlocks-body');
+  if(!el)return;
+  var secs=[
+    {req:0,label:'🎁 Free'},
+    {req:5,label:'📚 5 books'},
+    {req:10,label:'📚 10 books'},
+    {req:15,label:'📚 15 books'},
+    {req:20,label:'📚 20 books'},
+    {req:25,label:'📚 25 books'},
+    {req:35,label:'📚 35 books'},
+    {req:50,label:'📚 50 books'},
+    {req:65,label:'📚 65 books'},
+    {req:80,label:'📚 80 books'},
+    {req:100,label:'🏆 100 books'}
+  ];
+  var html='<div class="stat-card" style="margin-bottom:16px;text-align:center"><div class="stat-big">'+read+'</div><div class="stat-label">Books Read</div></div>';
+  secs.forEach(function(sec){
+    var decos=(ALL_DECOS||[]).filter(function(d){return (d.req||0)===sec.req;});
+    if(!decos.length)return;
+    var isU=read>=sec.req;
+    html+='<div style="margin-bottom:8px;padding:10px 12px;border-radius:12px;background:'+(isU?'rgba(244,167,195,0.15)':'rgba(200,120,160,0.05)')+';border:1px solid '+(isU?'rgba(244,167,195,0.4)':'rgba(200,120,160,0.1)')+'">'
+      +'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'
+      +(isU?'<span>✅</span>':'<span>🔒</span>')
+      +'<span style="font-family:Pacifico,cursive;font-size:13px;color:'+(isU?'#e07fa0':'#aaa')+'">'+sec.label+'</span>'
+      +(isU?'<span style="font-size:10px;color:#e07fa0;font-weight:700;margin-left:auto">Unlocked!</span>':'<span style="font-size:10px;color:#aaa;margin-left:auto">'+Math.max(0,sec.req-read)+' more books</span>')
+      +'</div><div style="display:flex;flex-wrap:wrap;gap:8px">';
+    decos.forEach(function(d){
+      html+='<div style="width:54px;text-align:center;opacity:'+(isU?1:0.35)+'">'
+        +'<div style="font-size:26px">'+d.icon+'</div>'
+        +'<div style="font-size:9px;font-weight:700;color:'+(isU?'#4a3060':'#aaa')+'">'+d.name+'</div>'
+        +(d.milestone?'<div style="font-size:8px;color:#e07fa0">⭐</div>':'')
+        +(d.hang?'<div style="font-size:8px;color:#5a9838">🪴</div>':'')
+        +'</div>';
+    });
+    html+='</div></div>';
+  });
+  el.innerHTML=html;
+}
+function showThemePicker(){
+  // Highlight current theme
+  ['forest','bookshop','sunny','midnight'].forEach(function(t){
+    var el=document.getElementById('theme-opt-'+t);
+    if(el)el.style.border=t===settings.theme?'3px solid #e07fa0':'3px solid transparent';
+  });
+  openModal('modal-theme');
+}
+
+// ─── AUTH ─────────────────────────────────────────
+function switchAuthTab(t){
+  document.getElementById('auth-signup').style.display=t==='signup'?'block':'none';
+  document.getElementById('auth-login').style.display=t==='login'?'block':'none';
+  document.getElementById('tab-signup').classList.toggle('active',t==='signup');
+  document.getElementById('tab-login').classList.toggle('active',t==='login');
+}
+
+function doSignup(){
+  var username=document.getElementById('auth-username').value.trim();
+  var email=document.getElementById('auth-email-s').value.trim();
+  var pass=document.getElementById('auth-pass-s').value;
+  var errEl=document.getElementById('auth-error');
+  if(!username||!email||!pass){errEl.textContent='Please fill all fields';return;}
+  if(pass.length<6){errEl.textContent='Password must be at least 6 characters';return;}
+  errEl.textContent='Creating account...';
+  try{
+    var d=supaAuth(email,pass,true);
+    supaSession=d.session||d;
+    supaUser=d.user||(d.session&&d.session.user);
+    if(supaUser){
+      supaFetch('/rest/v1/profiles','POST',{id:supaUser.id,username:username});
+      supaFetch('/rest/v1/privacy_settings','POST',{user_id:supaUser.id});
+      settings.supaUsername=username;
+      settings.supaUserId=supaUser.id;
+      save();
+      syncBooksToSupabase();
+      toast('Welcome '+username+'!');
+      goTo('screen-friends');
+      renderFriends();
+    }
+  }catch(e){errEl.textContent=e.message;}
+}
+
+function doLogin(){
+  var email=document.getElementById('auth-email-l').value.trim();
+  var pass=document.getElementById('auth-pass-l').value;
+  var errEl=document.getElementById('auth-error');
+  if(!email||!pass){errEl.textContent='Please fill all fields';return;}
+  errEl.textContent='Logging in...';
+  try{
+    var d=supaAuth(email,pass,false);
+    supaSession=d;
+    supaUser=d.user;
+    if(supaUser){
+      var profile=supaFetch('/rest/v1/profiles?id=eq.'+supaUser.id+'&select=username');
+      if(profile&&profile.length){
+        settings.supaUsername=profile[0].username;
+        settings.supaUserId=supaUser.id;
+        save();
+      }
+      syncBooksToSupabase();
+      toast('Welcome back!');
+      goTo('screen-friends');
+      renderFriends();
+    }
+  }catch(e){errEl.textContent=e.message;}
+}
+
+// ─── FRIENDS ──────────────────────────────────────
+var recToUserId=null;
+
+function renderFriends(){
+  var el=document.getElementById('friends-body');
+  if(!el)return;
+  if(!supaUser||!settings.supaUserId){
+    el.innerHTML='<div style="text-align:center;padding:32px 20px">'
+      +'<div style="font-size:48px;margin-bottom:12px">&#128101;</div>'
+      +'<div style="font-family:Pacifico,cursive;font-size:18px;color:#e07fa0;margin-bottom:8px">Connect with friends</div>'
+      +'<div style="font-size:13px;color:#8a6090;margin-bottom:24px">Create an account to follow friends,<br>share your shelves and recommend books!</div>'
+      +'<button class="btn btn-pink" onclick="goTo(\'screen-auth\')">Create Account / Log In</button></div>';
+    return;
+  }
+  el.innerHTML='<div class="loading">Loading...</div>';
+  try{
+    // Get following list
+    var following=supaFetch('/rest/v1/follows?follower_id=eq.'+settings.supaUserId+'&select=following_id');
+    var followingIds=(following||[]).map(function(f){return f.following_id;});
+    // Get followers count
+    var followers=supaFetch('/rest/v1/follows?following_id=eq.'+settings.supaUserId+'&select=follower_id');
+    // Get recommendations received
+    var recs=supaFetch('/rest/v1/recommendations?to_user_id=eq.'+settings.supaUserId+'&select=*,profiles!from_user_id(username)&order=created_at.desc&limit=5');
+    // Get privacy settings
+    var privacy=supaFetch('/rest/v1/privacy_settings?user_id=eq.'+settings.supaUserId+'&select=*');
+    var priv=privacy&&privacy.length?privacy[0]:{show_currently_reading:true,show_shelves:true,show_stats:true,show_recommendations:true};
+
+    var html='';
+    // Profile card
+    html+='<div class="stat-card" style="margin-bottom:16px">'
+      +'<div style="display:flex;align-items:center;gap:14px">'
+      +'<div style="width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#f4a7c3,#c9a0dc);display:flex;align-items:center;justify-content:center;font-family:Pacifico,cursive;font-size:20px;color:white">'+settings.supaUsername.charAt(0).toUpperCase()+'</div>'
+      +'<div><div style="font-family:Pacifico,cursive;font-size:16px;color:#4a3060">@'+settings.supaUsername+'</div>'
+      +'<div style="font-size:12px;color:#8a6090;margin-top:2px">'+followingIds.length+' following &middot; '+(followers||[]).length+' followers</div></div>'
+      +'</div>'
+      +'<button onclick="goTo(\'screen-privacy\')" style="margin-top:12px;width:100%;padding:8px;background:rgba(244,167,195,0.1);border:1px solid rgba(244,167,195,0.3);border-radius:10px;font-family:Nunito,sans-serif;font-size:12px;font-weight:700;color:#e07fa0;cursor:pointer">&#9881; Privacy Settings</button>'
+      +'</div>';
+
+    // Search for friends
+    html+='<div class="section-title">Find Friends</div>'
+      +'<div class="search-box" style="margin-bottom:16px">'
+      +'<input type="text" id="friend-search" placeholder="Search by username...">'
+      +'<button onclick="searchFriends()">Search</button></div>'
+      +'<div id="friend-results"></div>';
+
+    // Following list
+    if(followingIds.length){
+      html+='<div class="section-title">Following</div>';
+      var profiles=supaFetch('/rest/v1/profiles?id=in.('+followingIds.join(',')+')&select=id,username');
+      (profiles||[]).forEach(function(p){
+        html+='<div class="settings-row" style="margin-bottom:8px">'
+          +'<div onclick="viewFriendProfile(\''+p.id+'\',' +p.username+'\')" style="flex:1;cursor:pointer">'
+          +'<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f4a7c3,#c9a0dc);display:inline-flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:14px;margin-right:10px;vertical-align:middle">'+p.username.charAt(0).toUpperCase()+'</div>'
+          +'<span style="font-weight:700;color:#4a3060">@'+p.username+'</span></div>'
+          +'<div style="display:flex;gap:6px">'
+          +'<button onclick="openRecommendModal(\''+p.id+'\',' +p.username+'\')" style="background:rgba(244,167,195,0.15);border:1px solid rgba(244,167,195,0.3);border-radius:8px;padding:4px 8px;font-size:11px;font-weight:700;color:#e07fa0;cursor:pointer">&#128218; Rec</button>'
+          +'<button onclick="unfollow(\''+p.id+'\')" style="background:rgba(220,80,80,0.08);border:1px solid rgba(220,80,80,0.2);border-radius:8px;padding:4px 8px;font-size:11px;font-weight:700;color:#e07090;cursor:pointer">Unfollow</button>'
+          +'</div></div>';
+      });
+    }
+
+    // Recommendations received
+    if(recs&&recs.length){
+      html+='<div class="section-title">&#128218; Book Recommendations</div>';
+      recs.forEach(function(r){
+        html+='<div class="stat-card" style="margin-bottom:10px">'
+          +'<div style="font-size:11px;color:#8a6090;margin-bottom:6px">from @'+(r.profiles?r.profiles.username:'someone')+'</div>'
+          +'<div style="font-weight:700;color:#4a3060">'+r.book_title+'</div>'
+          +'<div style="font-size:12px;color:#8a6090">'+r.book_author+'</div>'
+          +(r.message?'<div style="font-size:12px;color:#c06080;margin-top:6px;font-style:italic">"'+r.message+'"</div>':'')
+          +'</div>';
+      });
+    }
+
+    el.innerHTML=html;
+  }catch(e){
+    el.innerHTML='<div class="empty"><p>Could not load friends. Check your connection.</p></div>';
+  }
+}
+
+function searchFriends(){
+  var q=document.getElementById('friend-search').value.trim();
+  var el=document.getElementById('friend-results');
+  if(!q){el.innerHTML='';return;}
+  el.innerHTML='<div class="loading">Searching...</div>';
+  try{
+    var results=supaFetch('/rest/v1/profiles?username=ilike.*'+encodeURIComponent(q)+'*&select=id,username&limit=10');
+    if(!results||!results.length){el.innerHTML='<div class="empty"><p>No users found</p></div>';return;}
+    // Get current following
+    var following=supaFetch('/rest/v1/follows?follower_id=eq.'+settings.supaUserId+'&select=following_id');
+    var followingIds=(following||[]).map(function(f){return f.following_id;});
+    el.innerHTML=results.filter(function(p){return p.id!==settings.supaUserId;}).map(function(p){
+      var isF=followingIds.indexOf(p.id)>=0;
+      return '<div class="settings-row" style="margin-bottom:8px">'
+        +'<div style="display:flex;align-items:center;gap:10px;flex:1;cursor:pointer" onclick="viewFriendProfile(\''+p.id+'\',' +p.username+'\')">'
+        +'<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f4a7c3,#c9a0dc);display:flex;align-items:center;justify-content:center;color:white;font-weight:700">'+p.username.charAt(0).toUpperCase()+'</div>'
+        +'<span style="font-weight:700;color:#4a3060">@'+p.username+'</span></div>'
+        +(isF
+          ?'<button onclick="unfollow(\''+p.id+'\')" style="background:rgba(220,80,80,0.08);border:1px solid rgba(220,80,80,0.2);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;color:#e07090;cursor:pointer">Unfollow</button>'
+          :'<button onclick="follow(\''+p.id+'\')" style="background:linear-gradient(135deg,#f4a7c3,#c9a0dc);border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;color:white;cursor:pointer">Follow</button>')
+        +'</div>';
+    }).join('');
+  }catch(e){el.innerHTML='<div class="empty"><p>Search failed</p></div>';}
+}
+
+function follow(userId){
+  try{
+    supaFetch('/rest/v1/follows','POST',{follower_id:settings.supaUserId,following_id:userId});
+    toast('Following!');renderFriends();
+  }catch(e){toast('Could not follow');}
+}
+function unfollow(userId){
+  try{
+    supaFetch('/rest/v1/follows?follower_id=eq.'+settings.supaUserId+'&following_id=eq.'+userId,'DELETE');
+    toast('Unfollowed');renderFriends();
+  }catch(e){toast('Could not unfollow');}
+}
+
+function viewFriendProfile(userId,username){
+  var el=document.getElementById('friends-body');
+  el.innerHTML='<div class="loading">Loading '+username+' profile...</div>';
+  try{
+    var privacyRes=supaFetch('/rest/v1/privacy_settings?user_id=eq.'+userId+'&select=*');
+    var priv=privacyRes&&privacyRes.length?privacyRes[0]:{show_shelves:true,show_stats:true,show_currently_reading:true};
+    var html='<button onclick="renderFriends()" style="background:none;border:none;color:#e07fa0;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:16px">&#8592; Back to Friends</button>'
+      +'<div style="text-align:center;margin-bottom:20px">'
+      +'<div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#f4a7c3,#c9a0dc);display:flex;align-items:center;justify-content:center;font-family:Pacifico,cursive;font-size:24px;color:white;margin:0 auto 8px">'+username.charAt(0).toUpperCase()+'</div>'
+      +'<div style="font-family:Pacifico,cursive;font-size:18px;color:#4a3060">@'+username+'</div></div>';
+    if(priv.show_stats){
+      var userBooks=supaFetch('/rest/v1/user_books?user_id=eq.'+userId+'&select=shelf,genre,rating');
+      var total=(userBooks||[]).length;
+      var read=(userBooks||[]).filter(function(b){return b.shelf==='read'||b.shelf==='fav';}).length;
+      html+='<div class="stat-row-2"><div class="stat-card"><div class="stat-big">'+total+'</div><div class="stat-label">Total Books</div></div>'
+        +'<div class="stat-card"><div class="stat-big">'+read+'</div><div class="stat-label">Books Read</div></div></div>';
+    }
+    if(priv.show_currently_reading){
+      var reading=supaFetch('/rest/v1/user_books?user_id=eq.'+userId+'&shelf=eq.reading&select=title,author,cover&limit=3');
+      if(reading&&reading.length){
+        html+='<div class="section-title">&#128214; Currently Reading</div>';
+        reading.forEach(function(b){
+          html+='<div class="book-li"><div class="mini-cov">'+(b.cover?'<img src="'+b.cover+'">':'&#128218;')+'</div>'
+            +'<div><div style="font-weight:700;font-size:13px;color:#4a3060">'+b.title+'</div>'
+            +'<div style="font-size:12px;color:#8a6090">'+(b.author||'')+'</div></div></div>';
+        });
+      }
+    }
+    html+='<button onclick="openRecommendModal(\''+userId+'\',' +username+'\')" class="btn btn-pink btn-full" style="margin-top:16px">&#128218; Recommend a Book</button>';
+    el.innerHTML=html;
+  }catch(e){el.innerHTML='<div class="empty"><p>Could not load profile</p></div>';}
+}
+
+function openRecommendModal(userId,username){
+  recToUserId=userId;
+  document.getElementById('rec-to-name').textContent='To: @'+username;
+  document.getElementById('rec-title').value='';
+  document.getElementById('rec-author').value='';
+  document.getElementById('rec-msg').value='';
+  openModal('modal-recommend');
+}
+
+function sendRecommendation(){
+  var title=document.getElementById('rec-title').value.trim();
+  var author=document.getElementById('rec-author').value.trim();
+  var msg=document.getElementById('rec-msg').value.trim();
+  if(!title){toast('Enter a book title!');return;}
+  try{
+    supaFetch('/rest/v1/recommendations','POST',{
+      from_user_id:settings.supaUserId,
+      to_user_id:recToUserId,
+      book_title:title,
+      book_author:author,
+      message:msg||null
+    });
+    closeModal('modal-recommend');
+    toast('Recommendation sent! &#128218;');
+  }catch(e){toast('Could not send recommendation');}
+}
+
+
+// ─── SUPABASE CONFIG ─────────────────────────────
+var SUPA_URL='https://fsxevykimglavfhcheqy.supabase.co';
+var SUPA_KEY='sb_publishable_m1s_rSj7ikyzobK18RwiLw_4dey8cfu';
+var supaUser=null;
+var supaSession=null;
+
+function supaFetch(path,method,body){
+  var opts={method:method||'GET',headers:{'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+(supaSession?supaSession.access_token:SUPA_KEY)}};
+  if(body)opts.body=JSON.stringify(body);
+  var r=fetch(SUPA_URL+path,opts);
+  if(!r.ok){var e=r.json();throw new Error(e.message||'Supabase error');}
+  var text=r.text();
+  return text?JSON.parse(text):null;
+}
+
+function supaAuth(email,password,isSignup){
+  var path=isSignup?'/auth/v1/signup':'/auth/v1/token?grant_type=password';
+  var r=fetch(SUPA_URL+path,{method:'POST',headers:{'Content-Type':'application/json','apikey':SUPA_KEY},body:JSON.stringify({email:email,password:password})});
+  var d=r.json();
+  if(d.error)throw new Error(d.error_description||d.error);
+  return d;
+}
+
+function syncBooksToSupabase(){
+  if(!supaUser)return;
+  var rows=(books||[]).map(function(b){return{id:b.id,user_id:supaUser.id,title:b.title,author:b.author||'',cover:b.cover||null,genre:b.genre||'Other',shelf:b.shelf,rating:b.rating||0,notes:b.notes||'',added_at:b.addedAt||Date.now()};});
+  if(!rows.length)return;
+  supaFetch('/rest/v1/user_books?on_conflict=id,user_id','POST',rows).catch(function(){});
+}
+
+
+var cases=JSON.parse(localStorage.getItem('bb_cases')||'[]');
+var books=JSON.parse(localStorage.getItem('bb_books')||'[]');
+var _ds={theme:'forest',goal:0,userName:'Reader',reminder:false,reminderTime:'20:00'};
+var settings=JSON.parse(localStorage.getItem('bb_settings')||'null')||_ds;
+var activeCaseId=null,currentCaseIdx=0,editingCaseId=null;
+var selBg=0,selShelf=0,selDecos=[],selPattern=0,selStyle=0,selGap=0,selBgTheme=0;
+var pendingBook=null,addRating=0,addCaseId=null,addStatus='reading';
+var popQueue=[];
+
+var BOOKCASE_PATTERNS=[
+  {l:'None',v:'none'},
+  {l:'Soft checkers',v:'linear-gradient(45deg,rgba(255,255,255,0.12) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,0.12) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,0.12) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,0.12) 75%)'},
+  {l:'Gingham',v:'linear-gradient(rgba(255,255,255,0.15) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.15) 1px,transparent 1px),linear-gradient(45deg,rgba(255,255,255,0.1) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,0.1) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,0.1) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,0.1) 75%)'},
+  {l:'Two-tone',v:'linear-gradient(45deg,rgba(255,255,255,0.18) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,0.08) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,0.08) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,0.18) 75%)'},
+  {l:'Dots+checks',v:'radial-gradient(circle,rgba(255,255,255,0.25) 1.5px,transparent 1.5px),linear-gradient(45deg,rgba(255,255,255,0.1) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,0.1) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,0.1) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,0.1) 75%)'}
+];
+var BOOKCASE_STYLES=[
+  {id:'cosy-wood',name:'Cosy Wood',icon:'🪵',req:0,
+   outer:'linear-gradient(135deg,#f5ede0,#ede0c8,#f0e8d0)',
+   border:'#c8a060',
+   cornice:'linear-gradient(90deg,#c8a060,#e8c880,#d4b070,#e8c880,#c8a060)',
+   shelf:'rgba(200,160,100,0.15)',
+   sideColor:'#c8a060',
+   plank:'linear-gradient(90deg,#b89050,#d4b070,#c8a060,#d4b070,#b89050)',
+   arch:false},
+  {id:'pink-fantasy',name:'Pink Fantasy',icon:'🌸',req:0,
+   outer:'linear-gradient(135deg,#fdf0f8,#f8e0f0,#fce8f4)',
+   border:'#f4a7c3',
+   cornice:'linear-gradient(90deg,#e07090,#f4a7c3,#e8b0c8,#f4a7c3,#e07090)',
+   shelf:'rgba(244,167,195,0.12)',
+   sideColor:'#f4a7c3',
+   plank:'linear-gradient(90deg,#e07090,#f4a7c3,#e8b0c8,#f4a7c3,#e07090)',
+   arch:false},
+  {id:'gothic-dark',name:'Gothic Dark',icon:'🔮',req:0,
+   outer:'linear-gradient(180deg,#1a0e06,#2a1810,#1e1208)',
+   border:'#5a3018',
+   cornice:'linear-gradient(90deg,#3a1808,#6a4020,#3a1808)',
+   shelf:'rgba(30,15,5,0.7)',
+   sideColor:'#4a2810',
+   plank:'linear-gradient(90deg,#4a2810,#6a4020,#4a2810)',
+   arch:false,dark:true},
+  {id:'amber-cottage',name:'Amber Cottage',icon:'☕',req:10,
+   outer:'linear-gradient(180deg,#fef0c0,#fde8a0)',
+   border:'#e8b840',
+   cornice:'linear-gradient(90deg,#c8a040,#e8c060,#c8a040)',
+   shelf:'rgba(200,160,60,0.15)',
+   sideColor:'#c8a040',
+   plank:'linear-gradient(90deg,#b89040,#d4b060,#b89040)',
+   arch:false},
+  {id:'scifi-glow',name:'Sci-Fi Glow',icon:'⚡',req:10,
+   outer:'linear-gradient(180deg,#0c1e34,#0a1828)',
+   border:'#4080c0',
+   cornice:'linear-gradient(90deg,#1040a0,#4080e0,#1040a0)',
+   shelf:'rgba(20,60,140,0.4)',
+   sideColor:'#1a4080',
+   plank:'linear-gradient(90deg,#60a0f0,#80c0ff,#60a0f0)',
+   plankH:4,
+   arch:false,dark:true},
+  {id:'forest-moss',name:'Forest Moss',icon:'🌿',req:10,
+   outer:'linear-gradient(180deg,#1e3412,#162808)',
+   border:'#3a6818',
+   cornice:'linear-gradient(90deg,#2a5010,#4a8020,#2a5010)',
+   shelf:'rgba(40,90,20,0.4)',
+   sideColor:'#2a5010',
+   plank:'linear-gradient(90deg,#2a5010,#4a8020,#2a5010)',
+   arch:false,dark:true},
+  {id:'marble-luxury',name:'Marble Luxury',icon:'🏛️',req:25,
+   outer:'linear-gradient(135deg,#f8f4ff,#ede8f8,#f4f0fc)',
+   border:'#c9a0dc',
+   cornice:'linear-gradient(90deg,#c9a0dc,#e8d0f8,#c9a0dc)',
+   shelf:'rgba(200,160,220,0.1)',
+   sideColor:'#c9a0dc',
+   plank:'linear-gradient(90deg,#c9a0dc,#e8d4f8,#d4b8e8,#c9a0dc)',
+   arch:false},
+  {id:'ocean-teal',name:'Ocean Teal',icon:'🌊',req:25,
+   outer:'linear-gradient(180deg,#d0f4f0,#c0e8e4)',
+   border:'#60c8c0',
+   cornice:'linear-gradient(90deg,#208080,#40c0b8,#208080)',
+   shelf:'rgba(40,160,152,0.15)',
+   sideColor:'#40a098',
+   plank:'linear-gradient(90deg,#208080,#40c0b8,#208080)',
+   arch:false},
+  {id:'rose-gold',name:'Rose Gold',icon:'✨',req:25,
+   outer:'linear-gradient(135deg,#fff0e8,#ffe0d0,#fff0e8)',
+   border:'#e09060',
+   cornice:'linear-gradient(90deg,#c07040,#e8a870,#d08050,#e8a870,#c07040)',
+   shelf:'rgba(200,120,60,0.1)',
+   sideColor:'#d08060',
+   plank:'linear-gradient(90deg,#c07040,#e8a870,#d08050,#e8a870,#c07040)',
+   arch:false},
+  {id:'celestial-night',name:'Celestial Night',icon:'🌌',req:50,
+   outer:'linear-gradient(180deg,#0c0c28,#080820)',
+   border:'#4040a0',
+   cornice:'linear-gradient(90deg,#3030a0,#6060c8,#3030a0)',
+   shelf:'rgba(60,60,160,0.3)',
+   sideColor:'#3040a0',
+   plank:'linear-gradient(90deg,#3030a0,#8080d0,#3030a0)',
+   plankH:4,
+   arch:false,dark:true},
+  {id:'crystal-palace',name:'Crystal Palace',icon:'❄️',req:50,
+   outer:'linear-gradient(135deg,#e8f4ff,#f0f8ff,#e0f0ff)',
+   border:'#80c0f0',
+   cornice:'linear-gradient(90deg,#60a0e0,#a0d0f8,#60a0e0)',
+   shelf:'rgba(100,180,240,0.12)',
+   sideColor:'#80c0f0',
+   plank:'linear-gradient(90deg,#60a0e0,#a0d0f8,#80b8f0,#a0d0f8,#60a0e0)',
+   arch:false},
+  {id:'rainbow-dream',name:'Rainbow Dream',icon:'🌈',req:50,
+   outer:'linear-gradient(135deg,#fff0f8,#f8f0ff,#f0f8ff)',
+   border:'#f4a7c3',
+   cornice:'linear-gradient(90deg,#f4a7c3,#ffd97d,#a0c4e8,#a8d8b9,#c9a0dc)',
+   shelf:'rgba(244,167,195,0.1)',
+   sideColor:'#f4a7c3',
+   plank:'linear-gradient(90deg,#f4a7c3,#ffd97d,#a0c4e8,#a8d8b9,#c9a0dc)',
+   arch:false},
+  {id:'pink-blossom',name:'Pink Blossom',icon:'🌸',req:50,
+   outer:'linear-gradient(135deg,#fce4ee,#f8d0e8,#fce4ee)',
+   border:'#e07090',
+   cornice:'linear-gradient(90deg,#e07090,#f4a7c3,#f8b8cc,#f4a7c3,#e07090)',
+   shelf:'rgba(244,167,195,0.15)',
+   sideColor:'#e07090',
+   plank:'linear-gradient(90deg,#e07090,#f4a7c3,#f8c0d0,#f4a7c3,#e07090)',
+   arch:false}
+];
+
+var BG_COLORS=[
+  {l:'Mint',v:'#a8d8c8',i:'rgba(60,30,80,0.55)'},
+  {l:'Lavender',v:'#c9a0dc',i:'rgba(50,20,70,0.55)'},
+  {l:'Pink',v:'#f4a7c3',i:'rgba(80,20,60,0.55)'},
+  {l:'Blush',v:'#e8b4c8',i:'rgba(70,20,50,0.55)'},
+  {l:'Sky',v:'#a0c4e8',i:'rgba(20,40,80,0.55)'},
+  {l:'Peach',v:'#ffb8a0',i:'rgba(80,30,10,0.55)'},
+  {l:'Yellow',v:'#ffd97d',i:'rgba(60,40,0,0.55)'},
+  {l:'Sage',v:'#b8d8a8',i:'rgba(20,50,20,0.55)'},
+  {l:'Mauve',v:'#d4a0c8',i:'rgba(60,20,60,0.55)'},
+  {l:'Teal',v:'#80c8c0',i:'rgba(10,50,50,0.55)'},
+  {l:'Lilac',v:'#d0b8e8',i:'rgba(40,20,70,0.55)'},
+  {l:'Coral',v:'#f4a080',i:'rgba(80,20,10,0.55)'}
+];
+var SHELF_COLORS=[
+  {l:'Oak',v:'#c8a060'},{l:'Walnut',v:'#8b5a2b'},{l:'White',v:'#f0ece8'},
+  {l:'Pink',v:'#f4b8c8'},{l:'Mint',v:'#90c8b8'},{l:'Lav',v:'#b890d0'},
+  {l:'Grey',v:'#a0a0b0'},{l:'Ebony',v:'#3a2a1a'}
+];
+var SPINE_COLORS=[
+  '#f4a7c3','#c9a0dc','#a0c4e8','#a8d8b9','#ffd97d','#ffb8a0',
+  '#e8b4d8','#b8d4f4','#d4f4b8','#f4d4b8','#b8f4e8','#f4b8d4'
+];
+var ALL_DECOS=[
+  {id:'candle',icon:'🕯️',name:'Candle',req:0,theme:'cozy'},
+  {id:'hangingplant',icon:'🌿',name:'Leafy Cascade',req:0,theme:'nature',hang:true},
+  {id:'fern',icon:'🌿',name:'Fern',req:0,theme:'nature'},
+  {id:'star',icon:'⭐',name:'Star',req:0,theme:'celestial'},
+  {id:'dragon',icon:'🐉',name:'Dragon',req:5,theme:'fantasy',milestone:true},
+  {id:'cat',icon:'🐱',name:'Cat',req:5,theme:'animals'},
+  {id:'mushroom',icon:'🍄',name:'Mushroom',req:5,theme:'nature'},
+  {id:'wizard',icon:'🧙',name:'Wizard',req:10,theme:'fantasy',milestone:true},
+  {id:'lantern',icon:'🏮',name:'Lantern',req:10,theme:'cozy'},
+  {id:'variegated',icon:'🌿',name:'Variegated Plant',req:10,theme:'nature',hang:true},
+  {id:'teacup',icon:'☕',name:'Tea Cup',req:10,theme:'cozy'},
+  {id:'succulent',icon:'🪴',name:'Succulent',req:15,theme:'nature'},
+  {id:'owl',icon:'🦉',name:'Owl',req:15,theme:'animals'},
+  {id:'moon',icon:'🌙',name:'Moon',req:15,theme:'celestial'},
+  {id:'tulip',icon:'🌷',name:'Tulip',req:15,theme:'nature'},
+  {id:'butterfly',icon:'🦋',name:'Butterfly',req:20,theme:'nature'},
+  {id:'purpleplant',icon:'🌿',name:'Purple Passion',req:20,theme:'nature',hang:true},
+  {id:'fox',icon:'🦊',name:'Fox',req:20,theme:'animals'},
+  {id:'potion',icon:'⚗️',name:'Potion',req:20,theme:'fantasy'},
+  {id:'unicorn',icon:'🦄',name:'Unicorn',req:25,theme:'fantasy',milestone:true},
+  {id:'clock',icon:'🕰️',name:'Clock',req:25,theme:'cozy'},
+  {id:'crystal',icon:'💎',name:'Crystal',req:25,theme:'fantasy'},
+  {id:'fairy',icon:'🧚',name:'Fairy',req:25,theme:'fantasy'},
+  {id:'spellbook',icon:'📖',name:'Spell Book',req:35,theme:'fantasy'},
+  {id:'hedgehog',icon:'🦔',name:'Hedgehog',req:35,theme:'animals'},
+  {id:'cactus',icon:'🌵',name:'Cactus',req:35,theme:'nature'},
+  {id:'orchid',icon:'🌸',name:'Orchid',req:35,theme:'nature'},
+  {id:'phoenix',icon:'🔥',name:'Phoenix',req:50,theme:'fantasy',milestone:true},
+  {id:'cushion',icon:'🛋️',name:'Cushion',req:50,theme:'cozy'},
+  {id:'mermaid',icon:'🧜',name:'Mermaid',req:50,theme:'fantasy'},
+  {id:'bonsai',icon:'🌳',name:'Bonsai',req:50,theme:'nature'},
+  {id:'hourglass',icon:'⏳',name:'Hourglass',req:65,theme:'cozy'},
+  {id:'bamboo',icon:'🎋',name:'Bamboo',req:65,theme:'nature'},
+  {id:'sunflower',icon:'🌻',name:'Sunflower',req:65,theme:'nature'},
+  {id:'rosebush',icon:'🌹',name:'Rose Bush',req:65,theme:'nature'},
+  {id:'kitsune',icon:'🦊',name:'Kitsune',req:80,theme:'magical'},
+  {id:'pegasus',icon:'🐴',name:'Pegasus',req:80,theme:'magical'},
+  {id:'kirin',icon:'🦌',name:'Kirin',req:80,theme:'magical'},
+  {id:'tanuki',icon:'🦝',name:'Tanuki',req:80,theme:'magical'},
+  {id:'galaxy2',icon:'🌌',name:'Galaxy',req:100,theme:'celestial',milestone:true},
+  {id:'phoenix2',icon:'🔥',name:'Firebird',req:100,theme:'magical'}
+];
+var MILESTONE_MSGS={
+  5:{t:'Dragon Tamer!',s:'5 books! The Dragon is yours.'},
+  10:{t:'Bookish Wizard!',s:'10 books! A wizard joins your shelf.'},
+  25:{t:'Unicorn Reader!',s:'25 books! The Unicorn appears!'},
+  50:{t:'Phoenix Scholar!',s:'50 books! You rose like a phoenix!'},
+  100:{t:'Galaxy Brain!',s:'100 books! You conquered the galaxy!'}
+};
+
+function save(){
+  localStorage.setItem('bb_cases',JSON.stringify(cases));
+  localStorage.setItem('bb_books',JSON.stringify(books));
+  localStorage.setItem('bb_settings',JSON.stringify(settings));
+}
+function getBooksRead(){return (books||[]).filter(function(b){return b.shelf==='read'&&!b.preReader;}).length;}
+
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='screen-room')renderRoom();
+  if(id==='screen-search'){
+    if((cases||[]).length){
+      addCaseId=cases[currentCaseIdx||0]?cases[currentCaseIdx||0].id:cases[0].id;
+    }
+    populateManualCase();
+  }
+  if(id==='screen-unlocks')renderUnlocks();
+  if(id==='screen-stats')renderStats();
+  if(id==='screen-settings')renderSettings();
+  if(id==='screen-friends')renderFriends();
+  if(id==='screen-privacy')renderPrivacy();
+}
+function roomNav(key){
+  ['lib','add','unl','fri','sta'].forEach(function(k){
+    var el=document.getElementById('nav-'+k);
+    if(el)el.classList.toggle('active',k===key);
+  });
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function toast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.style.opacity='1';
+  setTimeout(function(){t.style.opacity='0';},2400);
+}
+
+function applyTheme(t){
+  document.body.className='theme-'+t;
+  settings.theme=t;save();
+  // Reset room background to let CSS theme take over
+  var roomEl=document.getElementById('screen-room');
+  if(roomEl)roomEl.style.removeProperty('background');
+  // Re-render carousel to reapply bookcase background
+  if((cases||[]).length)renderCarousel();
+}
+
+function showWelcome(){
+  var t=settings.theme||'forest';
+  var bgs={
+    forest:'linear-gradient(160deg,#d4eee0,#e8f5ee,#c8e8d4)',
+    bookshop:'linear-gradient(160deg,#fce4ee,#fdf0f5,#f4d4e8)',
+    sunny:'linear-gradient(160deg,#fef5d0,#fdf8e8,#fde8a8)',
+    midnight:'linear-gradient(160deg,#100828,#080820,#180838)'
+  };
+  var colors={
+    forest:{g:'#3a6a4a',n:'#3a6a4a',s:'Your forest library awaits',d:'🌿'},
+    bookshop:{g:'#c06080',n:'#c06080',s:'Your cozy bookshop awaits',d:'🌸'},
+    sunny:{g:'#b87820',n:'#b87820',s:'Good morning! Time to read',d:'☀️'},
+    midnight:{g:'#c0c0f0',n:'#c0c0f0',s:'Your magical library awaits',d:'🔮'}
+  };
+  var col=colors[t]||colors.forest;
+  var existing=document.getElementById('welcome-overlay');
+  if(existing)existing.remove();
+  var el=document.createElement('div');
+  el.id='welcome-overlay';
+  el.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:'+bgs[t];
+  el.innerHTML='<div style="font-size:64px;margin-bottom:16px">'+col.d+'</div>'
+    +'<div style="font-family:Pacifico,cursive;font-size:12px;font-weight:400;margin-bottom:4px;color:'+col.g+'">Welcome back,</div>'
+    +'<div style="font-family:Pacifico,cursive;font-size:24px;font-weight:400;margin-bottom:8px;color:'+col.n+'">'+(settings.userName||'Reader')+'</div>'
+    +'<div style="font-size:13px;opacity:0.7;color:'+col.g+';margin-bottom:32px">'+col.s+'</div>'
+    +'<button id="welcome-btn" style="background:rgba(255,255,255,0.4);border:2px solid rgba(255,255,255,0.6);border-radius:24px;padding:12px 32px;font-size:15px;font-weight:700;color:'+col.n+';cursor:pointer;font-family:sans-serif">Enter my library</button>';
+  document.body.appendChild(el);
+  document.getElementById('welcome-btn').addEventListener('click',dismissWelcome);
+  setTimeout(dismissWelcome,5000);
+}
+function dismissWelcome(){
+  var el=document.getElementById('welcome-overlay');
+  if(!el)return;
+  el.style.transition='opacity 0.8s';
+  el.style.opacity='0';
+  setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el);},850);
+}
+
+function renderRoom(){
+  var total=(books||[]).length;
+  document.getElementById('room-sub').textContent=total+' book'+(total!==1?'s':'')+' collected';
+  renderCarousel();
+}
+function renderCarousel(){
+  var wrap=document.getElementById('car-wrap');
+  var dots=document.getElementById('car-dots');
+  var arrL=document.getElementById('arr-l');
+  var arrR=document.getElementById('arr-r');
+  if(!(cases||[]).length){
+    wrap.innerHTML='<div style="text-align:center;padding:40px 20px">'
+      +'<svg width="60" height="60" viewBox="0 0 64 64" style="margin-bottom:12px;display:block;margin-left:auto;margin-right:auto"><rect x="8" y="6" width="36" height="48" rx="5" fill="#e8d4f8" stroke="#c9a0dc" stroke-width="2"/><rect x="8" y="6" width="11" height="48" rx="4" fill="#c9a0dc" opacity="0.6"/><line x1="24" y1="18" x2="40" y2="18" stroke="#c9a0dc" stroke-width="2" stroke-linecap="round"/><line x1="24" y1="27" x2="40" y2="27" stroke="#c9a0dc" stroke-width="2" stroke-linecap="round"/><line x1="24" y1="36" x2="34" y2="36" stroke="#c9a0dc" stroke-width="2" stroke-linecap="round"/><circle cx="52" cy="16" r="5" fill="#ffd97d"/><circle cx="55" cy="32" r="3.5" fill="#f4a7c3"/><circle cx="52" cy="46" r="5" fill="#a0c4e8"/></svg>'
+      +'<div style="font-family:Pacifico,cursive;font-size:16px;margin-bottom:8px;color:#3a2a5a;font-weight:400">Your library awaits</div>'
+      +'<div style="font-size:13px;color:#5a4a7a;font-weight:600">Create your first bookcase below!</div></div>';
+    dots.innerHTML='';
+    arrL.style.display=arrR.style.display='none';
+    var roomEl=document.getElementById('screen-room');
+    if(roomEl)roomEl.style.background='';
+    return;
+  }
+  if(currentCaseIdx>=(cases||[]).length)currentCaseIdx=(cases||[]).length-1;
+  var c=cases[currentCaseIdx];
+  var cb=(books||[]).filter(function(b){return b.caseId===c.id;});
+  var bg=BG_COLORS[c.bgIdx]||BG_COLORS[0];
+  var sh=SHELF_COLORS[c.shelfIdx]||SHELF_COLORS[0];
+  var items=getShelfItems(c.id);
+  var cs=Math.max(5,Math.ceil(items.length/3));
+  var rows=[items.slice(0,cs),items.slice(cs,cs*2),items.slice(cs*2)];
+  var rowsHtml='';
+  rows.forEach(function(row,ri){
+    var bh='';
+    if(!row.length&&ri===0)bh='<div style="font-size:10px;color:rgba(255,255,255,0.4);padding:6px">Empty...</div>';
+    row.forEach(function(item,i){
+      if(item.type==='book'){
+        var b=(books||[]).find(function(x){return x.id===item.id;});
+        if(!b)return;
+        var h=48+(i%3)*10,w=12+(i%4)*4;
+        var col=SPINE_COLORS[i%SPINE_COLORS.length];
+        bh+='<div style="width:'+w+'px;height:'+h+'px;background:'+col+';border-radius:2px 2px 0 0;flex-shrink:0"></div>';
+      }else if(item.type==='deco'){
+        var d=(ALL_DECOS||[]).find(function(x){return x.id===item.decoId;});
+        bh+='<span style="font-size:12px;align-self:flex-end;padding-bottom:2px">'+(d?d.icon:'')+'</span>';
+      }
+    });
+    rowsHtml+='<div style="background:'+bg.i+';border-radius:3px;padding:3px 3px 0;display:flex;align-items:flex-end;gap:2px;min-height:58px">'+bh+'</div>'
+      +'<div style="height:6px;background:'+sh.v+';border-radius:0 0 3px 3px;margin-bottom:3px"></div>';
+  });
+  var isDark=settings.theme==='midnight'||!isLightColor(bg.v);
+  var labelColor=isDark?'rgba(255,255,255,0.95)':'#3a2a1a';
+  var labelShadow=isDark?'0 1px 4px rgba(0,0,0,0.6)':'0 1px 3px rgba(0,0,0,0.2)';
+  wrap.innerHTML='<div style="width:230px;cursor:pointer" onclick="openBookcase(\''+c.id+'\')"><div style="background:'+bg.v+';border-radius:16px;padding:10px 10px 6px;box-shadow:3px 3px 0 rgba(0,0,0,0.2)">'+rowsHtml+'</div>'
+    +'<div style="text-align:center;margin-top:8px">'
+    +'<div style="font-family:Pacifico,cursive;font-size:14px;font-weight:400;color:'+labelColor+';text-shadow:'+labelShadow+'">'+c.name+'</div>'
+    +'<div style="font-size:10px;color:'+labelColor+';opacity:0.7;margin-top:2px">'+cb.length+' book'+(cb.length!==1?'s':'')+' · tap to enter</div></div></div>';
+  dots.innerHTML=(cases||[]).map(function(_,i){
+    return '<div class="carousel-dot'+(i===currentCaseIdx?' active':'')+'" onclick="carGo('+i+')"></div>';
+  }).join('');
+  arrL.style.display=arrR.style.display=(cases||[]).length>1?'flex':'none';
+  var _rb=document.getElementById('screen-room');
+  if(_rb&&typeof BG_THEMES!=='undefined'&&typeof cases!=='undefined'&&(cases||[]).length&&typeof currentCaseIdx!=='undefined'){
+    _rb.style.background=(BG_THEMES[cases[currentCaseIdx].bgTheme||0]||BG_THEMES[0]).bg;
+  }
+  // Update room background to match current bookcase style
+  var roomEl=document.getElementById('screen-room');
+  if(roomEl&&(cases||[]).length){
+    var cst=BOOKCASE_STYLES[c.styleIdx||0]||BOOKCASE_STYLES[0];
+    var bgCol=BG_COLORS[c.bgIdx||0]||BG_COLORS[0];
+    var isLight=isLightColor(bgCol.v)&&!cst.dark;
+    // Apply bookcase style background directly
+    roomEl.style.setProperty('background',cst.outer,'important');
+    // Update text colours
+    var titleEl=document.querySelector('.room-title');
+    var subEl=document.getElementById('room-sub');
+    if(titleEl)titleEl.style.color=isLight?'#3a2a5a':'rgba(255,255,255,0.95)';
+    if(subEl)subEl.style.color=isLight?'#6a5a8a':'rgba(255,255,255,0.7)';
+    var btnEl=document.querySelector('.new-case-room-btn');
+    if(btnEl){
+      btnEl.style.background=isLight?'rgba(255,255,255,0.85)':'rgba(255,255,255,0.15)';
+      btnEl.style.color=isLight?'#3a2a5a':'rgba(255,255,255,0.9)';
+      btnEl.style.borderColor=isLight?'rgba(100,80,140,0.4)':'rgba(255,255,255,0.3)';
+    }
+  }
+}
+function isLightColor(hex){
+  var c=hex.replace('#','');
+  if(c.length===3)c=c[0]+c[0]+c[1]+c[1]+c[2]+c[2];
+  var r=parseInt(c.substr(0,2),16);
+  var g=parseInt(c.substr(2,2),16);
+  var b=parseInt(c.substr(4,2),16);
+  return(r*299+g*587+b*114)/1000>140;
+}
+function carPrev(){
+  if((cases||[]).length>1){
+    currentCaseIdx=(currentCaseIdx-1+(cases||[]).length)%(cases||[]).length;
+    renderCarousel();
+    var w=document.getElementById('car-wrap');
+    if(w){w.classList.remove('slide-left','slide-right');void w.offsetWidth;w.classList.add('slide-right');}
+  }
+}
+function carNext(){
+  if((cases||[]).length>1){
+    currentCaseIdx=(currentCaseIdx+1)%(cases||[]).length;
+    renderCarousel();
+    var w=document.getElementById('car-wrap');
+    if(w){w.classList.remove('slide-left','slide-right');void w.offsetWidth;w.classList.add('slide-left');}
+  }
+}
+function carGo(i){
+  var dir=i>currentCaseIdx?'slide-left':'slide-right';
+  currentCaseIdx=i;
+  renderCarousel();
+  var w=document.getElementById('car-wrap');
+  if(w){w.classList.remove('slide-left','slide-right');void w.offsetWidth;w.classList.add(dir);}
+}
+(function(){
+  var sx=0;
+  var cw=document.getElementById('car-wrap');
+  cw.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+  cw.addEventListener('touchend',function(e){
+    var dx=e.changedTouches[0].clientX-sx;
+    if(Math.abs(dx)>40){if(dx<0)carNext();else carPrev();}
+  });
+})();
+
+function openBookcase(id){
+  activeCaseId=id;
+  var c=(cases||[]).find(function(x){return x.id===id;});
+  if(!c)return;
+  document.getElementById('bc-title').textContent=(c.emoji||'📚')+' '+c.name;
+  renderBcInterior(id);
+  goTo('screen-bookcase');
+}
+function editCurrentCase(){if(activeCaseId)editCase(activeCaseId);}
+
+function renderBcInterior(caseId){
+  var c=(cases||[]).find(function(x){return x.id===caseId;});if(!c)return;
+  var cb=(books||[]).filter(function(b){return b.caseId===caseId;});
+  document.getElementById('bc-count').textContent=cb.length+' book'+(cb.length!==1?'s':'');
+  var bg=BG_COLORS[c.bgIdx]||BG_COLORS[0];
+  var sh=SHELF_COLORS[c.shelfIdx]||SHELF_COLORS[0];
+  var items=getShelfItems(caseId);
+  var CAP=8;
+  var numRows=Math.max(3,Math.ceil(items.length/CAP));
+  var rows=[];
+  for(var ri=0;ri<numRows;ri++){rows.push(items.slice(ri*CAP,(ri+1)*CAP));}
+  var shelvesHtml='';
+  rows.forEach(function(row,ri){
+    var go=ri*CAP;
+    var ih='<div class="drop-zone" data-cid="'+caseId+'" data-di="'+go+'" ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event,\''+caseId+'\','+go+')"></div>';
+    if(!row.length)ih+='<div class="shelf-empty-msg" style="color:rgba(255,255,255,0.9);text-shadow:0 1px 3px rgba(0,0,0,0.4)">Empty - add some books!</div>';
+    row.forEach(function(item,i){
+      var gi=go+i;
+      var dndAttrs='draggable="true" ondragstart="dsStart(event,\''+caseId+'\','+gi+')" ondragend="dsEnd(event)" ontouchstart="tsStart(event,\''+caseId+'\','+gi+')" ontouchmove="tsMove(event)" ontouchend="tsEnd(event)"';
+      if(item.type==='book'){
+        var b=(books||[]).find(function(x){return x.id===item.id;});if(!b)return;
+        var h=100+(gi%3)*20,w=18+(gi%4)*5;
+        var col=b.spineColor||SPINE_COLORS[gi%SPINE_COLORS.length];
+        var spineInner=(b.cover&&b.showCover)?'<img class="spine-img" src="'+b.cover+'">':'<div class="spine-inner" style="background:'+col+'"><span class="spine-label">'+b.title+'</span></div>';
+        ih+='<div class="book-spine-pastel" style="width:'+w+'px;height:'+h+'px" '+dndAttrs+' onclick="openBook(\''+b.id+'\')">'+spineInner+'</div>';
+      }else if(item.type==='deco'){
+        var d=(ALL_DECOS||[]).find(function(x){return x.id===item.decoId;});
+        if(d&&d.hang){
+          var hangSVG=getHangingPlantSVG(d.id);
+          ih+='<div class="deco-on-shelf" '+dndAttrs+' style="align-self:flex-start;position:relative;top:0;width:60px">'+hangSVG+'</div>';
+        }else{
+          ih+='<div class="deco-on-shelf" '+dndAttrs+'>'+(d?d.icon:'')+'</div>';
+        }
+      }
+      ih+='<div class="drop-zone" data-cid="'+caseId+'" data-di="'+(gi+1)+'" ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event,\''+caseId+'\','+(gi+1)+')"></div>';
+    });
+    ih+='<div class="add-slot" onclick="goTo(\'screen-search\')"><div class="add-slot-inner">+</div></div>';
+    shelvesHtml+='<div class="shelf-row-3d"><div class="shelf-books-area" style="background:'+bg.i+'">'+ih+'</div><div class="shelf-plank-3d" style="background:'+sh.v+'"></div></div>';
+  });
+  document.getElementById('bc-body').innerHTML='<div class="bookcase-body" style="background:'+bg.v+'">'+shelvesHtml+'</div>';
+}
+
+function getShelfItems(caseId){
+  var c=(cases||[]).find(function(x){return x.id===caseId;});if(!c)return[];
+  var cb=(books||[]).filter(function(b){return b.caseId===caseId;});
+  if(!c.shelfItems||!c.shelfItems.length)return cb.map(function(b){return{type:'book',id:b.id};});
+  var existing={};
+  c.shelfItems.filter(function(i){return i.type==='book';}).forEach(function(i){existing[i.id]=true;});
+  var merged=c.shelfItems.slice();
+  cb.forEach(function(b){if(!existing[b.id])merged.push({type:'book',id:b.id});});
+  return merged;
+}
+function saveShelfItems(caseId,items){
+  var idx=cases.findIndex(function(c){return c.id===caseId;});if(idx<0)return;
+  cases[idx].shelfItems=items;save();
+}
+
+var dragSrc=null;
+function dsStart(e,cid,i){dragSrc={cid:cid,i:i};setTimeout(function(){e.target.style.opacity='0.4';},0);}
+function dsEnd(e){e.target.style.opacity='1';}
+function dzOver(e){e.preventDefault();e.currentTarget.classList.add('drag-active');}
+function dzLeave(e){e.currentTarget.classList.remove('drag-active');}
+function dzDrop(e,cid,di){
+  e.preventDefault();e.currentTarget.classList.remove('drag-active');
+  if(!dragSrc||dragSrc.cid!==cid)return;
+  var items=getShelfItems(cid);
+  var moved=items.splice(dragSrc.i,1)[0];
+  var adj=di>dragSrc.i?di-1:di;
+  items.splice(adj,0,moved);
+  saveShelfItems(cid,items);dragSrc=null;renderBcInterior(cid);
+}
+var tSrc=null,tClone=null;
+function tsStart(e,cid,i){
+  tSrc={cid:cid,i:i};
+  tClone=e.currentTarget.cloneNode(true);
+  var rect=e.currentTarget.getBoundingClientRect();
+  tClone.style.cssText='position:fixed;pointer-events:none;z-index:9999;opacity:0.85;left:'+rect.left+'px;top:'+rect.top+'px;width:'+rect.width+'px;height:'+rect.height+'px;transition:none';
+  document.body.appendChild(tClone);
+  e.currentTarget.style.opacity='0.3';
+}
+function tsMove(e){
+  if(!tClone)return;e.preventDefault();
+  var t=e.touches[0];
+  tClone.style.left=t.clientX+'px';tClone.style.top=t.clientY+'px';
+  document.querySelectorAll('.drop-zone').forEach(function(z){z.classList.remove('drag-active');});
+  var el=document.elementFromPoint(t.clientX,t.clientY);
+  if(el&&el.classList.contains('drop-zone'))el.classList.add('drag-active');
+}
+function tsEnd(e){
+  if(!tClone||!tSrc)return;
+  tClone.remove();tClone=null;
+  document.querySelectorAll('.drop-zone').forEach(function(z){z.classList.remove('drag-active');});
+  document.querySelectorAll('.book-spine-pastel,.deco-on-shelf').forEach(function(el){el.style.opacity='1';});
+  var t=e.changedTouches[0];
+  // Check element under finger and its parents for drop zone
+  var el=document.elementFromPoint(t.clientX,t.clientY);
+  var dropZone=null;
+  while(el&&el!==document.body){
+    if(el.classList&&el.classList.contains('drop-zone')){dropZone=el;break;}
+    el=el.parentElement;
+  }
+  if(dropZone){
+    var cid=dropZone.dataset.cid,di=parseInt(dropZone.dataset.di);
+    if(cid===tSrc.cid){
+      var items=getShelfItems(cid);
+      var moved=items.splice(tSrc.i,1)[0];
+      var adj=di>tSrc.i?di-1:di;
+      items.splice(adj,0,moved);
+      saveShelfItems(cid,items);renderBcInterior(cid);
+    }
+  }
+  tSrc=null;
+}
+document.addEventListener('touchmove',tsMove,{passive:false});
+document.addEventListener('touchend',tsEnd);
+
+function openNewCase(){
+  editingCaseId=null;selBg=0;selShelf=0;selDecos=[];selPattern=0;selStyle=0;selGap=0;selBgTheme=0;selGap=0;selBgTheme=0;
+  document.getElementById('mc-title').textContent='New Bookcase';
+  document.getElementById('mc-name').value='';
+  document.getElementById('mc-emoji').value='';
+  openModal('modal-case');setTimeout(renderCaseEditor,80);
+}
+function editCase(id){
+  var c=(cases||[]).find(function(x){return x.id===id;});if(!c)return;
+  editingCaseId=id;selBg=c.bgIdx||0;selShelf=c.shelfIdx||0;selPattern=c.patternIdx||0;selStyle=c.styleIdx||0;selGap=c.gap||0;selBgTheme=c.bgTheme||0;
+  var ex=(c.shelfItems||[]).filter(function(i){return i.type==='deco';}).map(function(i){return i.decoId;});
+  selDecos=ex.filter(function(v,i,a){return a.indexOf(v)===i;});
+  document.getElementById('mc-title').textContent='Edit Bookcase';
+  document.getElementById('mc-name').value=c.name;
+  document.getElementById('mc-emoji').value=c.emoji||'';
+  openModal('modal-case');setTimeout(renderCaseEditor,80);
+}
+function renderCaseEditor(){
+  var unlocked=(typeof ALL_DECOS!=="undefined"?ALL_DECOS:[]).filter(function(d){return d.req<=getBooksRead();}).map(function(d){return d.id;});
+    var emojiList=['📚','🌹','🌸','🌿','⭐','🔮','🐉','🦄','🌙','☕','🏰','🌊','❄️','🌈','🎭','🎪','🦋','🌺','🍄','🕯️','🗝️','📖','✨','🎨','🌌','🏛️','🌷','🦊','🐱','🌻'];
+  var currentEmoji=document.getElementById('mc-emoji').value||'📚';
+  var emojiPicker=document.getElementById('mc-emoji-picker');
+  if(emojiPicker){emojiPicker.innerHTML=emojiList.map(function(e){
+    var isSel=e===currentEmoji;
+    return '<div onclick="selectEmoji(\''+e+'\')" style="width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;border:'+(isSel?'2.5px solid #e07fa0':'1.5px solid rgba(200,120,160,0.2)')+';background:'+(isSel?'rgba(244,167,195,0.2)':'rgba(255,255,255,0.6)')+'">'+e+'</div>';
+  }).join('');}
+  var mcBg=document.getElementById('mc-bg');if(mcBg)mcBg.innerHTML=(BG_COLORS||[]).map(function(c,i){
+    return '<div class="cswatch'+(i===selBg?' sel':'')+'" style="background:'+c.v+'" title="'+c.l+'" onclick="selBg='+i+';renderCaseEditor()"></div>';
+  }).join('');
+  var patBg=(BG_COLORS[selBg]||BG_COLORS[0]).v;
+  var mcPat=document.getElementById('mc-pattern');if(mcPat)mcPat.innerHTML=(BOOKCASE_PATTERNS||[]).map(function(p,i){
+    var bgStyle='background:'+patBg+';';
+    if(p.v!=='none') bgStyle+='background-image:'+p.v+';background-size:16px 16px;';
+    return '<div style="'+bgStyle+'width:56px;height:32px;border-radius:8px;cursor:pointer;display:inline-block;border:'+(i===selPattern?'3px solid #e07fa0':'1.5px solid rgba(180,120,200,0.3)')+';margin-right:4px;margin-bottom:4px;position:relative" title="'+p.l+'" onclick="selPattern='+i+';renderCaseEditor()">'
+      +'<span style="position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:7px;font-weight:700;color:rgba(255,255,255,0.9);text-shadow:0 1px 2px rgba(0,0,0,0.5)">'+p.l+'</span></div>';
+  }).join('');
+  var booksRead=getBooksRead();
+  var mcStyle=document.getElementById('mc-style');if(mcStyle)mcStyle.innerHTML=(BOOKCASE_STYLES||[]).map(function(st,i){
+    var isU=booksRead>=st.req;
+    var isSel=i===selStyle;
+    return '<div style="display:inline-block;margin:3px;cursor:'+(isU?'pointer':'not-allowed')+';opacity:'+(isU?'1':'0.4')+';vertical-align:top" onclick="'+(isU?'selStyle='+i+';renderCaseEditor()':'')+'">'
+      +'<div style="width:52px;height:52px;border-radius:10px;background:'+st.outer+';border:'+(isSel?'3px solid #e07fa0':'1.5px solid '+st.border)+';display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative">'
+      +(isU?'':'<span style="position:absolute;top:2px;right:3px;font-size:9px">🔒</span>')
+      +'<span style="font-size:18px">'+(st.icon||'📚')+'</span>'
+      +'<span style="font-size:7px;font-weight:700;color:'+(st.dark?'rgba(255,255,255,0.8)':'#4a3060')+';text-align:center;margin-top:2px">'+st.name+'</span>'
+      +'</div></div>';
+  }).join('');
+  var mcShelf=document.getElementById('mc-shelf');if(mcShelf)mcShelf.innerHTML=(SHELF_COLORS||[]).map(function(c,i){
+    return '<div class="sswatch'+(i===selShelf?' sel':'')+'" style="background:'+c.v+'" title="'+c.l+'" onclick="selShelf='+i+';renderCaseEditor()"></div>';
+  }).join('');
+  var mcDecos=document.getElementById('mc-decos');if(mcDecos)mcDecos.innerHTML=(ALL_DECOS||[]).map(function(d){
+    var isU=unlocked.indexOf(d.id)>=0,isSel=selDecos.indexOf(d.id)>=0;
+    return '<div class="deco-opt'+(isSel?' sel':'')+(isU?'':' locked')+'" onclick="'+(isU?'toggleDeco(\''+d.id+'\')':'')+'" title="'+(isU?d.name:'Read '+d.req+' books')+'">'
+      +(isU?'':'<span style="position:absolute;top:2px;right:4px;font-size:9px">🔒</span>')
+      +'<span>'+d.icon+'</span><span class="deco-lbl">'+d.name+'</span></div>';
+  }).join('');
+
+  // BG THEME PICKER
+  var mcBgt=document.getElementById('mc-bgtheme');
+  if(mcBgt){
+    var booksRead2=getBooksRead();
+    var bgtHtml='';
+    for(var bgi=0;bgi<BG_THEMES.length;bgi++){
+      var bt=BG_THEMES[bgi];
+      var btSel=bgi===selBgTheme;
+      var btU=booksRead2>=(bt.req||0);
+      bgtHtml+='<div onclick="'+(btU?'selBgTheme='+bgi+';renderCaseEditor()':'')+'" style="background:'+bt.bg+';width:68px;height:44px;border-radius:8px;cursor:'+(btU?'pointer':'not-allowed')+';display:inline-flex;align-items:flex-end;justify-content:center;padding-bottom:3px;border:'+(btSel?'3px solid #e07fa0':'1.5px solid rgba(200,120,160,0.2)')+';margin:3px;overflow:hidden;opacity:'+(btU?1:0.35)+';position:relative">'
+        +(btU?'':'<div style="position:absolute;top:2px;right:3px;font-size:10px">🔒</div>')
+        +'<span style="font-size:8px;font-weight:700;color:'+(bt.dark?'rgba(255,255,255,0.9)':'rgba(0,0,0,0.65)')+';text-shadow:0 1px 2px rgba(0,0,0,0.4);text-align:center">'+bt.label+'</span>'
+        +'</div>';
+    }
+    mcBgt.innerHTML=bgtHtml;
+  }
+
+}
+function toggleShowCover(bookId,show){
+  var b=(books||[]).find(function(x){return x.id===bookId;});
+  if(!b)return;
+  b.showCover=show;
+  save();
+  if(activeCaseId)renderBcInterior(activeCaseId);
+  openBook(bookId);
+}
+function toggleLyingDown(bookId,lying){
+  var b=(books||[]).find(function(x){return x.id===bookId;});
+  if(!b)return;
+  b.lyingDown=lying;
+  save();
+  if(activeCaseId)renderBcInterior(activeCaseId);
+  openBook(bookId);
+}
+function changeSpineColor(bookId,color){
+  var b=(books||[]).find(function(x){return x.id===bookId;});
+  if(!b)return;
+  b.spineColor=color;
+  save();
+  if(activeCaseId)renderBcInterior(activeCaseId);
+  openBook(bookId);
+}
+
+function saveCase(){
+  var name=document.getElementById('mc-name').value.trim();if(!name){toast('Enter a name!');return;}
+  var emoji=document.getElementById('mc-emoji').value.trim()||'📚';
+  var id=editingCaseId||String(Date.now());
+  var data={id:id,name:name,emoji:emoji,bgIdx:selBg,shelfIdx:selShelf,patternIdx:selPattern,styleIdx:selStyle};
+  if(editingCaseId){
+    var idx=cases.findIndex(function(c){return c.id===editingCaseId;});
+    cases[idx]=Object.assign({},cases[idx],data);
+  }else{
+    data.shelfItems=(selDecos||[]).map(function(did,i){return{type:'deco',id:'d'+(Date.now()+i),decoId:did};});
+    cases.push(data);currentCaseIdx=(cases||[]).length-1;
+  }
+  save();closeModal('modal-case');
+  if(editingCaseId&&activeCaseId===editingCaseId){
+    document.getElementById('bc-title').textContent=emoji+' '+name;
+    renderBcInterior(editingCaseId);
+  }
+  renderRoom();toast(editingCaseId?'Updated!':'Created!');
+}
+function renderStats(){
+  var total=(books||[]).length;
+  var read=(books||[]).filter(function(b){return b.shelf==='read';}).length;
+  var reading=(books||[]).filter(function(b){return b.shelf==='reading';}).length;
+  var want=(books||[]).filter(function(b){return b.shelf==='want';}).length;
+  var booksRead=getBooksRead();
+  var rated=(books||[]).filter(function(b){return b.rating>0;});
+  var avg=rated.length?(rated.reduce(function(s,b){return s+b.rating;},0)/rated.length).toFixed(1):'--';
+  var pct=total?Math.round((read/total)*100):0;
+  var goal=settings.goal||0;
+  var gPct=goal?Math.min(100,Math.round((booksRead/goal)*100)):0;
+  var r=54,circ=2*Math.PI*r,offset=circ-(gPct/100)*circ;
+  var monthlyGoal=settings.monthlyGoal||0;
+  var now=new Date();
+  var monthStart=new Date(now.getFullYear(),now.getMonth(),1);
+  var monthBooks=(books||[]).filter(function(b){return b.shelf==='read'&&b.addedAt>=monthStart.getTime();}).length;
+  var mPct=monthlyGoal?Math.min(100,Math.round((monthBooks/monthlyGoal)*100)):0;
+  var goalHtml='<div class="stat-card"><div style="display:flex;justify-content:space-between;align-items:center">'
+    +'<div class="stat-label">🎯 Reading Goals '+new Date().getFullYear()+'</div>'
+    +'<button class="goal-edit-btn" onclick="openGoalModal()">'+(goal||monthlyGoal?'Edit':'Set Goals')+'</button></div>'
+    +(goal?'<div class="goal-ring-wrap"><div class="goal-ring">'
+      +'<svg width="120" height="120" viewBox="0 0 120 120"><defs><linearGradient id="gg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#f4a7c3"/><stop offset="100%" style="stop-color:#c9a0dc"/></linearGradient></defs>'
+      +'<circle cx="60" cy="60" r="'+r+'" fill="none" stroke="rgba(200,120,160,0.12)" stroke-width="10"/>'
+      +'<circle cx="60" cy="60" r="'+r+'" fill="none" stroke="url(#gg)" stroke-width="10" stroke-linecap="round" stroke-dasharray="'+circ.toFixed(1)+'" stroke-dashoffset="'+offset.toFixed(1)+'"/></svg>'
+      +'<div class="goal-ring-text"><span class="goal-num">'+booksRead+'</span><span class="goal-denom">of '+goal+'</span></div></div></div>'
+      +'<div style="text-align:center;font-size:13px;color:#8a6090;font-weight:700">'+gPct+'% complete'+(booksRead>=goal?' 🎉':'')+'</div>'
+    +(monthlyGoal?'<div class="divider"></div><div style="font-size:12px;font-weight:700;color:#8a6090;margin-bottom:8px">🗓️ This month: '+monthBooks+' of '+monthlyGoal+' books</div>'
+      +'<div class="progress-bar"><div class="progress-fill" style="width:'+mPct+'%"></div></div>'
+      +'<div style="text-align:center;font-size:12px;color:#8a6090;margin-top:6px">'+mPct+'% complete'+(monthBooks>=monthlyGoal?' 🎉':'')+'</div>':'')
+    :'<div style="text-align:center;padding:16px;font-size:13px;color:#8a6090;font-style:italic">Tap Set Goal above</div>')
+    +'</div>';
+  // Genre donut chart
+  var genreColors={'Fantasy':'#c9a0dc','Romance':'#f4a7c3','Mystery':'#a0c4e8','Thriller':'#4a4a7a','Science Fiction':'#80c8f0','Horror':'#8a3a3a','Historical Fiction':'#c8a060','Literary Fiction':'#a8d8b9','Non-Fiction':'#ffd97d','Biography':'#ffb8a0','Self-Help':'#b8f4e8','Young Adult':'#f4b8d4','Children':'#ffd97d','Crime':'#808080','Other':'#d0c0e0'};
+  var genreCounts={};
+  (books||[]).forEach(function(b){if(b.genre){genreCounts[b.genre]=(genreCounts[b.genre]||0)+1;}});
+  var genreEntries=Object.keys(genreCounts).map(function(g){return{name:g,count:genreCounts[g]};}).sort(function(a,b){return b.count-a.count;});
+  var genreTotal=genreEntries.reduce(function(s,g){return s+g.count;},0);
+  var genreHtml='';
+  if(((genreEntries||[]).length)){
+    var r=54,circ=2*Math.PI*r;
+    var offset=0;
+    var slices=(genreEntries||[]).map(function(g){
+      var pct=g.count/genreTotal;
+      var dash=pct*circ;
+      var slice='<circle cx="70" cy="70" r="'+r+'" fill="none" stroke="'+(genreColors[g.name]||'#c9a0dc')+'" stroke-width="22" stroke-dasharray="'+dash.toFixed(1)+' '+(circ-dash).toFixed(1)+'" stroke-dashoffset="'+(-offset).toFixed(1)+'" stroke-linecap="butt"/>';
+      offset+=dash;
+      return slice;
+    }).join('');
+    var legend=genreEntries.slice(0,8).map(function(g){
+      var pct=Math.round((g.count/genreTotal)*100);
+      return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">'
+        +'<div style="width:12px;height:12px;border-radius:3px;flex-shrink:0;background:'+(genreColors[g.name]||'#c9a0dc')+'"></div>'
+        +'<div style="flex:1;font-size:12px;color:#4a3060;font-weight:600">'+g.name+'</div>'
+        +'<div style="font-size:12px;color:#8a6090;font-weight:700">'+pct+'%</div>'
+        +'</div>';
+    }).join('');
+    genreHtml='<div class="stat-card"><div style="font-size:14px;font-weight:800;margin-bottom:14px;color:#e07fa0">📚 Reading by Genre</div>'
+      +'<div style="display:flex;gap:16px;align-items:center">'
+      +'<div style="flex-shrink:0"><svg width="140" height="140" viewBox="0 0 140 140"><circle cx="70" cy="70" r="54" fill="none" stroke="rgba(200,120,160,0.1)" stroke-width="22"/>'+slices+'<circle cx="70" cy="70" r="43" fill="white"/><text x="70" y="66" text-anchor="middle" font-family="Pacifico,cursive" font-size="22" fill="#e07fa0">'+genreTotal+'</text><text x="70" y="82" text-anchor="middle" font-family="Nunito,sans-serif" font-size="10" fill="#8a6090" font-weight="700">books</text></svg></div>'
+      +'<div style="flex:1">'+legend+'</div>'
+      +'</div></div>';
+  }
+  var favBooks=(books||[]).filter(function(b){return b.rating>=4;}).slice(0,5);
+  var topHtml=((favBooks||[]).length)?'<div class="stat-card"><div style="font-size:14px;font-weight:800;margin-bottom:10px;color:#e07fa0">❤️ Top Reads</div>'
+    +(favBooks||[]).map(function(b){
+      return '<div class="book-li" onclick="openBook(\''+b.id+'\')"><div class="mini-cov">'+(b.cover?'<img src="'+b.cover+'">':'📚')+'</div>'
+        +'<div><div style="font-weight:700;font-size:13px;color:#4a3060">'+b.title+'</div>'
+        +'<div style="font-size:12px;color:#8a6090">'+(b.author||'')+'</div>'
+        +(b.rating?'<div style="font-size:14px;color:#ffd97d">'+('★').repeat(b.rating)+'</div>':'')
+        +'</div></div>';
+    }).join('')+'</div>':'';
+  document.getElementById('stats-body').innerHTML=goalHtml
+    +'<div class="stat-card"><div class="stat-big">'+total+'</div><div class="stat-label">Total Books</div>'
+    +'<div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%"></div></div>'
+    +'<div style="font-size:11px;color:#8a6090;margin-top:5px">'+pct+'% read</div></div>'
+    +'<div class="stat-row-2"><div class="stat-card"><div class="stat-big">'+read+'</div><div class="stat-label">✅ Read</div></div>'
+    +'<div class="stat-card"><div class="stat-big">'+reading+'</div><div class="stat-label">📖 Reading</div></div></div>'
+    +'<div class="stat-row-2"><div class="stat-card"><div class="stat-big">'+want+'</div><div class="stat-label">💫 Want</div></div>'
+    +'<div class="stat-card"><div class="stat-big">'+avg+'</div><div class="stat-label">⭐ Avg Rating</div></div></div>'
+    +'<div class="stat-card"><div class="stat-big">'+(cases||[]).length+'</div><div class="stat-label">🏠 Bookcases</div></div>'
+    +genreHtml
+    +topHtml;
+}
+function renderSettings(){
+  var html='<div style="margin-top:4px"><div class="section-title">👤 Your Name</div>'
+    +'<div class="settings-row" onclick="editName()">'
+    +'<div><div class="settings-row-label">'+(settings.userName||'Reader')+'</div><div class="settings-row-sub">Shown on welcome screen</div></div>'
+    +'<span style="color:#e07fa0;font-size:18px">→</span></div></div>'
+
+    +'<div style="margin-top:20px"><div class="section-title">💾 Data</div>'
+    +'<div class="settings-row" onclick="exportData()"><div><div class="settings-row-label">📤 Export Backup</div><div class="settings-row-sub">Save your books as a file</div></div><span style="color:#e07fa0;font-size:18px">→</span></div>'
+    +'<div class="settings-row" onclick="document.getElementById(\'import-file\').click()"><div><div class="settings-row-label">📥 Import Backup</div><div class="settings-row-sub">Restore from file</div></div><span style="color:#e07fa0;font-size:18px">→</span></div>'
+    +'<input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)"></div>'
+    +'<div style="text-align:center;padding:20px;font-size:12px;color:#8a6090">BookBuddy ✨ Made with love</div>';
+  document.getElementById('settings-body').innerHTML=html;
+}
+function openGoalModal(){
+  document.getElementById('goal-input').value=settings.goal||'';
+  document.getElementById('goal-monthly-input').value=settings.monthlyGoal||'';
+  openModal('modal-goal');
+}
+function saveGoal(){
+  var v=parseInt(document.getElementById('goal-input').value);
+  var vm=parseInt(document.getElementById('goal-monthly-input').value)||0;
+  if(!v||v<1){toast('Enter a number!');return;}
+  settings.goal=v;
+  settings.monthlyGoal=vm||0;
+  save();closeModal('modal-goal');renderStats();toast('Goals saved!');
+}
+function editName(){
+  var n=prompt('What should we call you?',settings.userName||'');
+  if(n!==null){settings.userName=n.trim()||'Reader';save();renderSettings();toast('Name saved!');}
+}
+function exportData(){
+  var blob=new Blob([JSON.stringify({cases:cases,books:books,settings:settings,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='bookbuddy-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();toast('Backup saved!');
+}
+function importData(e){
+  var file=e.target.files[0];if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      var d=JSON.parse(ev.target.result);
+      if(!d.books||!d.cases){toast('Invalid file');return;}
+      if(!confirm('Replace all current data?'))return;
+      cases=d.cases||[];books=d.books||[];settings=d.settings||settings;
+      save();applyTheme(settings.theme||'forest');renderRoom();renderSettings();toast('Restored!');
+    }catch(err){toast('Could not read file');}
+  };
+  reader.readAsText(file);e.target.value='';
+}
+
+// ─── APP BOOT ─────────────────────────────────────────────────────────────
+applyTheme(settings.theme||'forest');
+showWelcome();
+renderRoom();
+
+function populateManualCase(){
+  var pr=document.getElementById('ab-prereader');
+  if(pr)pr.checked=false;
+  if(!(cases||[]).length){return;}
+  var sel=document.getElementById('add-case-select');
+  if(sel){
+    sel.innerHTML=(cases||[]).map(function(c){
+      return '<option value="'+c.id+'"'+(c.id===addCaseId?' selected':'')+'>'+c.emoji+' '+c.name+'</option>';
+    }).join('');
+  }
+  // Always set addCaseId to current bookcase
+  addCaseId=cases[currentCaseIdx||0]?cases[currentCaseIdx||0].id:(cases[0]?cases[0].id:null);
+  if(sel&&addCaseId)sel.value=addCaseId;
+}
+
+function switchTab(t){
+  ['search','isbn','manual','add'].forEach(function(tab){
+    var el=document.getElementById('tab-'+tab);
+    if(el)el.style.display=tab===t?'block':'none';
+    var btn=document.getElementById('t'+tab);
+    if(btn)btn.classList.toggle('active',tab===t);
+  });
+  if(t==='add')populateManualCase();
+}
+function addManual(){
+  var title=document.getElementById('mtitle').value.trim();if(!title){toast('Title required!');return;}
+  var caseId=document.getElementById('mcase').value||addCaseId||(cases.length?cases[currentCaseIdx||0].id:'');if(!caseId){toast('Create a bookcase first!');goTo('screen-room');return;}
+  var prevRead=getBooksRead();
+  var mgenre=document.getElementById('mgenre').value||'Other';
+  books.push({id:String(Date.now()),caseId:caseId,title:title,author:document.getElementById('mauthor').value.trim(),year:'',cover:document.getElementById('mcover').value.trim()||null,shelf:document.getElementById('mstatus').value,rating:0,notes:'',genre:mgenre,spineColor:SPINE_COLORS[Math.floor(Math.random()*SPINE_COLORS.length)],addedAt:Date.now()});
+  save();toast('Added!');
+  document.getElementById('mtitle').value='';
+  document.getElementById('mauthor').value='';
+  document.getElementById('mcover').value='';
+  checkUnlocks(prevRead);goTo('screen-room');
+}
+function closePopup(){
+  document.getElementById('unlock-popup').style.display='none';
+  if(popQueue.length)setTimeout(showNextPop,400);
+  renderRoom();
+}
+function confirmAdd(){
+  if(!pendingBook)return;
+  if(!addCaseId&&(cases||[]).length)addCaseId=cases[currentCaseIdx||0]?cases[currentCaseIdx||0].id:cases[0].id;
+  if(!addCaseId){toast('Create a bookcase first!');goTo('screen-room');return;}
+  var prevRead=getBooksRead();
+  var genreSel=document.getElementById('ab-genre-sel');
+  var bookGenre=genreSel?genreSel.value:(pendingBook.genre||'Other');
+  var _pr=document.getElementById('ab-prereader');books.push({id:String(Date.now()),caseId:addCaseId,title:pendingBook.title,author:pendingBook.author,year:pendingBook.year,cover:pendingBook.cover,shelf:addStatus,rating:addRating,preReader:_pr?_pr.checked:false,notes:document.getElementById('ab-notes').value.trim(),genre:bookGenre,spineColor:SPINE_COLORS[Math.floor(Math.random()*SPINE_COLORS.length)],addedAt:Date.now()});
+  save();closeModal('modal-add-book');toast('Added!');pendingBook=null;
+  checkUnlocks(prevRead);renderRoom();
+  if(activeCaseId===addCaseId)renderBcInterior(addCaseId);
+}
+function doISBN(){
+  var isbn=document.getElementById('isbnq').value.trim();if(!isbn)return;
+  var el=document.getElementById('isbn-results');
+  el.innerHTML='<div class="loading">Looking up...</div>';
+  fetch('https://openlibrary.org/api/books?bibkeys=ISBN:'+isbn+'&format=json&jscmd=data')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var key='ISBN:'+isbn;
+      if(!d[key]){el.innerHTML='<div class="empty"><p>Not found</p></div>';return;}
+      var b=d[key];
+      renderResults([{title:b.title,author_name:b.authors?b.authors.map(function(a){return a.name;}):[],cover_i:b.cover?b.cover.medium:null}],el);
+    })
+    .catch(function(){el.innerHTML='<div class="empty"><p>Lookup failed.</p></div>';});
+}
+function doSearch(){
+  var q=document.getElementById('sq').value.trim();if(!q)return;
+  var el=document.getElementById('search-results');
+  el.innerHTML='<div class="loading">Searching...</div>';
+  fetch('https://openlibrary.org/search.json?q='+encodeURIComponent(q)+'&limit=20&fields=title,author_name,first_publish_year,cover_i,subject')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      var items=(d.docs||[]).map(function(doc){
+        var coverId=doc.cover_i;
+        var cover=coverId?'https://covers.openlibrary.org/b/id/'+coverId+'-M.jpg':null;
+        return {
+          title:doc.title||'Unknown',
+          author:(doc.author_name||[]).join(', ')||'Unknown',
+          year:doc.first_publish_year?String(doc.first_publish_year):'',
+          cover:cover,
+          genre:(doc.subject||['Other'])[0]||'Other'
+        };
+      });
+      renderResults(items,el);
+    })
+    .catch(function(){el.innerHTML='<div class="empty"><p>Search failed. Check your connection.</p></div>';});
+}
+function openBook(id){
+  var b=books.find(function(x){return x.id===id;});if(!b)return;
+  var labels={reading:'📖 Reading',read:'✅ Read',want:'💫 Want to Read',dnf:'🚧 DNF'};
+  var stars='';
+  for(var i=1;i<=5;i++)stars+='<span style="color:'+(i<=b.rating?'#ffd97d':'rgba(200,120,160,0.2)')+'">★</span>';
+  var html='<div class="book-detail-header">'
+    +'<div class="book-detail-cover">'+(b.cover?'<img src="'+b.cover+'">':'📚')+'</div>'
+    +'<div><div class="book-detail-title">'+b.title+'</div><div class="book-detail-author">'+(b.author||'Unknown')+'</div></div></div>'
+    +'<div style="margin-bottom:10px"><span style="background:rgba(244,167,195,0.2);padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;color:#e07fa0">'+(labels[b.shelf]||b.shelf)+'</span></div>'
+    +(b.rating?'<div style="font-size:22px;margin-bottom:8px">'+stars+'</div>':'')
+    +(b.notes?'<div style="font-size:14px;color:#8a6090;line-height:1.5;padding:10px;border-radius:10px;margin-bottom:12px;background:rgba(244,167,195,0.08)">'+b.notes+'</div>':'')
+    +'<div class="divider"></div>'
+    +'<button class="btn btn-danger btn-full" onclick="deleteBook(\''+b.id+'\')">Remove 🗑️</button>';
+  document.getElementById('modal-book-body').innerHTML=html;
+  openModal('modal-book');
+}
+function selectEmoji(e){
+  document.getElementById('mc-emoji').value=e;
+  renderCaseEditor();
+}
+function renderResults(items, el){
+  if(!items||!items.length){el.innerHTML='<div class="empty"><p>No books found.</p></div>';return;}
+  window._searchResults=items;
+  var html='';
+  items.forEach(function(b,i){
+    var coverHtml=b.cover
+      ?'<img src="'+b.cover+'" style="width:50px;height:70px;object-fit:cover;border-radius:6px;flex-shrink:0">'
+      :'<div style="width:50px;height:70px;border-radius:6px;background:#e8d8f0;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px">📚</div>';
+    html+='<div onclick="selectBook('+i+')" style="display:flex;gap:12px;padding:12px;border-bottom:1px solid rgba(200,120,160,0.15);cursor:pointer;align-items:flex-start">'
+      +coverHtml
+      +'<div style="flex:1;min-width:0">'
+      +'<div style="font-weight:800;color:#4a3060;font-size:13px;margin-bottom:2px">'+b.title+'</div>'
+      +'<div style="font-size:12px;color:#8a6090">'+b.author+(b.year?' · '+b.year:'')+'</div>'
+      +'</div></div>';
+  });
+  el.innerHTML=html;
+}
+
+function selectBook(i){try{
+  var b=window._searchResults[i];
+  if(!b)return;
+  pendingBook=b;
+  addRating=0;
+  addStatus='reading';
+  addCaseId=(cases&&cases.length)?(cases[currentCaseIdx]||cases[0]).id:null;
+
+  // Fill in book info
+  var abInfo=document.getElementById('ab-info');
+  if(abInfo){
+    abInfo.innerHTML='<div style="display:flex;gap:12px;padding:8px 0;align-items:flex-start">'
+      +(b.cover?'<img src="'+b.cover+'" style="width:55px;height:78px;object-fit:cover;border-radius:6px">':'<div style="width:55px;height:78px;background:#e8d8f0;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:22px">📚</div>')
+      +'<div><div style="font-weight:800;color:#4a3060;font-size:14px">'+b.title+'</div>'
+      +'<div style="font-size:12px;color:#8a6090;margin-top:3px">'+b.author+'</div></div></div>';
+  }
+
+  // Fill bookcase chips
+  var abCases=document.getElementById('ab-cases');
+  if(abCases){
+    if(cases&&cases.length){
+      abCases.innerHTML=cases.map(function(c){
+        return '<div class="chip'+(c.id===addCaseId?' active':'')+'" data-cid="'+c.id+'" onclick="selAddCase(this.dataset.cid)">'+c.emoji+' '+c.name+'</div>';
+      }).join('');
+    }else{
+      abCases.innerHTML='<p style="color:#e07fa0;font-size:13px">Create a bookcase first!</p>';
+    }
+  }
+
+  // Reset status chips
+  document.querySelectorAll('#ab-status .chip').forEach(function(ch){
+    ch.classList.toggle('active',ch.dataset.v==='reading');
+    ch.onclick=function(){
+      addStatus=this.dataset.v;
+      document.querySelectorAll('#ab-status .chip').forEach(function(x){x.classList.remove('active');});
+      this.classList.add('active');
+    };
+  });
+
+  // Reset stars
+  if(typeof updateStars==='function')updateStars(0);
+
+  // Reset notes
+  var notes=document.getElementById('ab-notes');
+  if(notes)notes.value='';
+
+  // Reset prereader
+  var pr=document.getElementById('ab-prereader');
+  if(pr)pr.checked=false;
+
+  openModal('modal-add-book');
+}catch(e){console.error("selectBook error:",e.message);toast("Error: "+e.message);}}
+function renderStars(){
+  document.querySelectorAll('.star-btn').forEach(function(s){
+    s.style.opacity=parseInt(s.dataset.r)<=addRating?'1':'0.3';
+  });
+}
+
+function updateStars(n){
+  addRating=n;
+  document.querySelectorAll('#ab-stars .star').forEach(function(s){
+    s.classList.toggle('active',parseInt(s.dataset.v)<=n);
+  });
+}
+
+function selAddCase(id){
+  addCaseId=id;
+  document.querySelectorAll('#ab-cases .chip').forEach(function(c){
+    c.classList.toggle('active',c.dataset.cid===id);
+  });
+}</script>
+
+<!-- SCREEN: FRIENDS -->
+<div class="screen" id="screen-friends">
+  <div class="inner-screen">
+    <div class="inner-header">
+      <button class="inner-back" onclick="goTo('screen-room')">&#8592;</button>
+      <div class="inner-title">&#128101; Friends</div>
+    </div>
+    <div class="inner-body" id="friends-body"></div>
+  </div>
+</div>
+
+<!-- SCREEN: AUTH -->
+<div class="screen" id="screen-auth">
+  <div class="inner-screen">
+    <div class="inner-header">
+      <button class="inner-back" onclick="goTo('screen-room')">&#8592;</button>
+      <div class="inner-title" id="auth-title">Create Account</div>
+    </div>
+    <div class="inner-body">
+      <div style="text-align:center;padding:20px 0">
+        <div style="font-size:48px;margin-bottom:12px">&#128101;</div>
+        <div style="font-family:Pacifico,cursive;font-size:18px;color:#e07fa0;margin-bottom:6px">Join BookBuddy</div>
+        <div style="font-size:13px;color:#8a6090;margin-bottom:24px">Connect with fellow readers!</div>
+      </div>
+      <div class="tab-row" style="margin-bottom:20px">
+        <button class="tab-btn active" id="tab-signup" onclick="switchAuthTab('signup')">Sign Up</button>
+        <button class="tab-btn" id="tab-login" onclick="switchAuthTab('login')">Log In</button>
+      </div>
+      <div id="auth-signup">
+        <div class="form-group"><label>Username</label><input type="text" id="auth-username" placeholder="e.g. bookworm123"></div>
+        <div class="form-group"><label>Email</label><input type="email" id="auth-email-s" placeholder="your@email.com"></div>
+        <div class="form-group"><label>Password</label><input type="password" id="auth-pass-s" placeholder="Min 6 characters"></div>
+        <button class="btn btn-pink btn-full" onclick="doSignup()">Create Account</button>
+      </div>
+      <div id="auth-login" style="display:none">
+        <div class="form-group"><label>Email</label><input type="email" id="auth-email-l" placeholder="your@email.com"></div>
+        <div class="form-group"><label>Password</label><input type="password" id="auth-pass-l" placeholder="Your password"></div>
+        <button class="btn btn-pink btn-full" onclick="doLogin()">Log In</button>
+      </div>
+      <div id="auth-error" style="color:#e07090;font-size:13px;text-align:center;margin-top:10px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: recommend book -->
+<div class="modal-overlay" id="modal-recommend">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Recommend a Book</div>
+    <div id="rec-to-name" style="font-size:13px;color:#8a6090;margin-bottom:12px"></div>
+    <div class="form-group"><label>Book title</label><input type="text" id="rec-title" placeholder="Book title"></div>
+    <div class="form-group"><label>Author</label><input type="text" id="rec-author" placeholder="Author name"></div>
+    <div class="form-group"><label>Message (optional)</label><textarea id="rec-msg" placeholder="Why they'd love it..."></textarea></div>
+    <div class="divider"></div>
+    <button class="btn btn-pink btn-full" onclick="sendRecommendation()">Send Recommendation</button>
+    <button class="btn btn-outline btn-full" onclick="closeModal('modal-recommend')">Cancel</button>
+  </div>
+</div>
+
+
+<!-- MODAL: theme picker -->
+<div class="modal-overlay" id="modal-theme">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Choose Theme</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+      <div onclick="applyTheme('forest');closeModal('modal-theme')" style="border-radius:16px;padding:20px;background:linear-gradient(135deg,#d4eee0,#b8dfc8);cursor:pointer;text-align:center;border:3px solid transparent" id="theme-opt-forest">
+        <div style="font-size:32px;margin-bottom:8px">🌿</div>
+        <div style="font-family:Pacifico,cursive;font-size:14px;color:#3a6a4a">Forest</div>
+        <div style="font-size:11px;color:#5a8a6a;margin-top:4px">Calm and cosy</div>
+      </div>
+      <div onclick="applyTheme('bookshop');closeModal('modal-theme')" style="border-radius:16px;padding:20px;background:linear-gradient(135deg,#fce4ee,#f4c8d8);cursor:pointer;text-align:center;border:3px solid transparent" id="theme-opt-bookshop">
+        <div style="font-size:32px;margin-bottom:8px">🌸</div>
+        <div style="font-family:Pacifico,cursive;font-size:14px;color:#c06080">Bookshop</div>
+        <div style="font-size:11px;color:#d080a0;margin-top:4px">Soft and romantic</div>
+      </div>
+      <div onclick="applyTheme('sunny');closeModal('modal-theme')" style="border-radius:16px;padding:20px;background:linear-gradient(135deg,#fef5d0,#fde8a0);cursor:pointer;text-align:center;border:3px solid transparent" id="theme-opt-sunny">
+        <div style="font-size:32px;margin-bottom:8px">☀️</div>
+        <div style="font-family:Pacifico,cursive;font-size:14px;color:#b87820">Sunny</div>
+        <div style="font-size:11px;color:#c89030;margin-top:4px">Warm and bright</div>
+      </div>
+      <div onclick="applyTheme('midnight');closeModal('modal-theme')" style="border-radius:16px;padding:20px;background:linear-gradient(135deg,#201060,#100828);cursor:pointer;text-align:center;border:3px solid transparent" id="theme-opt-midnight">
+        <div style="font-size:32px;margin-bottom:8px">🔮</div>
+        <div style="font-family:Pacifico,cursive;font-size:14px;color:#c0c0f0">Midnight</div>
+        <div style="font-size:11px;color:#9090d0;margin-top:4px">Magical and dark</div>
+      </div>
+    </div>
+    <button class="btn btn-outline btn-full" onclick="closeModal('modal-theme')">Cancel</button>
+  </div>
+</div>
+
+<nav class="room-nav">
+    <button class="room-nav-btn" id="nav-add" onclick="goTo('screen-search');roomNav('add')">
+      <svg width="26" height="26" viewBox="0 0 26 26"><rect x="3" y="5" width="14" height="18" rx="3" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><line x1="7" y1="10" x2="13" y2="10" stroke="#f4a7c3" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="14" x2="11" y2="14" stroke="#f4a7c3" stroke-width="1.5" stroke-linecap="round"/><circle cx="20" cy="20" r="5" fill="#f4a7c3"/><line x1="20" y1="17.5" x2="20" y2="22.5" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="17.5" y1="20" x2="22.5" y2="20" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      Add book</button>
+    <button class="room-nav-btn" id="nav-unl" onclick="goTo('screen-unlocks');roomNav('unl')">
+      <svg width="26" height="26" viewBox="0 0 26 26"><path d="M13 3L15.8 9.5H22.5L17.2 13.5L19.5 20L13 16.5L6.5 20L8.8 13.5L3.5 9.5H10.2Z" fill="#fff8e0" stroke="#ffd97d" stroke-width="1.2" stroke-linejoin="round"/><path d="M10 12.5L12 14.5L16 10.5" fill="none" stroke="#ffd97d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Unlocks</button>
+    <button class="room-nav-btn active" id="nav-lib" onclick="goTo('screen-room');roomNav('lib')">
+      <svg width="26" height="26" viewBox="0 0 26 26"><path d="M3 13L13 5L23 13V23H16V17H10V23H3Z" fill="#e8d4f8" stroke="#c9a0dc" stroke-width="1.2" stroke-linejoin="round"/><rect x="10" y="17" width="6" height="6" rx="1" fill="#c9a0dc" opacity="0.6"/><circle cx="13" cy="12" r="1.5" fill="#c9a0dc"/></svg>
+      Library</button>
+    <button class="room-nav-btn" id="nav-fri" onclick="goTo('screen-friends');renderFriends();roomNav('fri')"><svg width="26" height="26" viewBox="0 0 26 26"><circle cx="10" cy="9" r="4" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><circle cx="18" cy="9" r="3" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><path d="M3 22 Q3 16 10 16 Q17 16 17 22" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><path d="M17 17 Q22 17 22 21" fill="none" stroke="#f4a7c3" stroke-width="1.2"/></svg>Friends</button>
+    <button class="room-nav-btn" id="nav-sta" onclick="goTo('screen-stats');roomNav('sta')">
+      <svg width="26" height="26" viewBox="0 0 26 26"><rect x="3" y="17" width="5" height="7" rx="2" fill="#a8d8b9"/><rect x="10" y="12" width="5" height="12" rx="2" fill="#a0c4e8"/><rect x="17" y="7" width="5" height="17" rx="2" fill="#c9a0dc"/><circle cx="5.5" cy="14" r="2" fill="white" opacity="0.6"/><circle cx="12.5" cy="9" r="2" fill="white" opacity="0.6"/><circle cx="19.5" cy="5" r="2" fill="white" opacity="0.6"/></svg>
+      Stats</button>
+  </nav>
+</body>
+</html>
