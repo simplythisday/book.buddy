@@ -2121,6 +2121,12 @@ function openBook(id){
     +(b.rating?'<div style="font-size:22px;margin-bottom:8px">'+stars+'</div>':'')
     +(b.notes?'<div style="font-size:14px;color:#8a6090;line-height:1.5;padding:10px;border-radius:10px;margin-bottom:12px;background:rgba(244,167,195,0.08)">'+b.notes+'</div>':'')
     +'<div class="divider"></div>'
+    +'<div style="border-top:1px solid rgba(200,120,160,0.2);margin:12px 0 8px"></div>'
+    +(b.cover?'<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:800;color:#8a6090;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">📸 Display on shelf</div>'
+      +'<div style="display:flex;gap:8px">'
+      +'<div onclick="toggleShowCover(\''+b.id+'\',false)" style="flex:1;padding:8px;border-radius:10px;text-align:center;cursor:pointer;border:'+(b.showCover?'1.5px solid rgba(200,120,160,0.2)':'2px solid #f4a7c3')+';background:'+(b.showCover?'rgba(255,255,255,0.5)':'rgba(244,167,195,0.15)')+'"><div style="font-size:18px">🎨</div><div style="font-size:10px;font-weight:700;color:#4a3060">Coloured Spine</div></div>'
+      +'<div onclick="toggleShowCover(\''+b.id+'\',true)" style="flex:1;padding:8px;border-radius:10px;text-align:center;cursor:pointer;border:'+(b.showCover?'2px solid #f4a7c3':'1.5px solid rgba(200,120,160,0.2)')+';background:'+(b.showCover?'rgba(244,167,195,0.15)':'rgba(255,255,255,0.5)')+'"><div style="font-size:18px">📸</div><div style="font-size:10px;font-weight:700;color:#4a3060">Real Cover</div></div>'
+      +'</div></div>':'')
     +'<button class="btn btn-danger btn-full" onclick="deleteBook(\''+b.id+'\')">Remove 🗑️</button>';
   document.getElementById('modal-book-body').innerHTML=html;
   openModal('modal-book');
