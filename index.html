@@ -88,7 +88,7 @@ body.theme-midnight #screen-room::before{}
 .screen.active{display:flex}
 
 /* ── ROOM SCREEN ── */
-#screen-room{position:relative;overflow:hidden;height:100vh;display:flex;flex-direction:column}
+#screen-room{position:relative;overflow:hidden;display:flex;flex-direction:column}
 .wisteria-bar{position:absolute;top:0;left:0;right:0;height:110px;z-index:2;pointer-events:none}
 
 .moon{display:none}
@@ -255,7 +255,7 @@ input:checked + .tog-slider:before{transform:translateX(20px)}
 .empty{text-align:center;padding:28px 20px;color:#8a6090}
 .empty-icon{font-size:38px;margin-bottom:8px}
 .section-title{font-family:'Pacifico',cursive;font-size:16px;font-weight:700;color:#e07fa0;margin-bottom:10px;margin-top:4px}
-.drop-zone{width:0!important;min-width:0!important;padding:0!important;overflow:hidden}.shelf-books-area{gap:0!important}.spine-img{width:100%;height:100%;object-fit:cover;display:block}
+.drop-zone{width:8px!important;min-width:8px!important;padding:0!important}.shelf-books-area{gap:0!important}.spine-img{width:100%;height:100%;object-fit:cover;display:block}
 
 @keyframes slideInLeft{from{transform:translateX(60px);opacity:0}to{transform:translateX(0);opacity:1}}
 @keyframes slideInRight{from{transform:translateX(-60px);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -270,6 +270,9 @@ input:checked + .tog-slider:before{transform:translateX(20px)}
 .wisteria-bar{position:relative;z-index:2}
 .room-title{position:relative;z-index:2}
 .deco-hanging{overflow:visible!important}.shelf-row-3d{overflow:visible!important}.bookcase-body{overflow:visible!important}
+.drop-zone{min-width:6px;min-height:60px;transition:width .2s,background .2s;border-radius:3px;cursor:copy}
+.drop-zone.drag-active{min-width:30px;background:rgba(244,167,195,0.4)!important}
+.drag-active{background:rgba(244,167,195,0.4)!important;min-width:24px!important}
 </style>
 </head>
 <body>
@@ -308,7 +311,7 @@ input:checked + .tog-slider:before{transform:translateX(20px)}
   <div class="room-carousel-wrap">
     <div class="room-carousel" id="room-carousel">
       <button class="carousel-arrow left" id="arr-l" onclick="carPrev()">&#8249;</button>
-      <div id="car-wrap" style="width:230px;position:relative"></div>
+      <div id="car-wrap" style="width:220px;position:relative"></div>
       <button class="carousel-arrow right" id="arr-r" onclick="carNext()">&#8250;</button>
     </div>
     <div class="carousel-dots" id="car-dots"></div>
