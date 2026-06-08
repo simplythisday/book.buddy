@@ -84,7 +84,7 @@ body.theme-midnight #screen-room::before{}
 
 
 /* ── SCREENS ── */
-.screen{display:none;min-height:100vh;flex-direction:column}
+.screen{display:none;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:0;overflow-y:auto;-webkit-overflow-scrolling:touch;z-index:10}
 .screen.active{display:flex}
 
 /* ── ROOM SCREEN ── */
@@ -169,7 +169,7 @@ body.theme-midnight #screen-room::before{}
 .form-group input,.form-group textarea,.form-group select{width:100%;padding:11px 14px;border:1.5px solid rgba(180,120,200,.25);border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;background:rgba(255,255,255,.8);color:#4a3060;outline:none}
 .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:#f4a7c3}
 .form-group textarea{resize:vertical;min-height:75px}
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(61,20,80,.55);z-index:200;align-items:flex-end}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(61,20,80,.55);z-index:500;align-items:flex-end}
 .modal-overlay.open{display:flex}
 .modal{background:#fff0f8;border-radius:26px 26px 0 0;padding:16px 18px 44px;width:100%;max-height:93vh;overflow-y:auto;animation:slideUp .3s cubic-bezier(.22,1,.36,1);border-top:2px solid rgba(244,167,195,.3)}
 @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
@@ -261,7 +261,7 @@ input:checked + .tog-slider:before{transform:translateX(20px)}
 @keyframes slideInRight{from{transform:translateX(-60px);opacity:0}to{transform:translateX(0);opacity:1}}
 .slide-left{animation:slideInLeft 0.35s cubic-bezier(0.4,0,0.2,1)}
 .slide-right{animation:slideInRight 0.35s cubic-bezier(0.4,0,0.2,1)}
-.bg-pattern{transition:opacity 0.5s ease}
+.bg-pattern{transition:opacity 0.5s ease;pointer-events:none!important}
 
 .bg-pattern{z-index:0!important;pointer-events:none}
 .room-header{position:relative;z-index:2}
