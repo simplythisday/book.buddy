@@ -1388,6 +1388,7 @@ function save(){
 function getBooksRead(){return (books||[]).filter(function(b){return b.shelf==='read'&&!b.preReader;}).length;}
 
 function goTo(id){
+  if(id==='screen-room')document.body.classList.remove('in-bookcase');
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
@@ -1612,6 +1613,7 @@ function carGo(i){
 
 function openBookcase(id){
   activeCaseId=id;
+  document.body.classList.add('in-bookcase');
   var c=(cases||[]).find(function(x){return x.id===id;});
   if(!c)return;
   document.getElementById('bc-title').textContent=(c.emoji||'📚')+' '+c.name;
@@ -1765,6 +1767,7 @@ function openNewCase(){
 function editCase(id){
   var c=(cases||[]).find(function(x){return x.id===id;});if(!c)return;
   editingCaseId=id;selBg=c.bgIdx||0;selShelf=c.shelfIdx||0;selPattern=c.patternIdx||0;selStyle=c.styleIdx||0;selGap=c.gap||0;selBgTheme=c.bgTheme||0;
+  selDecos=(c.shelfItems||[]).filter(function(it){return it.type==='deco';}).map(function(it){return it.decoId;});
   var ex=(c.shelfItems||[]).filter(function(i){return i.type==='deco';}).map(function(i){return i.decoId;});
   selDecos=ex.filter(function(v,i,a){return a.indexOf(v)===i;});
   document.getElementById('mc-title').textContent='Edit Bookcase';
@@ -1844,21 +1847,27 @@ function toggleShowCover(bookId,show){
   if(activeCaseId)renderBcInterior(activeCaseId);
   openBook(bookId);
 }
-function toggleLyingDown(bookId,lying){
-  var b=(books||[]).find(function(x){return x.id===bookId;});
+function toggleLyingDown(btnOrId,lying){
+  var id=typeof btnOrId==='string'?btnOrId:(btnOrId&&btnOrId.dataset?btnOrId.dataset.id:null);
+  var lyingVal=typeof btnOrId==='object'&&btnOrId.dataset?(btnOrId.dataset.lying==='true'):lying;
+  var b=(books||[]).find(function(x){return x.id===id;});
   if(!b)return;
-  b.lyingDown=lying;
+  b.lyingDown=lyingVal;
   save();
   if(activeCaseId)renderBcInterior(activeCaseId);
-  openBook(bookId);
+  openBook(id);
 }
-function changeSpineColor(bookId,color){
-  var b=(books||[]).find(function(x){return x.id===bookId;});
+function changeSpineColor(e){
+  var el=e.currentTarget||e.target;
+  var id=el.dataset.id, color=el.dataset.color;
+  var b=(books||[]).find(function(x){return x.id===id;});
   if(!b)return;
   b.spineColor=color;
+  b.showCover=false;
   save();
   if(activeCaseId)renderBcInterior(activeCaseId);
-  openBook(bookId);
+  renderCarousel();
+  openBook(id);
 }
 
 function saveCase(){
@@ -1868,7 +1877,12 @@ function saveCase(){
   var data={id:id,name:name,emoji:emoji,bgIdx:selBg,shelfIdx:selShelf,patternIdx:selPattern,styleIdx:selStyle,gap:selGap,bgTheme:selBgTheme,decos:(selDecos||[])};
   if(editingCaseId){
     var idx=cases.findIndex(function(c){return c.id===editingCaseId;});
-    cases[idx]=Object.assign({},cases[idx],data);
+    var existing=cases[idx];
+    // Keep existing books in shelfItems, replace decos with new selection
+    var bookItems=(existing.shelfItems||[]).filter(function(it){return it.type==='book';});
+    var decoItems=(selDecos||[]).map(function(did,i){return{type:'deco',id:'d'+(Date.now()+i),decoId:did};});
+    data.shelfItems=bookItems.concat(decoItems);
+    cases[idx]=Object.assign({},existing,data);
   }else{
     data.shelfItems=(selDecos||[]).map(function(did,i){return{type:'deco',id:'d'+(Date.now()+i),decoId:did};});
     cases.push(data);currentCaseIdx=(cases||[]).length-1;
@@ -2256,6 +2270,20 @@ function setBookSize(btn){
   save();
   if(activeCaseId)renderBcInterior(activeCaseId);
   openBook(id);
+}
+
+function deleteBook(id){
+  if(!confirm('Remove this book?'))return;
+  books=(books||[]).filter(function(b){return b.id!==id;});
+  // Remove from shelfItems too
+  (cases||[]).forEach(function(c){
+    c.shelfItems=(c.shelfItems||[]).filter(function(it){return it.id!==id;});
+  });
+  save();
+  closeModal('modal-book');
+  renderRoom();
+  if(activeCaseId)renderBcInterior(activeCaseId);
+  toast('Book removed');
 }
 </script>
 
