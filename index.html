@@ -12,7 +12,7 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 
 /* ── THEMES ── */
-body{font-family:'Nunito',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .3s}
+body{font-family:'Nunito',sans-serif;height:100vh;overflow:hidden;transition:background .3s}
 
 body.theme-forest  #screen-room::before{}
 body.theme-bookshop #screen-room::before{}
@@ -84,8 +84,8 @@ body.theme-midnight #screen-room::before{}
 
 
 /* ── SCREENS ── */
-.screen{display:none;min-height:100vh;flex-direction:column}
-.screen.active{display:flex}
+.screen{display:none;position:fixed;top:0;left:0;right:0;bottom:0;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.screen.active{display:flex;z-index:10}
 
 /* ── ROOM SCREEN ── */
 #screen-room{position:relative;overflow:hidden;display:flex;flex-direction:column}
@@ -151,7 +151,7 @@ body.theme-midnight #screen-room::before{}
 .bookcase-nav-btn.active svg{transform:scale(1.15)}
 
 /* ── INNER SCREENS ── */
-.inner-screen{background:#fce8f3;min-height:100vh;padding-bottom:80px}
+.inner-screen{background:#fce8f3;flex:1;display:flex;flex-direction:column;overflow-y:auto}
 .inner-header{background:linear-gradient(135deg,#f4a7c3,#c9a0dc);padding:14px 16px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 16px rgba(200,120,160,.2);position:sticky;top:0;z-index:100}
 .inner-back{background:rgba(255,255,255,.3);border:none;color:white;width:34px;height:34px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .inner-title{font-family:'Pacifico',cursive;font-size:20px;font-weight:900;color:white;flex:1}
