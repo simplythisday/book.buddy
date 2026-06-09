@@ -274,6 +274,12 @@ input:checked + .tog-slider:before{transform:translateX(20px)}
 .drop-zone.drag-active{min-width:30px;background:rgba(244,167,195,0.4)!important}
 .drag-active{background:rgba(244,167,195,0.4)!important;min-width:24px!important}
 #car-wrap{position:relative;z-index:5}#car-wrap *{position:relative;z-index:5}
+
+.bc-deco-layer{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:10}
+.bc-free-deco{position:absolute;cursor:grab;pointer-events:all;user-select:none;touch-action:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
+.bc-free-deco:active{cursor:grabbing;transform:scale(1.1)}
+.bc-free-deco img{width:44px;height:44px;object-fit:contain;display:block;pointer-events:none}
+#bc-body{position:relative}
 </style>
 </head>
 <body>
@@ -319,6 +325,22 @@ input:checked + .tog-slider:before{transform:translateX(20px)}
     <button class="new-case-room-btn" onclick="openNewCase()">&#10024; New Bookcase</button>
   </div>
   
+
+  <nav class="room-nav">
+    <button class="room-nav-btn" id="nav-add" onclick="goTo('screen-search');roomNav('add')">
+      <svg width="26" height="26" viewBox="0 0 26 26"><rect x="3" y="5" width="14" height="18" rx="3" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><line x1="7" y1="10" x2="13" y2="10" stroke="#f4a7c3" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="14" x2="11" y2="14" stroke="#f4a7c3" stroke-width="1.5" stroke-linecap="round"/><circle cx="20" cy="20" r="5" fill="#f4a7c3"/><line x1="20" y1="17.5" x2="20" y2="22.5" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="17.5" y1="20" x2="22.5" y2="20" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+      Add book</button>
+    <button class="room-nav-btn" id="nav-unl" onclick="goTo('screen-unlocks');roomNav('unl')">
+      <svg width="26" height="26" viewBox="0 0 26 26"><path d="M13 3L15.8 9.5H22.5L17.2 13.5L19.5 20L13 16.5L6.5 20L8.8 13.5L3.5 9.5H10.2Z" fill="#fff8e0" stroke="#ffd97d" stroke-width="1.2" stroke-linejoin="round"/><path d="M10 12.5L12 14.5L16 10.5" fill="none" stroke="#ffd97d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Unlocks</button>
+    <button class="room-nav-btn active" id="nav-lib" onclick="goTo('screen-room');roomNav('lib')">
+      <svg width="26" height="26" viewBox="0 0 26 26"><path d="M3 13L13 5L23 13V23H16V17H10V23H3Z" fill="#e8d4f8" stroke="#c9a0dc" stroke-width="1.2" stroke-linejoin="round"/><rect x="10" y="17" width="6" height="6" rx="1" fill="#c9a0dc" opacity="0.6"/><circle cx="13" cy="12" r="1.5" fill="#c9a0dc"/></svg>
+      Library</button>
+    <button class="room-nav-btn" id="nav-fri" onclick="goTo('screen-friends');renderFriends();roomNav('fri')"><svg width="26" height="26" viewBox="0 0 26 26"><circle cx="10" cy="9" r="4" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><circle cx="18" cy="9" r="3" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><path d="M3 22 Q3 16 10 16 Q17 16 17 22" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><path d="M17 17 Q22 17 22 21" fill="none" stroke="#f4a7c3" stroke-width="1.2"/></svg>Friends</button>
+    <button class="room-nav-btn" id="nav-sta" onclick="goTo('screen-stats');roomNav('sta')">
+      <svg width="26" height="26" viewBox="0 0 26 26"><rect x="3" y="17" width="5" height="7" rx="2" fill="#a8d8b9"/><rect x="10" y="12" width="5" height="12" rx="2" fill="#a0c4e8"/><rect x="17" y="7" width="5" height="17" rx="2" fill="#c9a0dc"/><circle cx="5.5" cy="14" r="2" fill="white" opacity="0.6"/><circle cx="12.5" cy="9" r="2" fill="white" opacity="0.6"/><circle cx="19.5" cy="5" r="2" fill="white" opacity="0.6"/></svg>
+      Stats</button>
+  </nav>
 </div>
 
 <!-- SCREEN: BOOKCASE -->
@@ -2329,6 +2351,17 @@ function renderBcInterior(caseId){
     shelvesHtml+='<div style="text-align:center;padding:8px;font-size:12px;color:rgba(255,255,255,0.6);font-weight:700">📚 Shelf is full!</div>';
   }
   document.getElementById('bc-body').innerHTML='<div class="bookcase-body" style="'+frameStyle+'"><div style="background:'+bg.v+patternStyle+';">'+shelvesHtml+'</div></div>';
+  // Add free deco layer
+  var bcBody=document.getElementById('bc-body');
+  if(bcBody&&!document.getElementById('bc-deco-layer')){
+    var layer=document.createElement('div');
+    layer.id='bc-deco-layer';
+    layer.className='bc-deco-layer';
+    bcBody.appendChild(layer);
+  }else if(document.getElementById('bc-deco-layer')){
+    document.getElementById('bc-deco-layer').innerHTML='';
+  }
+  renderFreeDecos(caseId);
 }
 
 function getShelfItems(caseId){
@@ -3140,9 +3173,11 @@ function openDecoPicker(){
   openModal('modal-deco-picker');
 }
 function chooseDecoToPlace(decoId, name){
-  selectedDecoId=decoId;
+  selectedDecoId=null;
   closeModal('modal-deco-picker');
-  toast('Tap a spot between books to place '+name+' 🌿');
+  if(activeCaseId){
+    addFreeDeco(activeCaseId,decoId);
+  }
 }
 
 function getDecoSVG(decoId, size){
@@ -3155,6 +3190,123 @@ function getDecoSVG(decoId, size){
   // fallback to emoji icon
   var d=(ALL_DECOS||[]).find(function(x){return x.id===decoId;});
   return '<div style="font-size:'+Math.round(s*0.75)+'px;line-height:1;text-align:center">'+(d?d.icon:'🎨')+'</div>';
+}
+
+// ─── FREE DECO PLACEMENT ────────────────────────────────────────────────
+
+function renderFreeDecos(caseId){
+  var c=(cases||[]).find(function(x){return x.id===caseId;});
+  if(!c)return;
+  var layer=document.getElementById('bc-deco-layer');
+  if(!layer)return;
+  var freeDecos=(c.freeDecos||[]);
+  var base='https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/';
+  var codes={candle:'1f56f',hangingplant:'1fab4',fern:'1f33f',star:'2b50',dragon:'1f409',cat:'1f431',mushroom:'1f344',wizard:'1f9d9',lantern:'1f3ee',variegated:'1fab4',teacup:'1f375',succulent:'1f335',owl:'1f989',moon:'1f319',tulip:'1f337',butterfly:'1f98b',purpleplant:'1f33f',fox:'1f98a',potion:'2697',unicorn:'1f984',clock:'1f551',crystal:'1f52e',fairy:'1f9da',spellbook:'1f4da',hedgehog:'1f994',cactus:'1f335',orchid:'1fab7',phoenix:'1f985',cushion:'1fa92',mermaid:'1f9dc',bonsai:'1fab4',hourglass:'231b',bamboo:'1f38d',sunflower:'1f33b',rosebush:'1f339',kitsune:'1f98a',pegasus:'1f40e',kirin:'1f992',tanuki:'1f99d',galaxy2:'1f30c',phoenix2:'1f985'};
+  layer.innerHTML='';
+  freeDecos.forEach(function(fd){
+    var code=codes[fd.decoId]||'1f4ab';
+    var el=document.createElement('div');
+    el.className='bc-free-deco';
+    el.dataset.fdid=fd.id;
+    el.style.left=(fd.x||50)+'%';
+    el.style.top=(fd.y||50)+'%';
+    el.style.transform='translate(-50%,-50%)';
+    var img=document.createElement('img');
+    img.src=base+code+'.svg';
+    img.draggable=false;
+    el.appendChild(img);
+    // Double tap to remove
+    el.dataset.taps='0';
+    el.addEventListener('click',function(){
+      var taps=parseInt(this.dataset.taps||0)+1;
+      this.dataset.taps=taps;
+      if(taps>=2){
+        if(confirm('Remove this decoration?')){
+          removeFreeDeco(caseId,fd.id);
+        }
+        this.dataset.taps=0;
+      }else{
+        var self=this;
+        setTimeout(function(){self.dataset.taps=0;},400);
+      }
+    });
+    // Touch drag
+    el.addEventListener('touchstart',function(e){
+      e.stopPropagation();
+      var touch=e.touches[0];
+      var rect=layer.getBoundingClientRect();
+      var startX=touch.clientX-rect.left;
+      var startY=touch.clientY-rect.top;
+      var fd_id=this.dataset.fdid;
+      var self=this;
+      function onMove(ev){
+        ev.preventDefault();
+        var t=ev.touches[0];
+        var x=((t.clientX-rect.left)/rect.width*100).toFixed(1);
+        var y=((t.clientY-rect.top)/rect.height*100).toFixed(1);
+        self.style.left=x+'%';
+        self.style.top=y+'%';
+      }
+      function onEnd(ev){
+        document.removeEventListener('touchmove',onMove);
+        document.removeEventListener('touchend',onEnd);
+        var t=ev.changedTouches[0];
+        var x=parseFloat(((t.clientX-rect.left)/rect.width*100).toFixed(1));
+        var y=parseFloat(((t.clientY-rect.top)/rect.height*100).toFixed(1));
+        saveFreeDecoPos(caseId,fd_id,x,y);
+      }
+      document.addEventListener('touchmove',onMove,{passive:false});
+      document.addEventListener('touchend',onEnd);
+    },{passive:true});
+    // Mouse drag
+    el.addEventListener('mousedown',function(e){
+      e.stopPropagation();
+      var rect=layer.getBoundingClientRect();
+      var fd_id=this.dataset.fdid;
+      var self=this;
+      function onMove(ev){
+        var x=((ev.clientX-rect.left)/rect.width*100).toFixed(1);
+        var y=((ev.clientY-rect.top)/rect.height*100).toFixed(1);
+        self.style.left=x+'%';
+        self.style.top=y+'%';
+      }
+      function onUp(ev){
+        document.removeEventListener('mousemove',onMove);
+        document.removeEventListener('mouseup',onUp);
+        var x=parseFloat(((ev.clientX-rect.left)/rect.width*100).toFixed(1));
+        var y=parseFloat(((ev.clientY-rect.top)/rect.height*100).toFixed(1));
+        saveFreeDecoPos(caseId,fd_id,x,y);
+      }
+      document.addEventListener('mousemove',onMove);
+      document.addEventListener('mouseup',onUp);
+    });
+    layer.appendChild(el);
+  });
+}
+
+function saveFreeDecoPos(caseId,fdId,x,y){
+  var c=(cases||[]).find(function(x){return x.id===caseId;});
+  if(!c||!c.freeDecos)return;
+  var fd=c.freeDecos.find(function(f){return f.id===fdId;});
+  if(fd){fd.x=x;fd.y=y;save();}
+}
+
+function addFreeDeco(caseId,decoId){
+  var c=(cases||[]).find(function(x){return x.id===caseId;});
+  if(!c)return;
+  if(!c.freeDecos)c.freeDecos=[];
+  c.freeDecos.push({id:'fd'+Date.now(),decoId:decoId,x:50,y:50});
+  save();
+  renderFreeDecos(caseId);
+  toast('Drag to position it anywhere!');
+}
+
+function removeFreeDeco(caseId,fdId){
+  var c=(cases||[]).find(function(x){return x.id===caseId;});
+  if(!c||!c.freeDecos)return;
+  c.freeDecos=c.freeDecos.filter(function(f){return f.id!==fdId;});
+  save();
+  renderFreeDecos(caseId);
 }
 </script>
 
@@ -3249,21 +3401,7 @@ function getDecoSVG(decoId, size){
   </div>
 </div>
 
-<nav class="room-nav">
-    <button class="room-nav-btn" id="nav-add" onclick="goTo('screen-search');roomNav('add')">
-      <svg width="26" height="26" viewBox="0 0 26 26"><rect x="3" y="5" width="14" height="18" rx="3" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><line x1="7" y1="10" x2="13" y2="10" stroke="#f4a7c3" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="14" x2="11" y2="14" stroke="#f4a7c3" stroke-width="1.5" stroke-linecap="round"/><circle cx="20" cy="20" r="5" fill="#f4a7c3"/><line x1="20" y1="17.5" x2="20" y2="22.5" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="17.5" y1="20" x2="22.5" y2="20" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
-      Add book</button>
-    <button class="room-nav-btn" id="nav-unl" onclick="goTo('screen-unlocks');roomNav('unl')">
-      <svg width="26" height="26" viewBox="0 0 26 26"><path d="M13 3L15.8 9.5H22.5L17.2 13.5L19.5 20L13 16.5L6.5 20L8.8 13.5L3.5 9.5H10.2Z" fill="#fff8e0" stroke="#ffd97d" stroke-width="1.2" stroke-linejoin="round"/><path d="M10 12.5L12 14.5L16 10.5" fill="none" stroke="#ffd97d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Unlocks</button>
-    <button class="room-nav-btn active" id="nav-lib" onclick="goTo('screen-room');roomNav('lib')">
-      <svg width="26" height="26" viewBox="0 0 26 26"><path d="M3 13L13 5L23 13V23H16V17H10V23H3Z" fill="#e8d4f8" stroke="#c9a0dc" stroke-width="1.2" stroke-linejoin="round"/><rect x="10" y="17" width="6" height="6" rx="1" fill="#c9a0dc" opacity="0.6"/><circle cx="13" cy="12" r="1.5" fill="#c9a0dc"/></svg>
-      Library</button>
-    <button class="room-nav-btn" id="nav-fri" onclick="goTo('screen-friends');renderFriends();roomNav('fri')"><svg width="26" height="26" viewBox="0 0 26 26"><circle cx="10" cy="9" r="4" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><circle cx="18" cy="9" r="3" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><path d="M3 22 Q3 16 10 16 Q17 16 17 22" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><path d="M17 17 Q22 17 22 21" fill="none" stroke="#f4a7c3" stroke-width="1.2"/></svg>Friends</button>
-    <button class="room-nav-btn" id="nav-sta" onclick="goTo('screen-stats');roomNav('sta')">
-      <svg width="26" height="26" viewBox="0 0 26 26"><rect x="3" y="17" width="5" height="7" rx="2" fill="#a8d8b9"/><rect x="10" y="12" width="5" height="12" rx="2" fill="#a0c4e8"/><rect x="17" y="7" width="5" height="17" rx="2" fill="#c9a0dc"/><circle cx="5.5" cy="14" r="2" fill="white" opacity="0.6"/><circle cx="12.5" cy="9" r="2" fill="white" opacity="0.6"/><circle cx="19.5" cy="5" r="2" fill="white" opacity="0.6"/></svg>
-      Stats</button>
-  </nav>
+
 
 <div class="modal-overlay" id="modal-deco-picker">
   <div class="modal">
