@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0045)file:///C:/Users/simpl/Downloads/index_9.html -->
+<!-- saved from url=(0046)file:///C:/Users/simpl/Downloads/index_10.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -172,7 +172,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
     </svg>
   </div>
   <h1>BookBuddy</h1>
-  <p id="welcome-sub">Your personal library</p>
+  <p id="welcome-sub">Welcome, Reader!</p>
   <button onclick="enterApp()">Enter my library</button>
 </div>
 
@@ -311,7 +311,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
     <div class="modal-handle"></div>
     <div class="modal-title">Add to Shelf</div>
     <div style="display:flex;gap:12px;margin-bottom:16px;align-items:flex-start">
-      <img id="add-cover-img" style="width:60px;height:86px;border-radius:6px;object-fit:cover;background:#e8d8c0;flex-shrink:0" src="file:///C:/Users/simpl/Downloads/index_9.html">
+      <img id="add-cover-img" style="width:60px;height:86px;border-radius:6px;object-fit:cover;background:#e8d8c0;flex-shrink:0" src="file:///C:/Users/simpl/Downloads/index_10.html">
       <div>
         <div id="add-title" style="font-weight:800;color:#3a2a1a;font-size:15px;margin-bottom:4px"></div>
         <div id="add-author" style="font-size:13px;color:#7a5a3a"></div>
@@ -378,105 +378,108 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
     <div class="form-group"><label>Shelf Colour</label><div id="mc-shelf" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div></div>
     <div class="form-group"><label>Decorations</label><div id="mc-decos" style="display:flex;flex-wrap:wrap;gap:8px;max-height:200px;overflow-y:auto;margin-top:4px"></div></div>
     <button class="btn btn-primary" onclick="saveCase()">Save Bookcase</button>
-    <button class="btn btn-outline" onclick="closeModal(&#39;modal-c
-&lt;script&gt;
-&#39;use strict&#39;;
+    <button class="btn btn-outline" onclick="closeModal(&#39;modal-case&#39;)">Cancel</button>
+  </div>
+</div>
+
+<script>
+'use strict';
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
 var BOOKCASE_STYLES = [
-  {id:&#39;dark-wood&#39;,name:&#39;Dark Wood&#39;,bg:&#39;linear-gradient(180deg,#2a1a08 0%,#1a0e04 100%)&#39;,plank:&#39;linear-gradient(90deg,#4a2e10,#6a3e18,#4a2e10)&#39;,border:&#39;#3a2208&#39;},
-  {id:&#39;black&#39;,name:&#39;Black&#39;,bg:&#39;linear-gradient(180deg,#0a0a0a 0%,#151515 100%)&#39;,plank:&#39;linear-gradient(90deg,#1a1a1a,#2a2a2a,#1a1a1a)&#39;,border:&#39;#111&#39;},
-  {id:&#39;walnut&#39;,name:&#39;Walnut&#39;,bg:&#39;linear-gradient(180deg,#3d1c0a 0%,#2d1408 100%)&#39;,plank:&#39;linear-gradient(90deg,#6b3010,#8b4018,#6b3010)&#39;,border:&#39;#4a2010&#39;},
-  {id:&#39;navy&#39;,name:&#39;Navy&#39;,bg:&#39;linear-gradient(180deg,#0a1428 0%,#060e1c 100%)&#39;,plank:&#39;linear-gradient(90deg,#102040,#182c58,#102040)&#39;,border:&#39;#0c1830&#39;},
-  {id:&#39;forest&#39;,name:&#39;Forest&#39;,bg:&#39;linear-gradient(180deg,#0a1e0a 0%,#061406 100%)&#39;,plank:&#39;linear-gradient(90deg,#1a3a1a,#2a5028,#1a3a1a)&#39;,border:&#39;#0e2010&#39;},
-  {id:&#39;burgundy&#39;,name:&#39;Burgundy&#39;,bg:&#39;linear-gradient(180deg,#2e0a10 0%,#1e0608 100%)&#39;,plank:&#39;linear-gradient(90deg,#5a1020,#7a1828,#5a1020)&#39;,border:&#39;#3a0c14&#39;},
-  {id:&#39;cream&#39;,name:&#39;Cream&#39;,bg:&#39;linear-gradient(180deg,#f5ede0 0%,#ede0cc 100%)&#39;,plank:&#39;linear-gradient(90deg,#c8a878,#d8b888,#c8a878)&#39;,border:&#39;#d0b888&#39;},
-  {id:&#39;dusty-pink&#39;,name:&#39;Dusty Pink&#39;,bg:&#39;linear-gradient(180deg,#f0d8d8 0%,#e8c8c8 100%)&#39;,plank:&#39;linear-gradient(90deg,#c09090,#d0a0a0,#c09090)&#39;,border:&#39;#c89898&#39;},
-  {id:&#39;sage&#39;,name:&#39;Sage&#39;,bg:&#39;linear-gradient(180deg,#8a9a7a 0%,#6a7a5a 100%)&#39;,plank:&#39;linear-gradient(90deg,#7a8a6a,#9aaa8a,#7a8a6a)&#39;,border:&#39;#7a8a6a&#39;},
-  {id:&#39;slate&#39;,name:&#39;Slate&#39;,bg:&#39;linear-gradient(180deg,#3a4050 0%,#2a3040 100%)&#39;,plank:&#39;linear-gradient(90deg,#4a5060,#5a6070,#4a5060)&#39;,border:&#39;#404858&#39;},
-  {id:&#39;terracotta&#39;,name:&#39;Terracotta&#39;,bg:&#39;linear-gradient(180deg,#8a3a20 0%,#6a2a14 100%)&#39;,plank:&#39;linear-gradient(90deg,#a04828,#c06038,#a04828)&#39;,border:&#39;#904030&#39;},
-  {id:&#39;midnight&#39;,name:&#39;Midnight&#39;,bg:&#39;linear-gradient(180deg,#0a0818 0%,#060410 100%)&#39;,plank:&#39;linear-gradient(90deg,#181030,#281848,#181030)&#39;,border:&#39;#100c20&#39;},
-  {id:&#39;gold&#39;,name:&#39;Gold&#39;,bg:&#39;linear-gradient(180deg,#3a2808 0%,#2a1c04 100%)&#39;,plank:&#39;linear-gradient(90deg,#8a6820,#b08830,#8a6820)&#39;,border:&#39;#604010&#39;},
-  {id:&#39;plum&#39;,name:&#39;Plum&#39;,bg:&#39;linear-gradient(180deg,#2a0a3a 0%,#1a0628 100%)&#39;,plank:&#39;linear-gradient(90deg,#401060,#581878,#401060)&#39;,border:&#39;#300848&#39;},
-  {id:&#39;ivory&#39;,name:&#39;Ivory&#39;,bg:&#39;linear-gradient(180deg,#f8f4e8 0%,#f0e8d8 100%)&#39;,plank:&#39;linear-gradient(90deg,#d0c090,#e0d0a0,#d0c090)&#39;,border:&#39;#d8c898&#39;},
-  {id:&#39;charcoal&#39;,name:&#39;Charcoal&#39;,bg:&#39;linear-gradient(180deg,#2a2a2a 0%,#1a1a1a 100%)&#39;,plank:&#39;linear-gradient(90deg,#303030,#404040,#303030)&#39;,border:&#39;#282828&#39;},
-  {id:&#39;teal&#39;,name:&#39;Deep Teal&#39;,bg:&#39;linear-gradient(180deg,#0a2a2a 0%,#061818 100%)&#39;,plank:&#39;linear-gradient(90deg,#104040,#1a5858,#104040)&#39;,border:&#39;#0c2e2e&#39;},
-  {id:&#39;copper&#39;,name:&#39;Copper&#39;,bg:&#39;linear-gradient(180deg,#5a2808 0%,#3a1804 100%)&#39;,plank:&#39;linear-gradient(90deg,#8a4818,#aa5828,#8a4818)&#39;,border:&#39;#6a3010&#39;},
-  {id:&#39;mint&#39;,name:&#39;Mint&#39;,bg:&#39;linear-gradient(180deg,#c0e8d8 0%,#a0d8c8 100%)&#39;,plank:&#39;linear-gradient(90deg,#80b898,#a0d0b0,#80b898)&#39;,border:&#39;#90c8a8&#39;},
-  {id:&#39;oak&#39;,name:&#39;Oak&#39;,bg:&#39;linear-gradient(180deg,#c8a060 0%,#a88040 100%)&#39;,plank:&#39;linear-gradient(90deg,#b89050,#d8a860,#b89050)&#39;,border:&#39;#b88848&#39;},
-  {id:&#39;white&#39;,name:&#39;White&#39;,bg:&#39;linear-gradient(180deg,#ffffff 0%,#f0f0f0 100%)&#39;,plank:&#39;linear-gradient(90deg,#c8c8c8,#e0e0e0,#c8c8c8)&#39;,border:&#39;#d0d0d0&#39;},
-  {id:&#39;pink-fantasy&#39;,name:&#39;Pink Fantasy&#39;,bg:&#39;linear-gradient(180deg,#f8d0e0 0%,#f0c0d0 100%)&#39;,plank:&#39;linear-gradient(90deg,#d890a8,#e8a0b8,#d890a8)&#39;,border:&#39;#e098b0&#39;},
-  {id:&#39;gothic&#39;,name:&#39;Gothic Dark&#39;,bg:&#39;linear-gradient(180deg,#180818 0%,#100810 100%)&#39;,plank:&#39;linear-gradient(90deg,#280828,#381038,#280828)&#39;,border:&#39;#200820&#39;},
-  {id:&#39;amber&#39;,name:&#39;Amber&#39;,bg:&#39;linear-gradient(180deg,#8a4808 0%,#6a3404 100%)&#39;,plank:&#39;linear-gradient(90deg,#b06018,#d07828,#b06018)&#39;,border:&#39;#904810&#39;},
-  {id:&#39;lavender&#39;,name:&#39;Lavender&#39;,bg:&#39;linear-gradient(180deg,#d0b8e8 0%,#b898d0 100%)&#39;,plank:&#39;linear-gradient(90deg,#9870b8,#b890d0,#9870b8)&#39;,border:&#39;#a880c0&#39;},
-  {id:&#39;rose-gold&#39;,name:&#39;Rose Gold&#39;,bg:&#39;linear-gradient(180deg,#e8c0b0 0%,#d8a898 100%)&#39;,plank:&#39;linear-gradient(90deg,#c89080,#d8a090,#c89080)&#39;,border:&#39;#c89888&#39;},
-  {id:&#39;ocean&#39;,name:&#39;Ocean&#39;,bg:&#39;linear-gradient(180deg,#0a2848 0%,#061830 100%)&#39;,plank:&#39;linear-gradient(90deg,#104060,#185878,#104060)&#39;,border:&#39;#0c3050&#39;},
-  {id:&#39;cherry&#39;,name:&#39;Cherry&#39;,bg:&#39;linear-gradient(180deg,#4a0818 0%,#300410 100%)&#39;,plank:&#39;linear-gradient(90deg,#781020,#981828,#781020)&#39;,border:&#39;#580c18&#39;},
-  {id:&#39;sand&#39;,name:&#39;Sand&#39;,bg:&#39;linear-gradient(180deg,#e8d8b0 0%,#d8c898 100%)&#39;,plank:&#39;linear-gradient(90deg,#c0a870,#d8c080,#c0a870)&#39;,border:&#39;#c8b078&#39;},
-  {id:&#39;arctic&#39;,name:&#39;Arctic&#39;,bg:&#39;linear-gradient(180deg,#d8eef8 0%,#c0e0f0 100%)&#39;,plank:&#39;linear-gradient(90deg,#90c0d8,#b0d8e8,#90c0d8)&#39;,border:&#39;#98c8e0&#39;}
+  {id:'dark-wood',name:'Dark Wood',bg:'linear-gradient(180deg,#2a1a08 0%,#1a0e04 100%)',plank:'linear-gradient(90deg,#4a2e10,#6a3e18,#4a2e10)',border:'#3a2208'},
+  {id:'black',name:'Black',bg:'linear-gradient(180deg,#0a0a0a 0%,#151515 100%)',plank:'linear-gradient(90deg,#1a1a1a,#2a2a2a,#1a1a1a)',border:'#111'},
+  {id:'walnut',name:'Walnut',bg:'linear-gradient(180deg,#3d1c0a 0%,#2d1408 100%)',plank:'linear-gradient(90deg,#6b3010,#8b4018,#6b3010)',border:'#4a2010'},
+  {id:'navy',name:'Navy',bg:'linear-gradient(180deg,#0a1428 0%,#060e1c 100%)',plank:'linear-gradient(90deg,#102040,#182c58,#102040)',border:'#0c1830'},
+  {id:'forest',name:'Forest',bg:'linear-gradient(180deg,#0a1e0a 0%,#061406 100%)',plank:'linear-gradient(90deg,#1a3a1a,#2a5028,#1a3a1a)',border:'#0e2010'},
+  {id:'burgundy',name:'Burgundy',bg:'linear-gradient(180deg,#2e0a10 0%,#1e0608 100%)',plank:'linear-gradient(90deg,#5a1020,#7a1828,#5a1020)',border:'#3a0c14'},
+  {id:'cream',name:'Cream',bg:'linear-gradient(180deg,#f5ede0 0%,#ede0cc 100%)',plank:'linear-gradient(90deg,#c8a878,#d8b888,#c8a878)',border:'#d0b888'},
+  {id:'dusty-pink',name:'Dusty Pink',bg:'linear-gradient(180deg,#f0d8d8 0%,#e8c8c8 100%)',plank:'linear-gradient(90deg,#c09090,#d0a0a0,#c09090)',border:'#c89898'},
+  {id:'sage',name:'Sage',bg:'linear-gradient(180deg,#8a9a7a 0%,#6a7a5a 100%)',plank:'linear-gradient(90deg,#7a8a6a,#9aaa8a,#7a8a6a)',border:'#7a8a6a'},
+  {id:'slate',name:'Slate',bg:'linear-gradient(180deg,#3a4050 0%,#2a3040 100%)',plank:'linear-gradient(90deg,#4a5060,#5a6070,#4a5060)',border:'#404858'},
+  {id:'terracotta',name:'Terracotta',bg:'linear-gradient(180deg,#8a3a20 0%,#6a2a14 100%)',plank:'linear-gradient(90deg,#a04828,#c06038,#a04828)',border:'#904030'},
+  {id:'midnight',name:'Midnight',bg:'linear-gradient(180deg,#0a0818 0%,#060410 100%)',plank:'linear-gradient(90deg,#181030,#281848,#181030)',border:'#100c20'},
+  {id:'gold',name:'Gold',bg:'linear-gradient(180deg,#3a2808 0%,#2a1c04 100%)',plank:'linear-gradient(90deg,#8a6820,#b08830,#8a6820)',border:'#604010'},
+  {id:'plum',name:'Plum',bg:'linear-gradient(180deg,#2a0a3a 0%,#1a0628 100%)',plank:'linear-gradient(90deg,#401060,#581878,#401060)',border:'#300848'},
+  {id:'ivory',name:'Ivory',bg:'linear-gradient(180deg,#f8f4e8 0%,#f0e8d8 100%)',plank:'linear-gradient(90deg,#d0c090,#e0d0a0,#d0c090)',border:'#d8c898'},
+  {id:'charcoal',name:'Charcoal',bg:'linear-gradient(180deg,#2a2a2a 0%,#1a1a1a 100%)',plank:'linear-gradient(90deg,#303030,#404040,#303030)',border:'#282828'},
+  {id:'teal',name:'Deep Teal',bg:'linear-gradient(180deg,#0a2a2a 0%,#061818 100%)',plank:'linear-gradient(90deg,#104040,#1a5858,#104040)',border:'#0c2e2e'},
+  {id:'copper',name:'Copper',bg:'linear-gradient(180deg,#5a2808 0%,#3a1804 100%)',plank:'linear-gradient(90deg,#8a4818,#aa5828,#8a4818)',border:'#6a3010'},
+  {id:'mint',name:'Mint',bg:'linear-gradient(180deg,#c0e8d8 0%,#a0d8c8 100%)',plank:'linear-gradient(90deg,#80b898,#a0d0b0,#80b898)',border:'#90c8a8'},
+  {id:'oak',name:'Oak',bg:'linear-gradient(180deg,#c8a060 0%,#a88040 100%)',plank:'linear-gradient(90deg,#b89050,#d8a860,#b89050)',border:'#b88848'},
+  {id:'white',name:'White',bg:'linear-gradient(180deg,#ffffff 0%,#f0f0f0 100%)',plank:'linear-gradient(90deg,#c8c8c8,#e0e0e0,#c8c8c8)',border:'#d0d0d0'},
+  {id:'pink-fantasy',name:'Pink Fantasy',bg:'linear-gradient(180deg,#f8d0e0 0%,#f0c0d0 100%)',plank:'linear-gradient(90deg,#d890a8,#e8a0b8,#d890a8)',border:'#e098b0'},
+  {id:'gothic',name:'Gothic Dark',bg:'linear-gradient(180deg,#180818 0%,#100810 100%)',plank:'linear-gradient(90deg,#280828,#381038,#280828)',border:'#200820'},
+  {id:'amber',name:'Amber',bg:'linear-gradient(180deg,#8a4808 0%,#6a3404 100%)',plank:'linear-gradient(90deg,#b06018,#d07828,#b06018)',border:'#904810'},
+  {id:'lavender',name:'Lavender',bg:'linear-gradient(180deg,#d0b8e8 0%,#b898d0 100%)',plank:'linear-gradient(90deg,#9870b8,#b890d0,#9870b8)',border:'#a880c0'},
+  {id:'rose-gold',name:'Rose Gold',bg:'linear-gradient(180deg,#e8c0b0 0%,#d8a898 100%)',plank:'linear-gradient(90deg,#c89080,#d8a090,#c89080)',border:'#c89888'},
+  {id:'ocean',name:'Ocean',bg:'linear-gradient(180deg,#0a2848 0%,#061830 100%)',plank:'linear-gradient(90deg,#104060,#185878,#104060)',border:'#0c3050'},
+  {id:'cherry',name:'Cherry',bg:'linear-gradient(180deg,#4a0818 0%,#300410 100%)',plank:'linear-gradient(90deg,#781020,#981828,#781020)',border:'#580c18'},
+  {id:'sand',name:'Sand',bg:'linear-gradient(180deg,#e8d8b0 0%,#d8c898 100%)',plank:'linear-gradient(90deg,#c0a870,#d8c080,#c0a870)',border:'#c8b078'},
+  {id:'arctic',name:'Arctic',bg:'linear-gradient(180deg,#d8eef8 0%,#c0e0f0 100%)',plank:'linear-gradient(90deg,#90c0d8,#b0d8e8,#90c0d8)',border:'#98c8e0'}
 ];
 
 var SHELF_COLORS = [
-  {l:&#39;Oak&#39;,v:&#39;#c8a060&#39;},{l:&#39;Walnut&#39;,v:&#39;#8b5a2b&#39;},{l:&#39;Ebony&#39;,v:&#39;#2a1808&#39;},
-  {l:&#39;White&#39;,v:&#39;#f0ece8&#39;},{l:&#39;Black&#39;,v:&#39;#1a1a1a&#39;},{l:&#39;Grey&#39;,v:&#39;#888898&#39;},
-  {l:&#39;Pink&#39;,v:&#39;#e8a0b0&#39;},{l:&#39;Mint&#39;,v:&#39;#80c8a8&#39;},{l:&#39;Navy&#39;,v:&#39;#203060&#39;},
-  {l:&#39;Gold&#39;,v:&#39;#b8881e&#39;}
+  {l:'Oak',v:'#c8a060'},{l:'Walnut',v:'#8b5a2b'},{l:'Ebony',v:'#2a1808'},
+  {l:'White',v:'#f0ece8'},{l:'Black',v:'#1a1a1a'},{l:'Grey',v:'#888898'},
+  {l:'Pink',v:'#e8a0b0'},{l:'Mint',v:'#80c8a8'},{l:'Navy',v:'#203060'},
+  {l:'Gold',v:'#b8881e'}
 ];
 
 var SPINE_COLORS = [
-  &#39;#c8523a&#39;,&#39;#d4763a&#39;,&#39;#e8a830&#39;,&#39;#a8c840&#39;,&#39;#48a870&#39;,&#39;#38a8c8&#39;,
-  &#39;#3858c8&#39;,&#39;#7848c8&#39;,&#39;#c83878&#39;,&#39;#c83848&#39;,&#39;#6a4030&#39;,&#39;#384858&#39;,
-  &#39;#8a3828&#39;,&#39;#287858&#39;,&#39;#204878&#39;,&#39;#502878&#39;,&#39;#782038&#39;,&#39;#484020&#39;
+  '#c8523a','#d4763a','#e8a830','#a8c840','#48a870','#38a8c8',
+  '#3858c8','#7848c8','#c83878','#c83848','#6a4030','#384858',
+  '#8a3828','#287858','#204878','#502878','#782038','#484020'
 ];
 
-var TWEMOJI = &#39;https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/&#39;;
+var TWEMOJI = 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/';
 var DECO_CODES = {
-  candle:&#39;1f56f&#39;,hangingplant:&#39;1fab4&#39;,fern:&#39;1f33f&#39;,star:&#39;2b50&#39;,
-  dragon:&#39;1f409&#39;,cat:&#39;1f431&#39;,mushroom:&#39;1f344&#39;,wizard:&#39;1f9d9&#39;,
-  lantern:&#39;1f3ee&#39;,variegated:&#39;1fab4&#39;,teacup:&#39;1f375&#39;,succulent:&#39;1f335&#39;,
-  owl:&#39;1f989&#39;,moon:&#39;1f319&#39;,tulip:&#39;1f337&#39;,butterfly:&#39;1f98b&#39;,
-  purpleplant:&#39;1f33f&#39;,fox:&#39;1f98a&#39;,potion:&#39;2697&#39;,unicorn:&#39;1f984&#39;,
-  clock:&#39;1f551&#39;,crystal:&#39;1f52e&#39;,fairy:&#39;1f9da&#39;,spellbook:&#39;1f4da&#39;,
-  hedgehog:&#39;1f994&#39;,cactus:&#39;1f335&#39;,orchid:&#39;1fab7&#39;,phoenix:&#39;1f985&#39;,
-  cushion:&#39;1fa92&#39;,mermaid:&#39;1f9dc&#39;,bonsai:&#39;1fab4&#39;,hourglass:&#39;231b&#39;,
-  bamboo:&#39;1f38d&#39;,sunflower:&#39;1f33b&#39;,rosebush:&#39;1f339&#39;,kitsune:&#39;1f98a&#39;,
-  pegasus:&#39;1f40e&#39;,kirin:&#39;1f992&#39;,tanuki:&#39;1f99d&#39;,galaxy:&#39;1f30c&#39;,phoenix2:&#39;1f985&#39;
+  candle:'1f56f',hangingplant:'1fab4',fern:'1f33f',star:'2b50',
+  dragon:'1f409',cat:'1f431',mushroom:'1f344',wizard:'1f9d9',
+  lantern:'1f3ee',variegated:'1fab4',teacup:'1f375',succulent:'1f335',
+  owl:'1f989',moon:'1f319',tulip:'1f337',butterfly:'1f98b',
+  purpleplant:'1f33f',fox:'1f98a',potion:'2697',unicorn:'1f984',
+  clock:'1f551',crystal:'1f52e',fairy:'1f9da',spellbook:'1f4da',
+  hedgehog:'1f994',cactus:'1f335',orchid:'1fab7',phoenix:'1f985',
+  cushion:'1fa92',mermaid:'1f9dc',bonsai:'1fab4',hourglass:'231b',
+  bamboo:'1f38d',sunflower:'1f33b',rosebush:'1f339',kitsune:'1f98a',
+  pegasus:'1f40e',kirin:'1f992',tanuki:'1f99d',galaxy:'1f30c',phoenix2:'1f985'
 };
 
 var ALL_DECOS = [
-  {id:&#39;candle&#39;,name:&#39;Candle&#39;,req:0},{id:&#39;hangingplant&#39;,name:&#39;Potted Plant&#39;,req:0},
-  {id:&#39;fern&#39;,name:&#39;Fern&#39;,req:0},{id:&#39;star&#39;,name:&#39;Star&#39;,req:0},
-  {id:&#39;dragon&#39;,name:&#39;Dragon&#39;,req:5},{id:&#39;cat&#39;,name:&#39;Cat&#39;,req:5},{id:&#39;mushroom&#39;,name:&#39;Mushroom&#39;,req:5},
-  {id:&#39;wizard&#39;,name:&#39;Wizard&#39;,req:10},{id:&#39;lantern&#39;,name:&#39;Lantern&#39;,req:10},
-  {id:&#39;variegated&#39;,name:&#39;Variegated&#39;,req:10},{id:&#39;teacup&#39;,name:&#39;Tea Cup&#39;,req:10},
-  {id:&#39;succulent&#39;,name:&#39;Succulent&#39;,req:15},{id:&#39;owl&#39;,name:&#39;Owl&#39;,req:15},
-  {id:&#39;moon&#39;,name:&#39;Moon&#39;,req:15},{id:&#39;tulip&#39;,name:&#39;Tulip&#39;,req:15},
-  {id:&#39;butterfly&#39;,name:&#39;Butterfly&#39;,req:20},{id:&#39;purpleplant&#39;,name:&#39;Purple Plant&#39;,req:20},
-  {id:&#39;fox&#39;,name:&#39;Fox&#39;,req:20},{id:&#39;potion&#39;,name:&#39;Potion&#39;,req:20},
-  {id:&#39;unicorn&#39;,name:&#39;Unicorn&#39;,req:25},{id:&#39;clock&#39;,name:&#39;Clock&#39;,req:25},
-  {id:&#39;crystal&#39;,name:&#39;Crystal&#39;,req:25},{id:&#39;fairy&#39;,name:&#39;Fairy&#39;,req:25},
-  {id:&#39;spellbook&#39;,name:&#39;Spell Book&#39;,req:35},{id:&#39;hedgehog&#39;,name:&#39;Hedgehog&#39;,req:35},
-  {id:&#39;cactus&#39;,name:&#39;Cactus&#39;,req:35},{id:&#39;orchid&#39;,name:&#39;Orchid&#39;,req:35},
-  {id:&#39;phoenix&#39;,name:&#39;Phoenix&#39;,req:50},{id:&#39;cushion&#39;,name:&#39;Cushion&#39;,req:50},
-  {id:&#39;mermaid&#39;,name:&#39;Mermaid&#39;,req:50},{id:&#39;bonsai&#39;,name:&#39;Bonsai&#39;,req:50},
-  {id:&#39;hourglass&#39;,name:&#39;Hourglass&#39;,req:65},{id:&#39;bamboo&#39;,name:&#39;Bamboo&#39;,req:65},
-  {id:&#39;sunflower&#39;,name:&#39;Sunflower&#39;,req:65},{id:&#39;rosebush&#39;,name:&#39;Rose Bush&#39;,req:65},
-  {id:&#39;kitsune&#39;,name:&#39;Kitsune&#39;,req:80},{id:&#39;pegasus&#39;,name:&#39;Pegasus&#39;,req:80},
-  {id:&#39;kirin&#39;,name:&#39;Kirin&#39;,req:80},{id:&#39;tanuki&#39;,name:&#39;Tanuki&#39;,req:80},
-  {id:&#39;galaxy&#39;,name:&#39;Galaxy&#39;,req:100},{id:&#39;phoenix2&#39;,name:&#39;Phoenix II&#39;,req:100}
+  {id:'candle',name:'Candle',req:0},{id:'hangingplant',name:'Potted Plant',req:0},
+  {id:'fern',name:'Fern',req:0},{id:'star',name:'Star',req:0},
+  {id:'dragon',name:'Dragon',req:5},{id:'cat',name:'Cat',req:5},{id:'mushroom',name:'Mushroom',req:5},
+  {id:'wizard',name:'Wizard',req:10},{id:'lantern',name:'Lantern',req:10},
+  {id:'variegated',name:'Variegated',req:10},{id:'teacup',name:'Tea Cup',req:10},
+  {id:'succulent',name:'Succulent',req:15},{id:'owl',name:'Owl',req:15},
+  {id:'moon',name:'Moon',req:15},{id:'tulip',name:'Tulip',req:15},
+  {id:'butterfly',name:'Butterfly',req:20},{id:'purpleplant',name:'Purple Plant',req:20},
+  {id:'fox',name:'Fox',req:20},{id:'potion',name:'Potion',req:20},
+  {id:'unicorn',name:'Unicorn',req:25},{id:'clock',name:'Clock',req:25},
+  {id:'crystal',name:'Crystal',req:25},{id:'fairy',name:'Fairy',req:25},
+  {id:'spellbook',name:'Spell Book',req:35},{id:'hedgehog',name:'Hedgehog',req:35},
+  {id:'cactus',name:'Cactus',req:35},{id:'orchid',name:'Orchid',req:35},
+  {id:'phoenix',name:'Phoenix',req:50},{id:'cushion',name:'Cushion',req:50},
+  {id:'mermaid',name:'Mermaid',req:50},{id:'bonsai',name:'Bonsai',req:50},
+  {id:'hourglass',name:'Hourglass',req:65},{id:'bamboo',name:'Bamboo',req:65},
+  {id:'sunflower',name:'Sunflower',req:65},{id:'rosebush',name:'Rose Bush',req:65},
+  {id:'kitsune',name:'Kitsune',req:80},{id:'pegasus',name:'Pegasus',req:80},
+  {id:'kirin',name:'Kirin',req:80},{id:'tanuki',name:'Tanuki',req:80},
+  {id:'galaxy',name:'Galaxy',req:100},{id:'phoenix2',name:'Phoenix II',req:100}
 ];
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
-var cases = JSON.parse(localStorage.getItem(&#39;bb3_cases&#39;)||&#39;[]&#39;);
-var books = JSON.parse(localStorage.getItem(&#39;bb3_books&#39;)||&#39;[]&#39;);
-var settings = JSON.parse(localStorage.getItem(&#39;bb3_settings&#39;)||&#39;null&#39;)||{
-  userName:&#39;Reader&#39;,goal:0,monthlyGoal:0
+var cases = JSON.parse(localStorage.getItem('bb3_cases')||'[]');
+var books = JSON.parse(localStorage.getItem('bb3_books')||'[]');
+var settings = JSON.parse(localStorage.getItem('bb3_settings')||'null')||{
+  userName:'Reader',goal:0,monthlyGoal:0
 };
 var currentCaseIdx = 0;
 var pendingBook = null;
 var addRating = 0;
-var addStatus = &#39;read&#39;;
+var addStatus = 'read';
 var addCaseId = null;
 var editingCaseId = null;
 var selStyle = 0;
@@ -486,75 +489,75 @@ var dragDeco = null;
 var _searchResults = [];
 
 function save(){
-  localStorage.setItem(&#39;bb3_cases&#39;,JSON.stringify(cases));
-  localStorage.setItem(&#39;bb3_books&#39;,JSON.stringify(books));
-  localStorage.setItem(&#39;bb3_settings&#39;,JSON.stringify(settings));
+  localStorage.setItem('bb3_cases',JSON.stringify(cases));
+  localStorage.setItem('bb3_books',JSON.stringify(books));
+  localStorage.setItem('bb3_settings',JSON.stringify(settings));
 }
 
 // ─── NAVIGATION ──────────────────────────────────────────────────────────────
 function goTo(id){
-  document.querySelectorAll(&#39;.modal-overlay.open&#39;).forEach(function(m){m.classList.remove(&#39;open&#39;);});
-  document.querySelectorAll(&#39;.screen&#39;).forEach(function(s){s.classList.remove(&#39;active&#39;);});
+  document.querySelectorAll('.modal-overlay.open').forEach(function(m){m.classList.remove('open');});
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
   var el = document.getElementById(id);
-  if(el) el.classList.add(&#39;active&#39;);
+  if(el) el.classList.add('active');
   window.scrollTo(0,0);
-  if(id===&#39;screen-unlocks&#39;) renderUnlocks();
-  if(id===&#39;screen-stats&#39;) renderStats();
-  if(id===&#39;screen-settings&#39;) renderSettings();
-  if(id===&#39;screen-home&#39;) renderHome();
+  if(id==='screen-unlocks') renderUnlocks();
+  if(id==='screen-stats') renderStats();
+  if(id==='screen-settings') renderSettings();
+  if(id==='screen-home') renderHome();
 }
 
 function navTo(screenId, navId){
   goTo(screenId);
-  document.querySelectorAll(&#39;.nav-btn&#39;).forEach(function(b){b.classList.remove(&#39;active&#39;);});
-  var btn = document.getElementById(&#39;nav-&#39;+navId);
-  if(btn) btn.classList.add(&#39;active&#39;);
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
+  var btn = document.getElementById('nav-'+navId);
+  if(btn) btn.classList.add('active');
 }
 
 function toast(msg){
-  var el = document.getElementById(&#39;toast&#39;);
+  var el = document.getElementById('toast');
   el.textContent = msg;
-  el.classList.add(&#39;show&#39;);
-  setTimeout(function(){el.classList.remove(&#39;show&#39;);}, 2500);
+  el.classList.add('show');
+  setTimeout(function(){el.classList.remove('show');}, 2500);
 }
 
-function openModal(id){document.getElementById(id).classList.add(&#39;open&#39;);}
-function closeModal(id){document.getElementById(id).classList.remove(&#39;open&#39;);}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
 
 // ─── WELCOME ──────────────────────────────────────────────────────────────────
 function enterApp(){
-  document.getElementById(&#39;welcome&#39;).style.display=&#39;none&#39;;
-  goTo(&#39;screen-home&#39;);
+  document.getElementById('welcome').style.display='none';
+  goTo('screen-home');
 }
 
 // ─── HOME SCREEN ─────────────────────────────────────────────────────────────
 function renderHome(){
   if(!cases.length){
-    document.getElementById(&#39;home-case-name&#39;).textContent = &#39;Create your first bookcase&#39;;
-    document.getElementById(&#39;bookcase-inner&#39;).innerHTML =
-      &#39;&lt;div style=" text-align:center;padding:60px="" 20px;color:rgba(255,255,255,0.4)"="">'
+    document.getElementById('home-case-name').textContent = 'Create your first bookcase';
+    document.getElementById('bookcase-inner').innerHTML =
+      '<div style="text-align:center;padding:60px 20px;color:rgba(255,255,255,0.4)">'
       +'<div style="font-size:48px;margin-bottom:16px">📚</div>'
       +'<div style="font-size:16px;font-weight:700;margin-bottom:8px">No bookcases yet</div>'
-      +'<div style="font-size:13px">Tap + to create your first bookcase</div></button></div>';
+      +'<div style="font-size:13px">Tap + to create your first bookcase</div></div>';
     document.getElementById('case-dots').innerHTML = '';
     document.getElementById('swipe-row').style.display = 'none';
     applyStyleToHome(BOOKCASE_STYLES[0]);
     return;
   }
 
-  if(currentCaseIdx &gt;= cases.length) currentCaseIdx = cases.length-1;
+  if(currentCaseIdx >= cases.length) currentCaseIdx = cases.length-1;
   var c = cases[currentCaseIdx];
   var st = BOOKCASE_STYLES[c.styleIdx||0]||BOOKCASE_STYLES[0];
   var sh = SHELF_COLORS[c.shelfIdx||0]||SHELF_COLORS[0];
 
   // Update header
   document.getElementById('home-case-name').textContent = (c.emoji||'📚')+' '+c.name;
-  document.getElementById('swipe-row').style.display = cases.length &gt; 1 ? 'flex' : 'none';
+  document.getElementById('swipe-row').style.display = cases.length > 1 ? 'flex' : 'none';
 
   // Update dots
   var dotsEl = document.getElementById('case-dots');
   dotsEl.innerHTML = cases.map(function(x,i){
-    return '<div class="dot&#39;+(i===currentCaseIdx?&#39; active&#39;:&#39;&#39;)+&#39;" onclick="jumpCase(&#39;+i+&#39;)"></div>';
+    return '<div class="dot'+(i===currentCaseIdx?' active':'')+'" onclick="jumpCase('+i+')"></div>';
   }).join('');
 
   // Apply style
@@ -589,8 +592,8 @@ function renderHome(){
     rowBks.forEach(function(item){
       if(item.type==='deco'){
         var code = DECO_CODES[item.decoId]||'1f4ab';
-        html += '<div class="book-deco" data-iid="&#39;+item.id+&#39;" onclick="openDecoOpts(this.dataset.iid)" style="width:44px;align-self:flex-end;padding-bottom:4px;cursor:pointer;flex-shrink:0">'
-          +'<img src="file:///C:/Users/simpl/Downloads/&#39;+TWEMOJI+code+&#39;.svg" style="width:44px;height:44px;object-fit:contain;display:block" draggable="false"></div>';
+        html += '<div class="book-deco" data-iid="'+item.id+'" onclick="openDecoOpts(this.dataset.iid)" style="width:44px;align-self:flex-end;padding-bottom:4px;cursor:pointer;flex-shrink:0">'
+          +'<img src="'+TWEMOJI+code+'.svg" style="width:44px;height:44px;object-fit:contain;display:block" draggable="false"></div>';
       } else {
         var b = item.book;
         if(!b) return;
@@ -599,16 +602,16 @@ function renderHome(){
         else{h=b.bookSize==='S'?90:b.bookSize==='L'?140:115;w=b.bookSize==='S'?20:b.bookSize==='L'?34:26;}
         var col = b.spineColor||SPINE_COLORS[0];
         var inner = '';
-        if(b.cover&amp;&amp;b.showCover){
-          inner = '<img src="file:///C:/Users/simpl/Downloads/&#39;+b.cover+&#39;" style="width:100%;height:100%;object-fit:cover;border-radius:2px 2px 0 0;display:block" draggable="false">';
+        if(b.cover&&b.showCover){
+          inner = '<img src="'+b.cover+'" style="width:100%;height:100%;object-fit:cover;border-radius:2px 2px 0 0;display:block" draggable="false">';
         } else {
           inner = '<div class="book-spine-label">'+b.title+'</div>';
         }
-        html += '<div class="book" data-bid="&#39;+b.id+&#39;" onclick="openBook(this.dataset.bid)" style="width:&#39;+w+&#39;px;height:&#39;+h+&#39;px;background:&#39;+col+&#39;">'+inner+'</div>';
+        html += '<div class="book" data-bid="'+b.id+'" onclick="openBook(this.dataset.bid)" style="width:'+w+'px;height:'+h+'px;background:'+col+'">'+inner+'</div>';
       }
     });
     html += '</div>';
-    html += '<div class="shelf-plank" style="background:&#39;+sh.v+&#39;"></div>';
+    html += '<div class="shelf-plank" style="background:'+sh.v+'"></div>';
     html += '</div>';
   });
 
@@ -672,13 +675,13 @@ function applyStyleToHome(st){
 
 // ─── CASE NAVIGATION ─────────────────────────────────────────────────────────
 function nextCase(){
-  if(cases.length&gt;1){
+  if(cases.length>1){
     currentCaseIdx=(currentCaseIdx+1)%cases.length;
     renderHome();
   }
 }
 function prevCase(){
-  if(cases.length&gt;1){
+  if(cases.length>1){
     currentCaseIdx=(currentCaseIdx-1+cases.length)%cases.length;
     renderHome();
   }
@@ -691,7 +694,7 @@ function jumpCase(i){currentCaseIdx=i;renderHome();}
   document.getElementById('bookcase-wrap').addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
   document.getElementById('bookcase-wrap').addEventListener('touchend',function(e){
     var dx=e.changedTouches[0].clientX-sx;
-    if(Math.abs(dx)&gt;50){if(dx&lt;0)nextCase();else prevCase();}
+    if(Math.abs(dx)>50){if(dx<0)nextCase();else prevCase();}
   });
 })();
 
@@ -726,8 +729,8 @@ function renderCaseEditor(){
   var styleEl=document.getElementById('mc-style');
   styleEl.innerHTML=BOOKCASE_STYLES.map(function(st,i){
     var sel=i===selStyle;
-    return '<div onclick="selCaseStyle(&#39;+i+&#39;)" style="display:inline-flex;flex-direction:column;align-items:center;gap:4px;padding:6px;border-radius:10px;cursor:pointer;border:&#39;+(sel?&#39;2px solid #8b5a2b&#39;:&#39;1.5px solid rgba(180,140,100,0.25)&#39;)+&#39;;background:&#39;+(sel?&#39;rgba(139,90,43,0.08)&#39;:&#39;#fff&#39;)+&#39;;margin:3px">'
-      +'<div style="width:48px;height:36px;border-radius:6px;background:&#39;+st.bg+&#39;"></div>'
+    return '<div onclick="selCaseStyle('+i+')" style="display:inline-flex;flex-direction:column;align-items:center;gap:4px;padding:6px;border-radius:10px;cursor:pointer;border:'+(sel?'2px solid #8b5a2b':'1.5px solid rgba(180,140,100,0.25)')+';background:'+(sel?'rgba(139,90,43,0.08)':'#fff')+';margin:3px">'
+      +'<div style="width:48px;height:36px;border-radius:6px;background:'+st.bg+'"></div>'
       +'<div style="font-size:9px;font-weight:700;color:#5a3e28">'+st.name+'</div></div>';
   }).join('');
 
@@ -735,17 +738,17 @@ function renderCaseEditor(){
   var shelfEl=document.getElementById('mc-shelf');
   shelfEl.innerHTML=SHELF_COLORS.map(function(s,i){
     var sel=i===selShelf;
-    return '<div onclick="selCaseShelf(&#39;+i+&#39;)" style="width:36px;height:36px;border-radius:8px;background:&#39;+s.v+&#39;;cursor:pointer;border:&#39;+(sel?&#39;3px solid #8b5a2b&#39;:&#39;2px solid transparent&#39;)+&#39;;transition:border .15s;margin:3px" title="&#39;+s.l+&#39;"></div>';
+    return '<div onclick="selCaseShelf('+i+')" style="width:36px;height:36px;border-radius:8px;background:'+s.v+';cursor:pointer;border:'+(sel?'3px solid #8b5a2b':'2px solid transparent')+';transition:border .15s;margin:3px" title="'+s.l+'"></div>';
   }).join('');
 
   // Decos
   var decoEl=document.getElementById('mc-decos');
   decoEl.innerHTML=ALL_DECOS.map(function(d){
-    var unlocked=(d.req||0)&lt;=read;
-    var selected=selDecos.indexOf(d.id)&gt;=0;
+    var unlocked=(d.req||0)<=read;
+    var selected=selDecos.indexOf(d.id)>=0;
     var code=DECO_CODES[d.id]||'1f4ab';
-    return '<div onclick="&#39;+(unlocked?&#39;toggleCaseDeco(\&#39;&#39;+d.id+&#39;\&#39;)&#39;:&#39;&#39;)+&#39;" style="width:60px;text-align:center;padding:4px;border-radius:10px;border:&#39;+(selected?&#39;2px solid #8b5a2b&#39;:&#39;1.5px solid rgba(180,140,100,0.2)&#39;)+&#39;;background:&#39;+(selected?&#39;rgba(139,90,43,0.08)&#39;:&#39;#fff&#39;)+&#39;;opacity:&#39;+(unlocked?&#39;1&#39;:&#39;0.4&#39;)+&#39;;cursor:&#39;+(unlocked?&#39;pointer&#39;:&#39;default&#39;)+&#39;">'
-      +'<img src="file:///C:/Users/simpl/Downloads/&#39;+TWEMOJI+code+&#39;.svg" style="width:36px;height:36px;object-fit:contain;display:block;margin:0 auto" loading="lazy">'
+    return '<div onclick="'+(unlocked?'toggleCaseDeco(\''+d.id+'\')':'')+'" style="width:60px;text-align:center;padding:4px;border-radius:10px;border:'+(selected?'2px solid #8b5a2b':'1.5px solid rgba(180,140,100,0.2)')+';background:'+(selected?'rgba(139,90,43,0.08)':'#fff')+';opacity:'+(unlocked?'1':'0.4')+';cursor:'+(unlocked?'pointer':'default')+'">'
+      +'<img src="'+TWEMOJI+code+'.svg" style="width:36px;height:36px;object-fit:contain;display:block;margin:0 auto" loading="lazy">'
       +'<div style="font-size:9px;font-weight:700;color:#5a3e28;margin-top:2px">'+d.name+'</div>'
       +(unlocked?'':'<div style="font-size:8px;color:#8b5a2b">🔒 '+d.req+'</div>')
       +'</div>';
@@ -756,7 +759,7 @@ function selCaseStyle(i){selStyle=i;renderCaseEditor();}
 function selCaseShelf(i){selShelf=i;renderCaseEditor();}
 function toggleCaseDeco(id){
   var idx=selDecos.indexOf(id);
-  if(idx&gt;=0)selDecos.splice(idx,1);else selDecos.push(id);
+  if(idx>=0)selDecos.splice(idx,1);else selDecos.push(id);
   renderCaseEditor();
 }
 
@@ -771,7 +774,7 @@ function saveCase(){
 
   if(editingCaseId){
     var idx=cases.findIndex(function(c){return c.id===editingCaseId;});
-    if(idx&gt;=0){
+    if(idx>=0){
       cases[idx]=Object.assign({},cases[idx],{name:name,emoji:emoji,styleIdx:selStyle,shelfIdx:selShelf,shelfDecos:shelfDecos});
     }
   } else {
@@ -789,14 +792,14 @@ function openDecoPicker(){
   var read=getBooksRead();
   var el=document.getElementById('deco-picker-grid');
   el.innerHTML=ALL_DECOS.map(function(d){
-    var unlocked=(d.req||0)&lt;=read;
+    var unlocked=(d.req||0)<=read;
     var code=DECO_CODES[d.id]||'1f4ab';
     if(!unlocked) return '<div style="width:64px;text-align:center;padding:6px;opacity:0.4">'
-      +'<img src="file:///C:/Users/simpl/Downloads/&#39;+TWEMOJI+code+&#39;.svg" style="width:40px;height:40px;object-fit:contain;display:block;margin:0 auto;filter:grayscale(1)" loading="lazy">'
+      +'<img src="'+TWEMOJI+code+'.svg" style="width:40px;height:40px;object-fit:contain;display:block;margin:0 auto;filter:grayscale(1)" loading="lazy">'
       +'<div style="font-size:9px;color:#7a5a3a;margin-top:2px">'+d.name+'</div>'
       +'<div style="font-size:8px;color:#8b5a2b">🔒 '+d.req+'</div></div>';
-    return '<div onclick="placeFreeDeco(\&#39;&#39;+d.id+&#39;\&#39;)" style="width:64px;text-align:center;padding:6px;border-radius:10px;border:1.5px solid rgba(180,140,100,0.2);cursor:pointer;background:#fff">'
-      +'<img src="file:///C:/Users/simpl/Downloads/&#39;+TWEMOJI+code+&#39;.svg" style="width:40px;height:40px;object-fit:contain;display:block;margin:0 auto" loading="lazy">'
+    return '<div onclick="placeFreeDeco(\''+d.id+'\')" style="width:64px;text-align:center;padding:6px;border-radius:10px;border:1.5px solid rgba(180,140,100,0.2);cursor:pointer;background:#fff">'
+      +'<img src="'+TWEMOJI+code+'.svg" style="width:40px;height:40px;object-fit:contain;display:block;margin:0 auto" loading="lazy">'
       +'<div style="font-size:9px;font-weight:700;color:#5a3e28;margin-top:2px">'+d.name+'</div></div>';
   }).join('');
   openModal('modal-deco');
@@ -828,13 +831,13 @@ function renderFreeDecos(caseId){
     el.dataset.fdid=fd.id;
     el.style.left=(fd.x||50)+'%';
     el.style.top=(fd.y||100)+'px';
-    el.innerHTML='<img src="file:///C:/Users/simpl/Downloads/&#39;+TWEMOJI+code+&#39;.svg" draggable="false">';
+    el.innerHTML='<img src="'+TWEMOJI+code+'.svg" draggable="false">';
 
     // Double tap to remove
     var lastTap=0;
     el.addEventListener('touchstart',function(e){
       var now=Date.now();
-      if(now-lastTap&lt;350){
+      if(now-lastTap<350){
         e.preventDefault();
         if(confirm('Remove this decoration?')){
           removeFreeDeco(caseId,fd.id);
@@ -929,7 +932,7 @@ function doSearch(){
   if(!q)return;
   var el=document.getElementById('search-results');
   el.innerHTML='<div style="text-align:center;padding:30px;color:#7a5a3a">Searching...</div>';
-  fetch('https://openlibrary.org/search.json?q='+encodeURIComponent(q)+'&amp;limit=20&amp;fields=title,author_name,first_publish_year,cover_i,subject')
+  fetch('https://openlibrary.org/search.json?q='+encodeURIComponent(q)+'&limit=20&fields=title,author_name,first_publish_year,cover_i,subject')
     .then(function(r){return r.json();})
     .then(function(d){
       _searchResults=(d.docs||[]).map(function(doc){
@@ -944,8 +947,8 @@ function doSearch(){
       });
       if(!_searchResults.length){el.innerHTML='<div style="text-align:center;padding:30px;color:#7a5a3a">No books found</div>';return;}
       el.innerHTML=_searchResults.map(function(b,i){
-        return '<div class="search-result" onclick="selectBook(&#39;+i+&#39;)">'
-          +(b.cover?'<img class="result-cover" src="file:///C:/Users/simpl/Downloads/&#39;+b.cover+&#39;">'
+        return '<div class="search-result" onclick="selectBook('+i+')">'
+          +(b.cover?'<img class="result-cover" src="'+b.cover+'">'
             :'<div class="result-cover" style="display:flex;align-items:center;justify-content:center;font-size:24px">📚</div>')
           +'<div class="result-info"><div class="result-title">'+b.title+'</div>'
           +'<div class="result-author">'+b.author+(b.year?' · '+b.year:'')+'</div></div></div>';
@@ -968,7 +971,7 @@ function selectBook(i){
   
   // Populate cases
   document.getElementById('add-cases').innerHTML=cases.map(function(c){
-    return '<div class="chip&#39;+(c.id===addCaseId?&#39; active&#39;:&#39;&#39;)+&#39;" data-cid="&#39;+c.id+&#39;" onclick="selAddCase(this.dataset.cid,this)">'+(c.emoji||'📚')+' '+c.name+'</div>';
+    return '<div class="chip'+(c.id===addCaseId?' active':'')+'" data-cid="'+c.id+'" onclick="selAddCase(this.dataset.cid,this)">'+(c.emoji||'📚')+' '+c.name+'</div>';
   }).join('')||'<div style="color:#7a5a3a;font-size:13px">Create a bookcase first!</div>';
   
   // Reset stars
@@ -996,45 +999,78 @@ function selStatus(el){
 function setRating(n){
   addRating=n;
   document.querySelectorAll('#add-stars .star').forEach(function(s,i){
-    s.classList.toggle('active',i<n); });="" }="" function="" confirmadd(){="" if(!pendingbook){toast('no="" book="" selected');return;}="" if(!addcaseid){toast('select="" a="" bookcase="" first!');return;}="" var="" prevread="getBooksRead();" books.push({="" id:string(date.now()),caseid:addcaseid,="" title:pendingbook.title,author:pendingbook.author,="" year:pendingbook.year,cover:pendingbook.cover,="" shelf:addstatus,rating:addrating,="" notes:document.getelementbyid('add-notes').value.trim(),="" genre:document.getelementbyid('add-genre').value,="" prereader:document.getelementbyid('add-prereader').checked,="" spinecolor:spine_colors[math.floor(math.random()*spine_colors.length)],="" showcover:!!(pendingbook.cover),="" addedat:date.now()="" save();="" closemodal('modal-add');="" pendingbook="null;" renderhome();="" toast('added!="" ✨');="" checkunlocks(prevread);="" ───="" options="" ─────────────────────────────────────────────────────────────="" openbook(id){="" b="books.find(function(x){return" x.id="==id;});" if(!b)return;="" html="&lt;div style=&quot;display:flex;gap:12px;margin-bottom:16px;align-items:flex-start&quot;&gt;" +(b.cover?'<img="" src="&#39;+b.cover+&#39;" style="width:64px;height:92px;border-radius:6px;object-fit:cover;flex-shrink:0">':'<div style="width:64px;height:92px;border-radius:6px;background:&#39;+b.spineColor+&#39;;flex-shrink:0"></div>')
+    s.classList.toggle('active',i<n);
+  });
+}
+
+function confirmAdd(){
+  if(!pendingBook){toast('No book selected');return;}
+  if(!addCaseId){toast('Select a bookcase first!');return;}
+  var prevRead=getBooksRead();
+  books.push({
+    id:String(Date.now()),caseId:addCaseId,
+    title:pendingBook.title,author:pendingBook.author,
+    year:pendingBook.year,cover:pendingBook.cover,
+    shelf:addStatus,rating:addRating,
+    notes:document.getElementById('add-notes').value.trim(),
+    genre:document.getElementById('add-genre').value,
+    preReader:document.getElementById('add-prereader').checked,
+    spineColor:SPINE_COLORS[Math.floor(Math.random()*SPINE_COLORS.length)],
+    showCover:!!(pendingBook.cover),
+    addedAt:Date.now()
+  });
+  save();
+  closeModal('modal-add');
+  pendingBook=null;
+  renderHome();
+  toast('Added! ✨');
+  checkUnlocks(prevRead);
+}
+
+// ─── BOOK OPTIONS ─────────────────────────────────────────────────────────────
+function openBook(id){
+  var b=books.find(function(x){return x.id===id;});
+  if(!b)return;
+  var html='<div style="display:flex;gap:12px;margin-bottom:16px;align-items:flex-start">'
+    +(b.cover?'<img src="'+b.cover+'" style="width:64px;height:92px;border-radius:6px;object-fit:cover;flex-shrink:0">':'<div style="width:64px;height:92px;border-radius:6px;background:'+b.spineColor+';flex-shrink:0"></div>')
     +'<div><div style="font-weight:800;color:#3a2a1a;font-size:16px;margin-bottom:4px">'+b.title+'</div>'
     +'<div style="font-size:13px;color:#7a5a3a">'+b.author+'</div>'
-    +(b.year?'<div style="font-size:12px;color:#9a7a5a;margin-top:2px">'+b.year+'</div>':'')+'</div></n);></div>'
+    +(b.year?'<div style="font-size:12px;color:#9a7a5a;margin-top:2px">'+b.year+'</div>':'')+'</div></div>'
     // Display toggle
     +'<div style="font-size:11px;font-weight:800;color:#7a5a3a;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Display on shelf</div>'
     +'<div class="book-display-toggle" style="margin-bottom:16px">'
-    +'<div class="display-opt&#39;+(b.showCover?&#39;&#39;:&#39; active&#39;)+&#39;" data-v="spine" onclick="setBookDisplay(\&#39;&#39;+b.id+&#39;\&#39;,false,this)"><div class="display-opt-icon">🎨</div><div class="display-opt-label">Spine</div></div>'
-    +(b.cover?'<div class="display-opt&#39;+(b.showCover?&#39; active&#39;:&#39;&#39;)+&#39;" data-v="cover" onclick="setBookDisplay(\&#39;&#39;+b.id+&#39;\&#39;,true,this)"><div class="display-opt-icon">📸</div><div class="display-opt-label">Cover</div></div>':'')
+    +'<div class="display-opt'+(b.showCover?'':' active')+'" data-v="spine" onclick="setBookDisplay(\''+b.id+'\',false,this)"><div class="display-opt-icon">🎨</div><div class="display-opt-label">Spine</div></div>'
+    +(b.cover?'<div class="display-opt'+(b.showCover?' active':'')+'" data-v="cover" onclick="setBookDisplay(\''+b.id+'\',true,this)"><div class="display-opt-icon">📸</div><div class="display-opt-label">Cover</div></div>':'')
     +'</div>'
     // Spine colour
     +'<div style="font-size:11px;font-weight:800;color:#7a5a3a;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Spine Colour</div>'
     +'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px">'
-    +SPINE_COLORS.map(function(c){return '<div class="color-swatch&#39;+(b.spineColor===c?&#39; active&#39;:&#39;&#39;)+&#39;" data-bid="&#39;+b.id+&#39;" data-color="&#39;+c+&#39;" onclick="setSpineColor(this)" style="background:&#39;+c+&#39;"></div>';}).join('')
+    +SPINE_COLORS.map(function(c){return '<div class="color-swatch'+(b.spineColor===c?' active':'')+'" data-bid="'+b.id+'" data-color="'+c+'" onclick="setSpineColor(this)" style="background:'+c+'"></div>';}).join('')
     +'</div>'
     // Size
     +'<div style="font-size:11px;font-weight:800;color:#7a5a3a;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Size</div>'
     +'<div style="display:flex;gap:6px;margin-bottom:16px">'
-    +'<div class="size-btn&#39;+((!b.bookSize||b.bookSize===&#39;M&#39;)?&#39; active&#39;:&#39;&#39;)+&#39;" onclick="setBookSize(\&#39;&#39;+b.id+&#39;\&#39;,\&#39;M\&#39;)">📘 Medium</div>'
-    +'<div class="size-btn&#39;+(b.bookSize===&#39;S&#39;?&#39; active&#39;:&#39;&#39;)+&#39;" onclick="setBookSize(\&#39;&#39;+b.id+&#39;\&#39;,\&#39;S\&#39;)">📗 Small</div>'
-    +'<div class="size-btn&#39;+(b.bookSize===&#39;L&#39;?&#39; active&#39;:&#39;&#39;)+&#39;" onclick="setBookSize(\&#39;&#39;+b.id+&#39;\&#39;,\&#39;L\&#39;)">📙 Large</div>'
+    +'<div class="size-btn'+((!b.bookSize||b.bookSize==='M')?' active':'')+'" onclick="setBookSize(\''+b.id+'\',\'M\')">📘 Medium</div>'
+    +'<div class="size-btn'+(b.bookSize==='S'?' active':'')+'" onclick="setBookSize(\''+b.id+'\',\'S\')">📗 Small</div>'
+    +'<div class="size-btn'+(b.bookSize==='L'?' active':'')+'" onclick="setBookSize(\''+b.id+'\',\'L\')">📙 Large</div>'
     +'</div>'
     +'<div style="font-size:11px;font-weight:800;color:#7a5a3a;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Position</div>'
     +'<div style="display:flex;gap:6px;margin-bottom:16px">'
-    +'<div class="size-btn&#39;+(b.lyingDown?&#39;&#39;:&#39; active&#39;)+&#39;" data-bid="&#39;+b.id+&#39;" onclick="setBookLying(this.dataset.bid,false)">📚 Standing</div>'
-    +'<div class="size-btn&#39;+(b.lyingDown?&#39; active&#39;:&#39;&#39;)+&#39;" data-bid="&#39;+b.id+&#39;" onclick="setBookLying(this.dataset.bid,true)">📖 Lying flat</div>'
+    +'<div class="size-btn'+(b.lyingDown?'':' active')+'" data-bid="'+b.id+'" onclick="setBookLying(this.dataset.bid,false)">📚 Standing</div>'
+    +'<div class="size-btn'+(b.lyingDown?' active':'')+'" data-bid="'+b.id+'" onclick="setBookLying(this.dataset.bid,true)">📖 Lying flat</div>'
     +'</div>'
-    // Status &amp; rating
+    // Status & rating
     +'<div style="font-size:11px;font-weight:800;color:#7a5a3a;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px">Status</div>'
     +'<div style="display:flex;flex-wrap:wrap;margin-bottom:16px">'
-    +'<div class="chip&#39;+(b.shelf===&#39;read&#39;?&#39; active&#39;:&#39;&#39;)+&#39;" onclick="updateBookShelf(\&#39;&#39;+b.id+&#39;\&#39;,\&#39;read\&#39;)">✅ Read</div>'
-    +'<div class="chip&#39;+(b.shelf===&#39;reading&#39;?&#39; active&#39;:&#39;&#39;)+&#39;" onclick="updateBookShelf(\&#39;&#39;+b.id+&#39;\&#39;,\&#39;reading\&#39;)">📖 Reading</div>'
-    +'<div class="chip&#39;+(b.shelf===&#39;want&#39;?&#39; active&#39;:&#39;&#39;)+&#39;" onclick="updateBookShelf(\&#39;&#39;+b.id+&#39;\&#39;,\&#39;want\&#39;)">🔖 Want</div>'
-    +'<div class="chip&#39;+(b.shelf===&#39;dnf&#39;?&#39; active&#39;:&#39;&#39;)+&#39;" onclick="updateBookShelf(\&#39;&#39;+b.id+&#39;\&#39;,\&#39;dnf\&#39;)">❌ DNF</div>'
+    +'<div class="chip'+(b.shelf==='read'?' active':'')+'" onclick="updateBookShelf(\''+b.id+'\',\'read\')">✅ Read</div>'
+    +'<div class="chip'+(b.shelf==='reading'?' active':'')+'" onclick="updateBookShelf(\''+b.id+'\',\'reading\')">📖 Reading</div>'
+    +'<div class="chip'+(b.shelf==='want'?' active':'')+'" onclick="updateBookShelf(\''+b.id+'\',\'want\')">🔖 Want</div>'
+    +'<div class="chip'+(b.shelf==='dnf'?' active':'')+'" onclick="updateBookShelf(\''+b.id+'\',\'dnf\')">❌ DNF</div>'
     +'</div>'
     +'<div class="stars" style="margin-bottom:16px">'
-    +[1,2,3,4,5].map(function(n){return '<span class="star&#39;+(b.rating&gt;=n?&#39; active&#39;:&#39;&#39;)+&#39;" onclick="updateBookRating(\&#39;&#39;+b.id+&#39;\&#39;,&#39;+n+&#39;)">★</span>';}).join('')
+    +[1,2,3,4,5].map(function(n){return '<span class="star'+(b.rating>=n?' active':'')+'" onclick="updateBookRating(\''+b.id+'\','+n+')">★</span>';}).join('')
     +'</div>'
-    +'<button class="btn" style="background:rgba(220,50,50,0.1);color:#c03030;border:1.5px solid rgba(220,50,50,0.2);margin-top:8px" onclick="deleteBook(\&#39;&#39;+b.id+&#39;\&#39;)">Remove 🗑️</button>';
+    +'<button class="btn" style="background:rgba(220,50,50,0.1);color:#c03030;border:1.5px solid rgba(220,50,50,0.2);margin-top:8px" onclick="deleteBook(\''+b.id+'\')">Remove 🗑️</button>';
 
   document.getElementById('book-modal-content').innerHTML=html;
   openModal('modal-book');
@@ -1089,7 +1125,7 @@ function deleteBook(id){
 
 // ─── REWARDS ─────────────────────────────────────────────────────────────────
 function getBooksRead(){
-  return books.filter(function(b){return b.shelf==='read'&amp;&amp;!b.preReader;}).length;
+  return books.filter(function(b){return b.shelf==='read'&&!b.preReader;}).length;
 }
 
 function checkUnlocks(prevRead){
@@ -1112,18 +1148,18 @@ function renderUnlocks(){
   levels.forEach(function(req){
     var decos=ALL_DECOS.filter(function(d){return (d.req||0)===req;});
     var styles=BOOKCASE_STYLES.filter(function(s){return (s.req||0)===req;});
-    if(!decos.length&amp;&amp;!styles.length)return;
-    var unlocked=read&gt;=req;
+    if(!decos.length&&!styles.length)return;
+    var unlocked=read>=req;
     html+='<div class="unlock-section">'
       +'<div class="unlock-header"><h3>'+(req===0?'🎁 Free':'📚 '+req+' books')+'</h3>'
-      +'<span class="unlock-badge&#39;+(unlocked?&#39;&#39;:&#39; locked&#39;)+&#39;">'+(unlocked?'✅ Unlocked':'🔒 '+req+' needed')+'</span></div>'
+      +'<span class="unlock-badge'+(unlocked?'':' locked')+'">'+(unlocked?'✅ Unlocked':'🔒 '+req+' needed')+'</span></div>'
       +'<div style="padding:12px">';
     if(styles.length){
       html+='<div style="font-size:10px;font-weight:800;color:#7a5a3a;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">🎨 Bookcase Styles</div>'
         +'<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px">';
       styles.forEach(function(st){
-        html+='<div style="text-align:center;opacity:&#39;+(unlocked?&#39;1&#39;:&#39;0.4&#39;)+&#39;">'
-          +'<div style="width:52px;height:38px;border-radius:8px;background:&#39;+st.bg+&#39;;border:1.5px solid rgba(180,140,100,0.2)"></div>'
+        html+='<div style="text-align:center;opacity:'+(unlocked?'1':'0.4')+'">'
+          +'<div style="width:52px;height:38px;border-radius:8px;background:'+st.bg+';border:1.5px solid rgba(180,140,100,0.2)"></div>'
           +'<div style="font-size:9px;font-weight:700;color:#5a3e28;margin-top:3px">'+st.name+'</div></div>';
       });
       html+='</div>';
@@ -1133,8 +1169,8 @@ function renderUnlocks(){
         +'<div class="deco-grid" style="padding:0">';
       decos.forEach(function(d){
         var code=DECO_CODES[d.id]||'1f4ab';
-        html+='<div class="deco-item&#39;+(unlocked?&#39;&#39;:&#39; locked&#39;)+&#39;">'
-          +'<img src="file:///C:/Users/simpl/Downloads/&#39;+TWEMOJI+code+&#39;.svg" style="width:44px;height:44px;object-fit:contain;display:block;margin:0 auto" loading="lazy">'
+        html+='<div class="deco-item'+(unlocked?'':' locked')+'">'
+          +'<img src="'+TWEMOJI+code+'.svg" style="width:44px;height:44px;object-fit:contain;display:block;margin:0 auto" loading="lazy">'
           +'<div class="deco-name">'+d.name+'</div></div>';
       });
       html+='</div>';
@@ -1169,21 +1205,21 @@ function renderStats(){
     var pct=Math.min(100,Math.round(reread/goal*100));
     html+='<div class="stat-card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
       +'<div class="stat-label">Yearly Goal</div><div style="font-weight:800;color:#8b5a2b">'+reread+' / '+goal+'</div></div>'
-      +'<div class="progress-bar"><div class="progress-fill" style="width:&#39;+pct+&#39;%"></div></div></div>';
+      +'<div class="progress-bar"><div class="progress-fill" style="width:'+pct+'%"></div></div></div>';
   }
   if(mGoal){
     var now=new Date();var month=now.getMonth();var year=now.getFullYear();
     var monthRead=books.filter(function(b){
       if(b.shelf!=='read')return false;
       var d=new Date(b.addedAt||0);
-      return d.getMonth()===month&amp;&amp;d.getFullYear()===year;
+      return d.getMonth()===month&&d.getFullYear()===year;
     }).length;
     var mpct=Math.min(100,Math.round(monthRead/mGoal*100));
     html+='<div class="stat-card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
       +'<div class="stat-label">Monthly Goal</div><div style="font-weight:800;color:#8b5a2b">'+monthRead+' / '+mGoal+'</div></div>'
-      +'<div class="progress-bar"><div class="progress-fill" style="width:&#39;+mpct+&#39;%"></div></div></div>';
+      +'<div class="progress-bar"><div class="progress-fill" style="width:'+mpct+'%"></div></div></div>';
   }
-  if(!goal&amp;&amp;!mGoal){
+  if(!goal&&!mGoal){
     html+='<div style="text-align:center;padding:20px;color:#7a5a3a">'
       +'<div style="font-size:32px;margin-bottom:8px">🎯</div>'
       +'<div style="font-weight:700">Set a reading goal in Settings!</div></div>';
@@ -1266,7 +1302,7 @@ function addManually(){
   document.getElementById('add-title').textContent=pendingBook.title;
   document.getElementById('add-author').textContent=pendingBook.author;
   document.getElementById('add-cases').innerHTML=cases.map(function(c){
-    return '<div class="chip&#39;+(c.id===addCaseId?&#39; active&#39;:&#39;&#39;)+&#39;" data-cid="&#39;+c.id+&#39;" onclick="selAddCase(this.dataset.cid,this)">'+(c.emoji||'📚')+' '+c.name+'</div>';
+    return '<div class="chip'+(c.id===addCaseId?' active':'')+'" data-cid="'+c.id+'" onclick="selAddCase(this.dataset.cid,this)">'+(c.emoji||'📚')+' '+c.name+'</div>';
   }).join('')||'<div style="color:#7a5a3a;font-size:13px">Create a bookcase first!</div>';
   setRating(0);document.getElementById('add-notes').value='';
   document.getElementById('add-prereader').checked=false;
@@ -1274,7 +1310,7 @@ function addManually(){
   document.getElementById('add-genre').value='Other';
   openModal('modal-add');
 }
+</script>
 
 
-
-</m&&now></body></html>
+</body></html>
