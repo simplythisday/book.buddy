@@ -20,7 +20,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 #main-nav{position:fixed;bottom:0;left:0;right:0;height:60px;z-index:9999;display:flex;align-items:stretch;border-top:1px solid rgba(255,255,255,0.15)}
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:none;background:none;cursor:pointer;font-family:'Nunito',sans-serif;font-size:9px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:.5px;transition:color .2s}
 .nav-btn *{pointer-events:none}
-.nav-btn.active{color:#fff}
+.nav-btn.active{color:#fff!important}
 .nav-btn svg{width:22px;height:22px}
 
 /* ── HOME SCREEN ─────────────────────────────────────────── */
@@ -388,36 +388,37 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
 var BOOKCASE_STYLES = [
-  {id:'dark-wood',name:'Dark Wood',bg:'linear-gradient(180deg,#2a1a08 0%,#1a0e04 100%)',plank:'linear-gradient(90deg,#4a2e10,#6a3e18,#4a2e10)',border:'#3a2208'},
-  {id:'black',name:'Black',bg:'linear-gradient(180deg,#0a0a0a 0%,#151515 100%)',plank:'linear-gradient(90deg,#1a1a1a,#2a2a2a,#1a1a1a)',border:'#111'},
-  {id:'walnut',name:'Walnut',bg:'linear-gradient(180deg,#3d1c0a 0%,#2d1408 100%)',plank:'linear-gradient(90deg,#6b3010,#8b4018,#6b3010)',border:'#4a2010'},
-  {id:'navy',name:'Navy',bg:'linear-gradient(180deg,#0a1428 0%,#060e1c 100%)',plank:'linear-gradient(90deg,#102040,#182c58,#102040)',border:'#0c1830'},
-  {id:'forest',name:'Forest',bg:'linear-gradient(180deg,#0a1e0a 0%,#061406 100%)',plank:'linear-gradient(90deg,#1a3a1a,#2a5028,#1a3a1a)',border:'#0e2010'},
-  {id:'burgundy',name:'Burgundy',bg:'linear-gradient(180deg,#2e0a10 0%,#1e0608 100%)',plank:'linear-gradient(90deg,#5a1020,#7a1828,#5a1020)',border:'#3a0c14'},
-  {id:'cream',name:'Cream',bg:'linear-gradient(180deg,#f5ede0 0%,#ede0cc 100%)',plank:'linear-gradient(90deg,#c8a878,#d8b888,#c8a878)',border:'#d0b888'},
-  {id:'dusty-pink',name:'Dusty Pink',bg:'linear-gradient(180deg,#f0d8d8 0%,#e8c8c8 100%)',plank:'linear-gradient(90deg,#c09090,#d0a0a0,#c09090)',border:'#c89898'},
-  {id:'sage',name:'Sage',bg:'linear-gradient(180deg,#8a9a7a 0%,#6a7a5a 100%)',plank:'linear-gradient(90deg,#7a8a6a,#9aaa8a,#7a8a6a)',border:'#7a8a6a'},
-  {id:'slate',name:'Slate',bg:'linear-gradient(180deg,#3a4050 0%,#2a3040 100%)',plank:'linear-gradient(90deg,#4a5060,#5a6070,#4a5060)',border:'#404858'},
-  {id:'terracotta',name:'Terracotta',bg:'linear-gradient(180deg,#8a3a20 0%,#6a2a14 100%)',plank:'linear-gradient(90deg,#a04828,#c06038,#a04828)',border:'#904030'},
-  {id:'midnight',name:'Midnight',bg:'linear-gradient(180deg,#0a0818 0%,#060410 100%)',plank:'linear-gradient(90deg,#181030,#281848,#181030)',border:'#100c20'},
-  {id:'gold',name:'Gold',bg:'linear-gradient(180deg,#3a2808 0%,#2a1c04 100%)',plank:'linear-gradient(90deg,#8a6820,#b08830,#8a6820)',border:'#604010'},
-  {id:'plum',name:'Plum',bg:'linear-gradient(180deg,#2a0a3a 0%,#1a0628 100%)',plank:'linear-gradient(90deg,#401060,#581878,#401060)',border:'#300848'},
-  {id:'ivory',name:'Ivory',bg:'linear-gradient(180deg,#f8f4e8 0%,#f0e8d8 100%)',plank:'linear-gradient(90deg,#d0c090,#e0d0a0,#d0c090)',border:'#d8c898'},
-  {id:'charcoal',name:'Charcoal',bg:'linear-gradient(180deg,#2a2a2a 0%,#1a1a1a 100%)',plank:'linear-gradient(90deg,#303030,#404040,#303030)',border:'#282828'},
-  {id:'teal',name:'Deep Teal',bg:'linear-gradient(180deg,#0a2a2a 0%,#061818 100%)',plank:'linear-gradient(90deg,#104040,#1a5858,#104040)',border:'#0c2e2e'},
-  {id:'copper',name:'Copper',bg:'linear-gradient(180deg,#5a2808 0%,#3a1804 100%)',plank:'linear-gradient(90deg,#8a4818,#aa5828,#8a4818)',border:'#6a3010'},
-  {id:'mint',name:'Mint',bg:'linear-gradient(180deg,#c0e8d8 0%,#a0d8c8 100%)',plank:'linear-gradient(90deg,#80b898,#a0d0b0,#80b898)',border:'#90c8a8'},
-  {id:'oak',name:'Oak',bg:'linear-gradient(180deg,#c8a060 0%,#a88040 100%)',plank:'linear-gradient(90deg,#b89050,#d8a860,#b89050)',border:'#b88848'},
-  {id:'white',name:'White',bg:'linear-gradient(180deg,#ffffff 0%,#f0f0f0 100%)',plank:'linear-gradient(90deg,#c8c8c8,#e0e0e0,#c8c8c8)',border:'#d0d0d0'},
-  {id:'pink-fantasy',name:'Pink Fantasy',bg:'linear-gradient(180deg,#f8d0e0 0%,#f0c0d0 100%)',plank:'linear-gradient(90deg,#d890a8,#e8a0b8,#d890a8)',border:'#e098b0'},
-  {id:'gothic',name:'Gothic Dark',bg:'linear-gradient(180deg,#180818 0%,#100810 100%)',plank:'linear-gradient(90deg,#280828,#381038,#280828)',border:'#200820'},
-  {id:'amber',name:'Amber',bg:'linear-gradient(180deg,#8a4808 0%,#6a3404 100%)',plank:'linear-gradient(90deg,#b06018,#d07828,#b06018)',border:'#904810'},
-  {id:'lavender',name:'Lavender',bg:'linear-gradient(180deg,#d0b8e8 0%,#b898d0 100%)',plank:'linear-gradient(90deg,#9870b8,#b890d0,#9870b8)',border:'#a880c0'},
-  {id:'rose-gold',name:'Rose Gold',bg:'linear-gradient(180deg,#e8c0b0 0%,#d8a898 100%)',plank:'linear-gradient(90deg,#c89080,#d8a090,#c89080)',border:'#c89888'},
-  {id:'ocean',name:'Ocean',bg:'linear-gradient(180deg,#0a2848 0%,#061830 100%)',plank:'linear-gradient(90deg,#104060,#185878,#104060)',border:'#0c3050'},
-  {id:'cherry',name:'Cherry',bg:'linear-gradient(180deg,#4a0818 0%,#300410 100%)',plank:'linear-gradient(90deg,#781020,#981828,#781020)',border:'#580c18'},
-  {id:'sand',name:'Sand',bg:'linear-gradient(180deg,#e8d8b0 0%,#d8c898 100%)',plank:'linear-gradient(90deg,#c0a870,#d8c080,#c0a870)',border:'#c8b078'},
-  {id:'arctic',name:'Arctic',bg:'linear-gradient(180deg,#d8eef8 0%,#c0e0f0 100%)',plank:'linear-gradient(90deg,#90c0d8,#b0d8e8,#90c0d8)',border:'#98c8e0'}
+  {id:'navy',name:'Navy',req:0,bg:'linear-gradient(180deg,#0a1428 0%,#060e1c 100%)',plank:'linear-gradient(90deg,#102040,#182c58,#102040)'},
+  {id:'walnut',name:'Walnut',req:0,bg:'linear-gradient(180deg,#3d1c0a 0%,#2d1408 100%)',plank:'linear-gradient(90deg,#6b3010,#8b4018,#6b3010)'},
+  {id:'dusty-pink',name:'Dusty Pink',req:0,bg:'linear-gradient(180deg,#f0d8d8 0%,#e8c8c8 100%)',plank:'linear-gradient(90deg,#c09090,#d0a0a0,#c09090)'},
+  {id:'baby-blue',name:'Baby Blue',req:0,bg:'linear-gradient(180deg,#c8dff5 0%,#b0cee8 100%)',plank:'linear-gradient(90deg,#7090b8,#90aed0,#7090b8)'},
+  {id:'dark-wood',name:'Dark Wood',req:5,bg:'linear-gradient(180deg,#2a1a08 0%,#1a0e04 100%)',plank:'linear-gradient(90deg,#4a2e10,#6a3e18,#4a2e10)'},
+  {id:'black',name:'Black',req:5,bg:'linear-gradient(180deg,#0a0a0a 0%,#151515 100%)',plank:'linear-gradient(90deg,#1a1a1a,#2a2a2a,#1a1a1a)'},
+  {id:'cream',name:'Cream',req:5,bg:'linear-gradient(180deg,#f5ede0 0%,#ede0cc 100%)',plank:'linear-gradient(90deg,#c8a878,#d8b888,#c8a878)'},
+  {id:'burgundy',name:'Burgundy',req:10,bg:'linear-gradient(180deg,#2e0a10 0%,#1e0608 100%)',plank:'linear-gradient(90deg,#5a1020,#7a1828,#5a1020)'},
+  {id:'forest',name:'Forest',req:10,bg:'linear-gradient(180deg,#0a1e0a 0%,#061406 100%)',plank:'linear-gradient(90deg,#1a3a1a,#2a5028,#1a3a1a)'},
+  {id:'lavender',name:'Lavender',req:10,bg:'linear-gradient(180deg,#d0b8e8 0%,#b898d0 100%)',plank:'linear-gradient(90deg,#9870b8,#b890d0,#9870b8)'},
+  {id:'slate',name:'Slate',req:15,bg:'linear-gradient(180deg,#3a4050 0%,#2a3040 100%)',plank:'linear-gradient(90deg,#4a5060,#5a6070,#4a5060)'},
+  {id:'sage',name:'Sage',req:15,bg:'linear-gradient(180deg,#8a9a7a 0%,#6a7a5a 100%)',plank:'linear-gradient(90deg,#7a8a6a,#9aaa8a,#7a8a6a)'},
+  {id:'rose-gold',name:'Rose Gold',req:15,bg:'linear-gradient(180deg,#e8c0b0 0%,#d8a898 100%)',plank:'linear-gradient(90deg,#c89080,#d8a090,#c89080)'},
+  {id:'midnight',name:'Midnight',req:20,bg:'linear-gradient(180deg,#0a0818 0%,#060410 100%)',plank:'linear-gradient(90deg,#181030,#281848,#181030)'},
+  {id:'terracotta',name:'Terracotta',req:20,bg:'linear-gradient(180deg,#8a3a20 0%,#6a2a14 100%)',plank:'linear-gradient(90deg,#a04828,#c06038,#a04828)'},
+  {id:'mint',name:'Mint',req:20,bg:'linear-gradient(180deg,#c0e8d8 0%,#a0d8c8 100%)',plank:'linear-gradient(90deg,#80b898,#a0d0b0,#80b898)'},
+  {id:'plum',name:'Plum',req:25,bg:'linear-gradient(180deg,#2a0a3a 0%,#1a0628 100%)',plank:'linear-gradient(90deg,#401060,#581878,#401060)'},
+  {id:'gold',name:'Gold',req:25,bg:'linear-gradient(180deg,#3a2808 0%,#2a1c04 100%)',plank:'linear-gradient(90deg,#8a6820,#b08830,#8a6820)'},
+  {id:'pink-fantasy',name:'Pink Fantasy',req:25,bg:'linear-gradient(180deg,#f8d0e0 0%,#f0c0d0 100%)',plank:'linear-gradient(90deg,#d890a8,#e8a0b8,#d890a8)'},
+  {id:'charcoal',name:'Charcoal',req:35,bg:'linear-gradient(180deg,#2a2a2a 0%,#1a1a1a 100%)',plank:'linear-gradient(90deg,#303030,#404040,#303030)'},
+  {id:'teal',name:'Deep Teal',req:35,bg:'linear-gradient(180deg,#0a2a2a 0%,#061818 100%)',plank:'linear-gradient(90deg,#104040,#1a5858,#104040)'},
+  {id:'ocean',name:'Ocean',req:35,bg:'linear-gradient(180deg,#0a2848 0%,#061830 100%)',plank:'linear-gradient(90deg,#104060,#185878,#104060)'},
+  {id:'copper',name:'Copper',req:50,bg:'linear-gradient(180deg,#5a2808 0%,#3a1804 100%)',plank:'linear-gradient(90deg,#8a4818,#aa5828,#8a4818)'},
+  {id:'gothic',name:'Gothic',req:50,bg:'linear-gradient(180deg,#180818 0%,#100810 100%)',plank:'linear-gradient(90deg,#280828,#381038,#280828)'},
+  {id:'amber',name:'Amber',req:50,bg:'linear-gradient(180deg,#8a4808 0%,#6a3404 100%)',plank:'linear-gradient(90deg,#b06018,#d07828,#b06018)'},
+  {id:'oak',name:'Oak',req:65,bg:'linear-gradient(180deg,#c8a060 0%,#a88040 100%)',plank:'linear-gradient(90deg,#b89050,#d8a860,#b89050)'},
+  {id:'cherry',name:'Cherry',req:65,bg:'linear-gradient(180deg,#4a0818 0%,#300410 100%)',plank:'linear-gradient(90deg,#781020,#981828,#781020)'},
+  {id:'sand',name:'Sand',req:80,bg:'linear-gradient(180deg,#e8d8b0 0%,#d8c898 100%)',plank:'linear-gradient(90deg,#c0a870,#d8c080,#c0a870)'},
+  {id:'arctic',name:'Arctic',req:80,bg:'linear-gradient(180deg,#d8eef8 0%,#c0e0f0 100%)',plank:'linear-gradient(90deg,#90c0d8,#b0d8e8,#90c0d8)'},
+  {id:'white',name:'White',req:100,bg:'linear-gradient(180deg,#ffffff 0%,#f0f0f0 100%)',plank:'linear-gradient(90deg,#c8c8c8,#e0e0e0,#c8c8c8)'},
+  {id:'gold-luxury',name:'Gold Luxury',req:100,bg:'linear-gradient(180deg,#2a1800 0%,#1a0e00 100%)',plank:'linear-gradient(90deg,#c8a000,#e8c020,#c8a000)'}
 ];
 
 var SHELF_COLORS = [
@@ -641,13 +642,14 @@ function applyStyleToHome(st){
   screenHome.style.background = st.bg;
   
   var isDark = st.bg.includes('#0') || st.bg.includes('#1') || st.bg.includes('#2') || st.bg.includes('#3a') || st.bg.includes('#4a') || st.bg.includes('#5a');
-  var tc = isDark ? 'rgba(255,255,255,0.95)' : '#2a1808';
-  var sc = isDark ? 'rgba(255,255,255,0.6)' : 'rgba(42,24,8,0.6)';
-  var nc = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(42,24,8,0.4)';
-  var na = isDark ? '#fff' : '#8b5a2b';
+  var nc = isDark ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.4)';
+  var na = isDark ? '#fff' : '#3a2a1a';
 
-  document.querySelector('.home-title').style.color = tc;
-  document.getElementById('home-case-name').style.color = sc;
+  // Title always white with shadow for readability on any background
+  document.querySelector('.home-title').style.color = '#fff';
+  document.querySelector('.home-title').style.textShadow = '0 2px 8px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.9)';
+  document.getElementById('home-case-name').style.color = 'rgba(255,255,255,0.85)';
+  document.getElementById('home-case-name').style.textShadow = '0 1px 4px rgba(0,0,0,0.6)';
   document.querySelector('.home-header').style.background = st.bg;
 
   // Nav
@@ -655,7 +657,7 @@ function applyStyleToHome(st){
   nav.style.background = st.bg;
   nav.style.borderTopColor = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)';
   document.querySelectorAll('.nav-btn').forEach(function(b){
-    b.style.color = b.classList.contains('active') ? na : nc;
+    b.style.color = b.classList.contains('active') ? '#fff' : nc;
   });
 
   // Swipe row
@@ -663,13 +665,13 @@ function applyStyleToHome(st){
   sr.style.background = st.bg;
   document.querySelectorAll('.swipe-btn').forEach(function(b){
     b.style.background = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)';
-    b.style.color = tc;
+    b.style.color = '#fff';
   });
 
   // Icon buttons
   document.querySelectorAll('.icon-btn').forEach(function(b){
     b.style.background = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)';
-    b.style.color = tc;
+    b.style.color = '#fff';
   });
 }
 
@@ -726,12 +728,18 @@ function renderCaseEditor(){
   var read=getBooksRead();
 
   // Styles
+  var read=getBooksRead();
   var styleEl=document.getElementById('mc-style');
   styleEl.innerHTML=BOOKCASE_STYLES.map(function(st,i){
     var sel=i===selStyle;
-    return '<div onclick="selCaseStyle('+i+')" style="display:inline-flex;flex-direction:column;align-items:center;gap:4px;padding:6px;border-radius:10px;cursor:pointer;border:'+(sel?'2px solid #8b5a2b':'1.5px solid rgba(180,140,100,0.25)')+';background:'+(sel?'rgba(139,90,43,0.08)':'#fff')+';margin:3px">'
-      +'<div style="width:48px;height:36px;border-radius:6px;background:'+st.bg+'"></div>'
-      +'<div style="font-size:9px;font-weight:700;color:#5a3e28">'+st.name+'</div></div>';
+    var unlocked=(st.req||0)<=read;
+    return '<div onclick="'+(unlocked?'selCaseStyle('+i+')':'')+'" style="display:inline-flex;flex-direction:column;align-items:center;gap:4px;padding:6px;border-radius:10px;cursor:'+(unlocked?'pointer':'default')+';border:'+(sel?'2px solid #8b5a2b':'1.5px solid rgba(180,140,100,0.25)')+';background:'+(sel?'rgba(139,90,43,0.08)':'#fff')+';margin:3px;opacity:'+(unlocked?'1':'0.45')+'">'
+      +'<div style="width:48px;height:36px;border-radius:6px;background:'+st.bg+';position:relative">'
+      +(unlocked?'':'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;background:rgba(0,0,0,0.25);border-radius:6px">🔒</div>')
+      +'</div>'
+      +'<div style="font-size:9px;font-weight:700;color:#5a3e28">'+st.name+'</div>'
+      +(unlocked?'':'<div style="font-size:8px;color:#8b5a2b">'+st.req+' 📚</div>')
+      +'</div>';
   }).join('');
 
   // Shelf colours
