@@ -84,7 +84,7 @@ body.theme-midnight #screen-room::before{}
 
 
 /* ── SCREENS ── */
-.screen{display:none;position:fixed;top:0;left:0;right:0;bottom:0;flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.screen{display:none;position:fixed;top:0;left:0;right:0;bottom:0;flex-direction:column;overflow:hidden;background:#fff8f8}
 .screen.active{display:flex;z-index:10}
 
 /* ── ROOM SCREEN ── */
@@ -152,7 +152,7 @@ body.theme-midnight #screen-room::before{}
 
 /* ── INNER SCREENS ── */
 .inner-screen{background:#fce8f3;flex:1;display:flex;flex-direction:column;overflow-y:auto}
-.inner-header{background:linear-gradient(135deg,#f4a7c3,#c9a0dc);padding:14px 16px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 16px rgba(200,120,160,.2);position:sticky;top:0;z-index:100}
+.inner-header{background:linear-gradient(135deg,#f5efe8,#fdf0e8);padding:14px 16px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 8px rgba(200,120,160,.1);position:sticky;top:0;z-index:100}
 .inner-back{background:rgba(255,255,255,.3);border:none;color:white;width:34px;height:34px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .inner-title{font-family:'Pacifico',cursive;font-size:20px;font-weight:900;color:white;flex:1}
 .inner-
@@ -264,7 +264,6 @@ input:checked + .tog-slider:before{transform:translateX(20px)}
 .bg-pattern{transition:opacity 0.5s ease;pointer-events:none!important}
 
 .bg-pattern{z-index:0!important;pointer-events:none}
-.room-header{position:relative;z-index:2}
 .room-carousel{position:relative;z-index:2}
 
 .wisteria-bar{position:relative;z-index:2}
@@ -286,60 +285,47 @@ input:checked + .tog-slider:before{transform:translateX(20px)}
 
 <!-- SCREEN: ROOM -->
 <div class="screen active" id="screen-room">
-  <div class="wisteria-bar"></div>
-  <div class="moon"></div>
-  <div class="room-header">
+  <div class="room-header" id="room-header">
     <div>
-      <div class="room-title" style="display:flex;align-items:center;gap:8px">
-        <svg width="28" height="28" viewBox="0 0 28 28">
-          <rect x="4" y="3" width="16" height="22" rx="3" fill="#e8d4f8" stroke="#c9a0dc" stroke-width="1.2"/>
-          <rect x="4" y="3" width="5" height="22" rx="2" fill="#c9a0dc" opacity="0.5"/>
-          <line x1="12" y1="9" x2="18" y2="9" stroke="#c9a0dc" stroke-width="1.2" stroke-linecap="round"/>
-          <line x1="12" y1="13" x2="18" y2="13" stroke="#c9a0dc" stroke-width="1.2" stroke-linecap="round"/>
-          <line x1="12" y1="17" x2="16" y2="17" stroke="#c9a0dc" stroke-width="1.2" stroke-linecap="round"/>
-          <path d="M18 3 Q24 8 24 14 Q24 20 18 25" fill="none" stroke="#f4a7c3" stroke-width="1" stroke-linecap="round" opacity="0.6"/>
-          <circle cx="22" cy="7" r="1.5" fill="#ffd97d" opacity="0.8"/>
-          <circle cx="24" cy="14" r="1" fill="#f4a7c3" opacity="0.7"/>
-          <circle cx="22" cy="21" r="1.5" fill="#a0c4e8" opacity="0.8"/>
-        </svg>
-        BookBuddy</div>
-      <div class="room-sub" id="room-sub">Your magical library</div>
+      <div class="room-title" id="room-title-text">BookBuddy</div>
+      <div class="room-sub" id="room-case-name">My Library</div>
     </div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <button class="room-icon-btn" onclick="showThemePicker()" title="Change theme" id="theme-btn">
-        <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="#e8d4f8" stroke="#c9a0dc" stroke-width="1.5"/><circle cx="10" cy="10" r="4" fill="#c9a0dc"/><circle cx="10" cy="5" r="2" fill="#ffd97d"/><circle cx="15" cy="13" r="2" fill="#f4a7c3"/><circle cx="5" cy="13" r="2" fill="#a0c4e8"/></svg>
-      </button>
-      
-      <button class="room-icon-btn" onclick="goTo('screen-settings')" title="Settings">
-        <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="6" fill="#e8f4fc" stroke="#a0c4e8" stroke-width="1.5"/><circle cx="10" cy="10" r="2.5" fill="#a0c4e8"/><line x1="10" y1="3" x2="10" y2="5.5" stroke="#a0c4e8" stroke-width="1.8" stroke-linecap="round"/><line x1="10" y1="14.5" x2="10" y2="17" stroke="#a0c4e8" stroke-width="1.8" stroke-linecap="round"/><line x1="3" y1="10" x2="5.5" y2="10" stroke="#a0c4e8" stroke-width="1.8" stroke-linecap="round"/><line x1="14.5" y1="10" x2="17" y2="10" stroke="#a0c4e8" stroke-width="1.8" stroke-linecap="round"/></svg>
-      </button>
+    <div style="display:flex;gap:8px">
+      <button class="room-icon-btn" onclick="editCurrentCase()" title="Edit">&#9998;</button>
+      <button class="room-icon-btn" onclick="openNewCase()" title="New bookcase" style="font-size:18px">+</button>
+      <button class="room-icon-btn" onclick="openDecoPicker()" title="Add decoration">🌿</button>
     </div>
   </div>
-  <div class="room-carousel-wrap">
-    <div class="room-carousel" id="room-carousel">
-      <button class="carousel-arrow left" id="arr-l" onclick="carPrev()">&#8249;</button>
-      <div id="car-wrap" style="width:220px;position:relative"></div>
-      <button class="carousel-arrow right" id="arr-r" onclick="carNext()">&#8250;</button>
-    </div>
-    <div class="carousel-dots" id="car-dots"></div>
-    <button class="new-case-room-btn" onclick="openNewCase()">&#10024; New Bookcase</button>
+  <div id="room-bookcase-wrap" style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;position:relative;-webkit-overflow-scrolling:touch">
+    <div id="bc-deco-layer" class="bc-deco-layer"></div>
+    <div id="room-bc-content" style="min-height:100%"></div>
   </div>
-  
-
+  <div style="display:flex;align-items:center;justify-content:center;gap:12px;padding:8px;flex-shrink:0">
+    <button onclick="carPrev()" style="background:rgba(255,255,255,0.2);border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:inherit">‹</button>
+    <div id="car-dots" style="display:flex;gap:6px"></div>
+    <button onclick="carNext()" style="background:rgba(255,255,255,0.2);border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:inherit">›</button>
+  </div>
   <nav class="room-nav">
-    <button class="room-nav-btn" id="nav-add" onclick="goTo('screen-search');roomNav('add')">
-      <svg width="26" height="26" viewBox="0 0 26 26"><rect x="3" y="5" width="14" height="18" rx="3" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><line x1="7" y1="10" x2="13" y2="10" stroke="#f4a7c3" stroke-width="1.5" stroke-linecap="round"/><line x1="7" y1="14" x2="11" y2="14" stroke="#f4a7c3" stroke-width="1.5" stroke-linecap="round"/><circle cx="20" cy="20" r="5" fill="#f4a7c3"/><line x1="20" y1="17.5" x2="20" y2="22.5" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="17.5" y1="20" x2="22.5" y2="20" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
-      Add book</button>
+    <button class="room-nav-btn active" id="nav-add" onclick="goTo('screen-search');roomNav('add')">
+      <svg width="26" height="26" viewBox="0 0 26 26"><rect x="3" y="5" width="14" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="20" y1="10" x2="20" y2="20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><line x1="15" y1="15" x2="25" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>ADD BOOK</span>
+    </button>
     <button class="room-nav-btn" id="nav-unl" onclick="goTo('screen-unlocks');roomNav('unl')">
-      <svg width="26" height="26" viewBox="0 0 26 26"><path d="M13 3L15.8 9.5H22.5L17.2 13.5L19.5 20L13 16.5L6.5 20L8.8 13.5L3.5 9.5H10.2Z" fill="#fff8e0" stroke="#ffd97d" stroke-width="1.2" stroke-linejoin="round"/><path d="M10 12.5L12 14.5L16 10.5" fill="none" stroke="#ffd97d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Unlocks</button>
-    <button class="room-nav-btn active" id="nav-lib" onclick="goTo('screen-room');roomNav('lib')">
-      <svg width="26" height="26" viewBox="0 0 26 26"><path d="M3 13L13 5L23 13V23H16V17H10V23H3Z" fill="#e8d4f8" stroke="#c9a0dc" stroke-width="1.2" stroke-linejoin="round"/><rect x="10" y="17" width="6" height="6" rx="1" fill="#c9a0dc" opacity="0.6"/><circle cx="13" cy="12" r="1.5" fill="#c9a0dc"/></svg>
-      Library</button>
-    <button class="room-nav-btn" id="nav-fri" onclick="goTo('screen-friends');renderFriends();roomNav('fri')"><svg width="26" height="26" viewBox="0 0 26 26"><circle cx="10" cy="9" r="4" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><circle cx="18" cy="9" r="3" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><path d="M3 22 Q3 16 10 16 Q17 16 17 22" fill="#fce4ee" stroke="#f4a7c3" stroke-width="1.2"/><path d="M17 17 Q22 17 22 21" fill="none" stroke="#f4a7c3" stroke-width="1.2"/></svg>Friends</button>
+      <svg width="26" height="26" viewBox="0 0 26 26"><path d="M13 3L15.5 9.5L22 10.5L17.5 15L18.5 21.5L13 18.5L7.5 21.5L8.5 15L4 10.5L10.5 9.5Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+      <span>UNLOCKS</span>
+    </button>
+    <button class="room-nav-btn" id="nav-lib" onclick="goTo('screen-room');roomNav('lib')">
+      <svg width="26" height="26" viewBox="0 0 26 26"><path d="M3 13L13 5L23 13V23H16V17H10V23H3Z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+      <span>LIBRARY</span>
+    </button>
+    <button class="room-nav-btn" id="nav-fri" onclick="goTo('screen-friends');renderFriends();roomNav('fri')">
+      <svg width="26" height="26" viewBox="0 0 26 26"><circle cx="10" cy="9" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="18" cy="9" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M2 22c0-4 3.5-7 8-7s8 3 8 7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M18 14c2.5 0 5 1.5 5 4.5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+      <span>FRIENDS</span>
+    </button>
     <button class="room-nav-btn" id="nav-sta" onclick="goTo('screen-stats');roomNav('sta')">
-      <svg width="26" height="26" viewBox="0 0 26 26"><rect x="3" y="17" width="5" height="7" rx="2" fill="#a8d8b9"/><rect x="10" y="12" width="5" height="12" rx="2" fill="#a0c4e8"/><rect x="17" y="7" width="5" height="17" rx="2" fill="#c9a0dc"/><circle cx="5.5" cy="14" r="2" fill="white" opacity="0.6"/><circle cx="12.5" cy="9" r="2" fill="white" opacity="0.6"/><circle cx="19.5" cy="5" r="2" fill="white" opacity="0.6"/></svg>
-      Stats</button>
+      <svg width="26" height="26" viewBox="0 0 26 26"><rect x="3" y="14" width="4" height="9" fill="currentColor" opacity="0.8"/><rect x="9" y="9" width="4" height="14" fill="currentColor" opacity="0.8"/><rect x="15" y="4" width="4" height="19" fill="currentColor" opacity="0.8"/><rect x="21" y="11" width="4" height="12" fill="currentColor" opacity="0.8"/></svg>
+      <span>STATS</span>
+    </button>
   </nav>
 </div>
 
@@ -860,12 +846,14 @@ var MILESTONE_MSGS={
 
 (function(){
   var sx=0;
-  var cw=document.getElementById('car-wrap');
-  cw.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
-  cw.addEventListener('touchend',function(e){
-    var dx=e.changedTouches[0].clientX-sx;
-    if(Math.abs(dx)>40){if(dx<0)carNext();else carPrev();}
-  });
+  var cw=document.getElementById('room-bookcase-wrap')||document.getElementById('car-wrap');
+  if(cw){
+    cw.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+    cw.addEventListener('touchend',function(e){
+      var dx=e.changedTouches[0].clientX-sx;
+      if(Math.abs(dx)>40){if(dx<0)carNext();else carPrev();}
+    });
+  }
 })();
 
 
@@ -1154,12 +1142,14 @@ var MILESTONE_MSGS={
 
 (function(){
   var sx=0;
-  var cw=document.getElementById('car-wrap');
-  cw.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
-  cw.addEventListener('touchend',function(e){
-    var dx=e.changedTouches[0].clientX-sx;
-    if(Math.abs(dx)>40){if(dx<0)carNext();else carPrev();}
-  });
+  var cw=document.getElementById('room-bookcase-wrap')||document.getElementById('car-wrap');
+  if(cw){
+    cw.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+    cw.addEventListener('touchend',function(e){
+      var dx=e.changedTouches[0].clientX-sx;
+      if(Math.abs(dx)>40){if(dx<0)carNext();else carPrev();}
+    });
+  }
 })();
 
 
@@ -1482,12 +1472,14 @@ var MILESTONE_MSGS={
 
 (function(){
   var sx=0;
-  var cw=document.getElementById('car-wrap');
-  cw.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
-  cw.addEventListener('touchend',function(e){
-    var dx=e.changedTouches[0].clientX-sx;
-    if(Math.abs(dx)>40){if(dx<0)carNext();else carPrev();}
-  });
+  var cw=document.getElementById('room-bookcase-wrap')||document.getElementById('car-wrap');
+  if(cw){
+    cw.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+    cw.addEventListener('touchend',function(e){
+      var dx=e.changedTouches[0].clientX-sx;
+      if(Math.abs(dx)>40){if(dx<0)carNext();else carPrev();}
+    });
+  }
 })();
 
 
@@ -2077,11 +2069,10 @@ function applyTheme(t){
   settings.theme=t;save();
 }
 function showWelcome(){
-  var el=document.getElementById('welcome-screen');
-  if(!el)return;
-  el.style.display='flex';
+  // Update user name in header if shown
   var nameEl=document.getElementById('welcome-name');
   if(nameEl)nameEl.textContent=settings.userName||'Reader';
+  // renderRoom handles the actual display
 }
 function dismissWelcome(){
   var el=document.getElementById('welcome-overlay');
@@ -2092,21 +2083,66 @@ function dismissWelcome(){
 }
 
 function renderRoom(){
-  var total=(books||[]).length;
-  document.getElementById('room-sub').textContent=total+' book'+(total!==1?'s':'')+' collected';
-  renderCarousel();
-
-  // Update nav color based on current background
-  if(cases&&cases.length&&typeof currentCaseIdx!=='undefined'){
-    var _c=cases[currentCaseIdx];
-    var _bgt=typeof BG_THEMES!=='undefined'?BG_THEMES[(_c&&_c.bgTheme)||0]:null;
-    var _dark=_bgt?(_bgt.dark||false):false;
-    var _nc=_dark?'rgba(255,255,255,0.7)':'rgba(100,60,140,0.6)';
-    var _na=_dark?'rgba(255,255,255,1)':'#e07fa0';
-    document.querySelectorAll('.room-nav-btn').forEach(function(el){
-      el.style.color=el.classList.contains('active')?_na:_nc;
-    });
+  if(!(cases||[]).length){
+    // No cases yet - show welcome
+    var wrap=document.getElementById('room-bc-content');
+    if(wrap)wrap.innerHTML='<div style="text-align:center;padding:60px 20px"><div style="font-size:60px">📚</div><div style="font-size:18px;font-weight:700;color:inherit;margin-top:16px">Your library awaits</div><div style="font-size:14px;opacity:0.7;margin-top:8px">Create your first bookcase below!</div></div>';
+    var dots=document.getElementById('car-dots');
+    if(dots)dots.innerHTML='';
+    updateRoomColors();
+    return;
   }
+  if(currentCaseIdx>=(cases||[]).length)currentCaseIdx=(cases||[]).length-1;
+  var c=cases[currentCaseIdx];
+  if(!c)return;
+
+  // Update header
+  var titleEl=document.getElementById('room-case-name');
+  if(titleEl)titleEl.textContent=(c.emoji||'📚')+' '+c.name;
+
+  // Update dots
+  var dots=document.getElementById('car-dots');
+  if(dots)dots.innerHTML=(cases||[]).map(function(x,i){
+    return '<div style="width:'+(i===currentCaseIdx?'18px':'8px')+';height:8px;border-radius:4px;background:'+(i===currentCaseIdx?'rgba(255,255,255,0.9)':'rgba(255,255,255,0.4)')+';transition:all .3s"></div>';
+  }).join('');
+
+  // Apply background
+  var screenRoom=document.getElementById('screen-room');
+  if(screenRoom&&typeof BG_THEMES!=='undefined'){
+    var bgt=BG_THEMES[c.bgTheme||0]||BG_THEMES[0];
+    screenRoom.style.background=bgt.bg;
+    // Apply pattern
+    var existingPat=screenRoom.querySelector('.bg-pattern');
+    if(existingPat)existingPat.remove();
+    if(bgt.pattern&&typeof getBgPatternSVG==='function'){
+      var patSvg=getBgPatternSVG(bgt.pattern,bgt.dark||false);
+      if(patSvg){
+        var patDiv=document.createElement('div');
+        patDiv.className='bg-pattern';
+        patDiv.style.cssText='position:absolute;inset:0;background-image:url("data:image/svg+xml,'+encodeURIComponent(patSvg)+'");background-repeat:repeat;pointer-events:none;z-index:0;opacity:0.6';
+        screenRoom.insertBefore(patDiv,screenRoom.firstChild);
+      }
+    }
+  }
+
+  // Render bookcase content
+  renderFullBookcase(c.id);
+  updateRoomColors();
+}
+
+function updateRoomColors(){
+  if(!(cases||[]).length)return;
+  var c=cases[currentCaseIdx];
+  if(!c)return;
+  var bgt=(typeof BG_THEMES!=='undefined'&&BG_THEMES[c.bgTheme||0])||null;
+  var dark=bgt?bgt.dark:false;
+  var tc=dark?'rgba(255,255,255,0.95)':'#3a2a5a';
+  var sc=dark?'rgba(255,255,255,0.7)':'rgba(58,42,90,0.65)';
+  var nc=dark?'rgba(255,255,255,0.7)':'rgba(100,60,140,0.6)';
+  var na=dark?'#fff':'#e07fa0';
+  document.querySelectorAll('.room-title,.room-sub,.room-case-name,.bookcase-header-title').forEach(function(el){el.style.color=tc;});
+  document.querySelectorAll('.room-nav-btn').forEach(function(el){el.style.color=el.classList.contains('active')?na:nc;});
+  document.querySelectorAll('.room-icon-btn').forEach(function(el){el.style.color=tc;});
 }
 function renderCarousel(){
   var wrap=document.getElementById('car-wrap');
@@ -2250,7 +2286,7 @@ function isLightColor(hex){
 function carPrev(){
   if((cases||[]).length>1){
     currentCaseIdx=(currentCaseIdx-1+(cases||[]).length)%(cases||[]).length;
-    renderCarousel();
+    renderRoom();
     var w=document.getElementById('car-wrap');
     if(w){w.classList.remove('slide-left','slide-right');void w.offsetWidth;w.classList.add('slide-right');}
   }
@@ -2258,7 +2294,7 @@ function carPrev(){
 function carNext(){
   if((cases||[]).length>1){
     currentCaseIdx=(currentCaseIdx+1)%(cases||[]).length;
-    renderCarousel();
+    renderRoom();
     var w=document.getElementById('car-wrap');
     if(w){w.classList.remove('slide-left','slide-right');void w.offsetWidth;w.classList.add('slide-left');}
   }
@@ -2272,97 +2308,24 @@ function carGo(i){
 }
 (function(){
   var sx=0;
-  var cw=document.getElementById('car-wrap');
-  cw.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
-  cw.addEventListener('touchend',function(e){
-    var dx=e.changedTouches[0].clientX-sx;
-    if(Math.abs(dx)>40){if(dx<0)carNext();else carPrev();}
-  });
+  var cw=document.getElementById('room-bookcase-wrap')||document.getElementById('car-wrap');
+  if(cw){
+    cw.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+    cw.addEventListener('touchend',function(e){
+      var dx=e.changedTouches[0].clientX-sx;
+      if(Math.abs(dx)>40){if(dx<0)carNext();else carPrev();}
+    });
+  }
 })();
 
 function openBookcase(id){
   activeCaseId=id;
-  document.body.classList.add('in-bookcase');
-  var c=(cases||[]).find(function(x){return x.id===id;});
-  if(!c)return;
-  document.getElementById('bc-title').textContent=(c.emoji||'📚')+' '+c.name;
-  renderBcInterior(id);
-  goTo('screen-bookcase');
+  var idx=(cases||[]).findIndex(function(c){return c.id===id;});
+  if(idx>=0)currentCaseIdx=idx;
+  renderRoom();
 }
-function editCurrentCase(){if(activeCaseId)editCase(activeCaseId);}
+function editCurrentCase(){var c=cases[currentCaseIdx];if(c){activeCaseId=c.id;editCase(c.id);}}
 
-function renderBcInterior(caseId){
-  var c=(cases||[]).find(function(x){return x.id===caseId;});if(!c)return;
-  var cb=(books||[]).filter(function(b){return b.caseId===caseId;});
-  document.getElementById('bc-count').textContent=cb.length+' book'+(cb.length!==1?'s':'');
-  var bg=BG_COLORS[c.bgIdx]||BG_COLORS[0];
-  var sh=SHELF_COLORS[c.shelfIdx]||SHELF_COLORS[0];
-  var items=getShelfItems(caseId);
-  var CAP=8;
-  var SHELF_WIDTH=320; // approximate shelf width in px
-  var MIN_W=16, MAX_W=36;
-  var numRows=Math.max(3,Math.ceil(items.length/CAP));
-  var rows=[];
-  for(var ri=0;ri<numRows;ri++){rows.push(items.slice(ri*CAP,(ri+1)*CAP));}
-  var shelvesHtml='';
-  rows.forEach(function(row,ri){
-    var go=ri*CAP;
-    var ih='<div class="drop-zone" data-cid="'+caseId+'" data-di="'+go+'" onclick="if(window.selectedDecoId){placeDecoAt(\''+caseId+'\','+go+');return;}" ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event,\''+caseId+'\','+go+')"></div>';
-    if(!row.length)ih+='<div class="shelf-empty-msg" style="color:rgba(255,255,255,0.9);text-shadow:0 1px 3px rgba(0,0,0,0.4)">Empty - add some books!</div>';
-    row.forEach(function(item,i){
-      var gi=go+i;
-      var dndAttrs='draggable="true" ondragstart="dsStart(event,\''+caseId+'\','+gi+')" ondragend="dsEnd(event)" ontouchstart="tsStart(event,\''+caseId+'\','+gi+')" ontouchmove="tsMove(event)" ontouchend="tsEnd(event)"';
-      if(item.type==='book'){
-        var b=(books||[]).find(function(x){return x.id===item.id;});if(!b)return;
-        // Use saved dimensions or defaults
-        var booksInRow=row.filter(function(it){return it.type==='book';}).length||1;
-        var availW=SHELF_WIDTH-20; // padding
-        var defaultW=Math.min(MAX_W,Math.max(MIN_W,Math.floor(availW/Math.max(booksInRow,1))));
-        var w=b.bookWidth||defaultW;
-        var h=b.bookHeight||120;
-        if(b.lyingDown){var tmp=w;w=Math.max(60,h*0.6);h=Math.min(28,tmp);}
-        var col=b.spineColor||SPINE_COLORS[gi%SPINE_COLORS.length];
-        var spineInner=(b.cover&&b.showCover)?'<img class="spine-img" src="'+b.cover+'">':'<div class="spine-inner" style="background:'+col+'"><span class="spine-label">'+b.title+'</span></div>';
-        ih+='<div class="book-spine-pastel" style="width:'+w+'px;height:'+h+'px" '+dndAttrs+' onclick="openBook(\''+b.id+'\')">'+spineInner+'</div>';
-      }else if(item.type==='deco'){
-        var d=(ALL_DECOS||[]).find(function(x){return x.id===item.decoId;});
-        if(!d)return;
-        if(d.hang){
-          var hangSVG=getHangingPlantSVG(d.id);
-          ih+='<div class="deco-on-shelf deco-hanging" '+dndAttrs+' data-iid="'+item.id+'" onclick="openDecoOptions(this.dataset.iid)" style="align-self:flex-start;position:relative;top:0;width:48px;flex-shrink:0;cursor:pointer;overflow:visible">'+hangSVG+'</div>';
-        }else{
-          ih+='<div class="deco-on-shelf" '+dndAttrs+' data-iid="'+item.id+'" onclick="openDecoOptions(this.dataset.iid)" style="align-self:flex-end;padding-bottom:2px;cursor:pointer;text-align:center;width:44px;flex-shrink:0">'+getDecoSVG(d.id,40)+'</div>';
-        }
-      }
-      ih+='<div class="drop-zone" data-cid="'+caseId+'" data-di="'+(gi+1)+'" ondragover="dzOver(event)" ondragleave="dzLeave(event)" ondrop="dzDrop(event,\''+caseId+'\','+(gi+1)+')"></div>';
-    });
-    ih+='<div class="add-slot" onclick="goTo(\'screen-search\')"><div class="add-slot-inner">+</div></div>';
-    shelvesHtml+='<div class="shelf-row-3d"><div class="shelf-books-area" style="background:'+bg.i+'">'+ih+'</div><div class="shelf-plank-3d" style="background:'+sh.v+'"></div></div>';
-  });
-  var cStyle=BOOKCASE_STYLES[c.styleIdx||0]||BOOKCASE_STYLES[0];
-  var cPattern=BOOKCASE_PATTERNS[c.patternIdx||0]||BOOKCASE_PATTERNS[0];
-  var patternStyle=cPattern.v!=='none'?';background-image:repeating-'+cPattern.v:'';
-  var frameStyle='border:8px solid '+cStyle.border+';border-radius:12px;background:'+cStyle.outer;
-    // Show shelf full indicator
-  var totalItems=items.length;
-  var maxItems=numRows*CAP;
-  var isFull=totalItems>=maxItems;
-  if(isFull){
-    shelvesHtml+='<div style="text-align:center;padding:8px;font-size:12px;color:rgba(255,255,255,0.6);font-weight:700">📚 Shelf is full!</div>';
-  }
-  document.getElementById('bc-body').innerHTML='<div class="bookcase-body" style="'+frameStyle+'"><div style="background:'+bg.v+patternStyle+';">'+shelvesHtml+'</div></div>';
-  // Add free deco layer
-  var bcBody=document.getElementById('bc-body');
-  if(bcBody&&!document.getElementById('bc-deco-layer')){
-    var layer=document.createElement('div');
-    layer.id='bc-deco-layer';
-    layer.className='bc-deco-layer';
-    bcBody.appendChild(layer);
-  }else if(document.getElementById('bc-deco-layer')){
-    document.getElementById('bc-deco-layer').innerHTML='';
-  }
-  renderFreeDecos(caseId);
-}
 
 function getShelfItems(caseId){
   var c=(cases||[]).find(function(x){return x.id===caseId;});if(!c)return[];
@@ -2451,7 +2414,7 @@ document.addEventListener('touchmove',tsMove,{passive:false});
 document.addEventListener('touchend',tsEnd);
 
 function openNewCase(){
-  editingCaseId=null;selBg=0;selShelf=0;selDecos=[];selPattern=0;selStyle=0;selGap=0;selBgTheme=0;selGap=0;selBgTheme=0;
+  editingCaseId=null;selBg=0;selShelf=0;selDecos=[];selPattern=0;selStyle=0;selGap=0;selBgTheme=1;
   document.getElementById('mc-title').textContent='New Bookcase';
   document.getElementById('mc-name').value='';
   document.getElementById('mc-emoji').value='';
@@ -2531,6 +2494,12 @@ function renderCaseEditor(){
   if(previewEl&&typeof BG_THEMES!=='undefined'&&BG_THEMES[selBgTheme]){
     previewEl.style.background=BG_THEMES[selBgTheme].bg;
   }
+
+  // Live preview background on screen-room
+  var previewEl=document.getElementById('screen-room');
+  if(previewEl&&typeof BG_THEMES!=='undefined'&&BG_THEMES[selBgTheme]){
+    previewEl.style.background=BG_THEMES[selBgTheme].bg;
+  }
 }
 function toggleShowCover(bookId,show){
   var b=(books||[]).find(function(x){return x.id===bookId;});
@@ -2581,11 +2550,8 @@ function saveCase(){
     cases.push(data);currentCaseIdx=(cases||[]).length-1;
   }
   save();closeModal('modal-case');
-  if(editingCaseId&&activeCaseId===editingCaseId){
-    document.getElementById('bc-title').textContent=emoji+' '+name;
-    renderBcInterior(editingCaseId);
-  }
-  renderRoom();toast(editingCaseId?'Updated!':'Created!');
+  renderRoom();
+  toast(editingCaseId?'Updated!':'Created!');
 }
 function renderStats(){
   var total=(books||[]).length;
@@ -3308,6 +3274,94 @@ function removeFreeDeco(caseId,fdId){
   save();
   renderFreeDecos(caseId);
 }
+
+function renderFullBookcase(caseId){
+  var c=(cases||[]).find(function(x){return x.id===caseId;});if(!c)return;
+  var caseBooks=(books||[]).filter(function(b){return b.caseId===caseId;});
+  var st=BOOKCASE_STYLES[c.styleIdx||0]||BOOKCASE_STYLES[0];
+  var sh=SHELF_COLORS[c.shelfIdx||0]||SHELF_COLORS[0];
+  var bg=BG_COLORS[c.bgIdx||0]||BG_COLORS[0];
+
+  // Update header
+  document.getElementById('bc-count').textContent=caseBooks.length+' book'+(caseBooks.length!==1?'s':'');
+
+  // Books per row - bigger books, fewer per row
+  var BOOKS_PER_ROW=4;
+  var rows=[];
+  var row=[];
+  caseBooks.forEach(function(b,i){
+    row.push(b);
+    if(row.length===BOOKS_PER_ROW){rows.push(row);row=[];}
+  });
+  if(row.length)rows.push(row);
+  if(!rows.length)rows.push([]);
+
+  // Shelf plank style
+  var plankStyle='background:'+st.plank+';height:14px;border-radius:2px;box-shadow:0 3px 6px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.2)';
+  var shelfBg=st.shelf||'rgba(0,0,0,0.1)';
+
+  var html='<div style="background:'+st.outer+';min-height:100%;padding:12px 8px 80px;position:relative" id="bc-inner-wrap">';
+
+  // Cornice / top bar
+  html+='<div style="'+plankStyle+';margin-bottom:16px"></div>';
+
+  rows.forEach(function(rowBooks,ri){
+    // Shelf row
+    html+='<div style="background:'+shelfBg+';border-radius:8px;padding:12px 8px 0;margin-bottom:6px;position:relative;min-height:140px">';
+    html+='<div style="display:flex;align-items:flex-end;gap:6px;flex-wrap:nowrap;justify-content:'+(rowBooks.length?'flex-start':'center')+'">';
+
+    if(!rowBooks.length){
+      html+='<div style="width:100%;text-align:center;padding:30px 0;font-size:13px;color:rgba(255,255,255,0.5)">Empty — add some books!</div>';
+    }
+
+    rowBooks.forEach(function(b,bi){
+      var bookW=70, bookH=110;
+      if(b.bookSize==='S'){bookW=50;bookH=85;}
+      if(b.bookSize==='L'){bookW=85;bookH=130;}
+      if(b.lyingDown){var tmp=bookW;bookW=bookH*0.7;bookH=tmp*0.4;}
+
+      var col=b.spineColor||SPINE_COLORS[(ri*BOOKS_PER_ROW+bi)%SPINE_COLORS.length];
+
+      var inner='';
+      if(b.cover&&b.showCover){
+        inner='<img src="'+b.cover+'" style="width:100%;height:100%;object-fit:cover;border-radius:4px 4px 0 0;display:block" draggable="false">';
+      }else{
+        // Spine label
+        var textStyle=b.lyingDown
+          ?'font-size:10px;font-weight:700;color:rgba(255,255,255,0.9);padding:4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis'
+          :'font-size:10px;font-weight:700;color:rgba(255,255,255,0.9);writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);padding:4px 2px;overflow:hidden;max-height:90px';
+        inner='<div style="'+textStyle+'">'+b.title+'</div>';
+      }
+
+      html+='<div data-bid="'+b.id+'" onclick="openBook(this.dataset.bid)" style="width:'+bookW+'px;height:'+bookH+'px;background:'+col+';border-radius:4px 4px 0 0;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:2px 0 6px rgba(0,0,0,0.3),inset 2px 0 0 rgba(255,255,255,0.1);flex-shrink:0;overflow:hidden">'+inner+'</div>';
+    });
+
+    html+='</div>';
+    // Shelf plank below books
+    html+='<div style="'+plankStyle+'"></div>';
+    html+='</div>';
+  });
+
+  // Side panels
+  html+='</div>';
+
+  var bcBody=document.getElementById('room-bc-content');
+  if(!bcBody){bcBody=document.getElementById('bc-body');}
+  if(!bcBody)return;
+  bcBody.innerHTML=html;
+  bcBody.style.background='transparent';
+
+  // Add free deco layer
+  var wrap=document.getElementById('bc-inner-wrap');
+  if(wrap){
+    var layer=document.createElement('div');
+    layer.id='bc-deco-layer';
+    layer.className='bc-deco-layer';
+    wrap.appendChild(layer);
+    renderFreeDecos(caseId);
+  }
+}
+function renderBcInterior(id){renderFullBookcase(id);}
 </script>
 
 <!-- SCREEN: FRIENDS -->
