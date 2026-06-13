@@ -378,12 +378,9 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
     <div class="form-group"><label>Emoji</label><input id="mc-emoji" type="text" placeholder="📚" maxlength="2"></div>
     <div class="form-group"><label>Bookcase Style</label><div id="mc-style" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div></div>
     <div class="form-group"><label>Shelf Colour</label><div id="mc-shelf" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div></div>
-    <div class="form-group"><label>Decorations</label><div id="mc-decos" style="display:flex;flex-wrap:wrap;gap:8px;max-height:200px;overflow-y:auto;margin-top:4px"></div></div>
-    <button class="btn btn-primary" onclick="saveCase()">Save Bookcase</button>
-    <button class="btn btn-outline" onclick="closeModal('modal-case')">Cancel</button>
-  </div>
-</div>
-
+    <div class="form-group"><label>Books Per Row</label><div id="mc-booksperrow" style="display:flex;gap:6px;margin-top:4px"></div></div>
+    <div class="form-group"><label>Shelf Alignment</label><div id="mc-shelfaling" style="display:flex;gap:6px;margin-top:4px"></div></div>
+    <div class="form-group"><label>Decorations</label><div id="mc-decos" style="display:flex;
 <script>
 'use strict';
 var decoEditMode = false;
@@ -575,7 +572,8 @@ function renderHome(){
 
   // Render books
   var caseBooks = books.filter(function(b){return b.caseId===c.id;});
-  var BOOKS_PER_ROW = 8;
+  var BOOKS_PER_ROW = c.booksPerRow||8;
+  var SHELF_ALIGN = c.shelfAlign||'left';
   var rows = [];
   var row = [];
   
@@ -595,7 +593,7 @@ function renderHome(){
   var html = '';
   rows.forEach(function(rowBks){
     html += '<div class="shelf-row">';
-    html += '<div class="shelf-books">';
+    html += '<div class="shelf-books" style="justify-content:'+(SHELF_ALIGN==="right"?"flex-end":"flex-start")+'">';
     if(!rowBks.length){
       html += '<div class="empty-shelf">Empty — add some books!</div>';
     }
@@ -796,10 +794,10 @@ function saveCase(){
   if(editingCaseId){
     var idx=cases.findIndex(function(c){return c.id===editingCaseId;});
     if(idx>=0){
-      cases[idx]=Object.assign({},cases[idx],{name:name,emoji:emoji,styleIdx:selStyle,shelfIdx:selShelf,shelfDecos:shelfDecos});
+      cases[idx]=Object.assign({},cases[idx],{name:name,emoji:emoji,styleIdx:selStyle,shelfIdx:selShelf,shelfDecos:shelfDecos,booksPerRow:selBooksPerRow,shelfAlign:selShelfAlign});
     }
   } else {
-    cases.push({id:id,name:name,emoji:emoji,styleIdx:selStyle,shelfIdx:selShelf,shelfDecos:shelfDecos,freeDecos:[]});
+    cases.push({id:id,name:name,emoji:emoji,styleIdx:selStyle,shelfIdx:selShelf,shelfDecos:shelfDecos,freeDecos:[],booksPerRow:selBooksPerRow,shelfAlign:selShelfAlign});
     currentCaseIdx=cases.length-1;
   }
   save();
@@ -810,9 +808,15 @@ function saveCase(){
 
 // ─── FREE DECOS ───────────────────────────────────────────────────────────────
 function openDecoPicker(){
-  decoEditMode=true;
-  showSaveBtn();
-  var c=cases[currentCaseIdx];if(c)renderFreeDecos(c.id);
+  // Enter edit mode first
+  if(!decoEditMode){
+    decoEditMode=true;
+    showSaveBtn();
+    var c=cases[currentCaseIdx];if(c)renderFreeDecos(c.id);
+    toast('Edit mode on — drag decos or add new ones 🌿');
+    return;
+  }
+  // Already in edit mode - show picker to add new deco
   var read=getBooksRead();
   var el=document.getElementById('deco-picker-grid');
   el.innerHTML=ALL_DECOS.map(function(d){
