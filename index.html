@@ -188,6 +188,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
       <button class="icon-btn" onclick="editCurrentCase()" title="Edit">✏️</button>
       <button class="icon-btn" onclick="openNewCase()" title="New">+</button>
       <button class="icon-btn" onclick="openDecoPicker()" title="Decorate">🌿</button>
+      <button class="icon-btn" id="save-decos-btn" onclick="saveDecoPositions()" title="Save layout" style="display:none">💾</button>
     </div>
   </div>
   <div id="bookcase-wrap">
@@ -378,12 +379,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
     <div class="form-group"><label>Bookcase Style</label><div id="mc-style" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div></div>
     <div class="form-group"><label>Shelf Colour</label><div id="mc-shelf" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px"></div></div>
     <div class="form-group"><label>Decorations</label><div id="mc-decos" style="display:flex;flex-wrap:wrap;gap:8px;max-height:200px;overflow-y:auto;margin-top:4px"></div></div>
-    <button class="btn btn-primary" onclick="saveCase()">Save Bookcase</button>
-    <button class="btn btn-outline" onclick="closeModal('modal-case')">Cancel</button>
-  </div>
-</div>
-
-<script>
+    <button class="btn btn-primary" onclick="saveCase()">Sa
 'use strict';
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
@@ -829,9 +825,10 @@ function placeFreeDeco(decoId){
   var c=cases[currentCaseIdx];
   if(!c)return;
   if(!c.freeDecos)c.freeDecos=[];
-  c.freeDecos.push({id:'fd'+Date.now(),decoId:decoId,x:50,y:50});
+  c.freeDecos.push({id:'fd'+Date.now(),decoId:decoId,x:50,y:150});
   save();
   renderFreeDecos(c.id);
+  showSaveBtn();
   toast('Drag to position it! Double-tap to remove.');
 }
 
@@ -904,15 +901,13 @@ function renderFreeDecos(caseId){
         self.style.left=fd.x+'%';
         self.style.top=fd.y+'px';
         // Save to localStorage
-        var cIdx=cases.findIndex(function(x){return x.id===caseId;});
-        if(cIdx>=0){
-          var fIdx=cases[cIdx].freeDecos.findIndex(function(f){return f.id===fd.id;});
-          if(fIdx>=0){
-            cases[cIdx].freeDecos[fIdx].x=fd.x;
-            cases[cIdx].freeDecos[fIdx].y=fd.y;
-          }
+        var cSave=cases.find(function(x){return x.id===caseId;});
+        if(cSave&&cSave.freeDecos){
+          var fSave=cSave.freeDecos.find(function(f){return f.id===fd.id;});
+          if(fSave){fSave.x=fd.x;fSave.y=fd.y;}
         }
         save();
+        showSaveBtn();
       }
 
       document.addEventListener('touchmove',onMove,{passive:false});
@@ -935,15 +930,13 @@ function renderFreeDecos(caseId){
         document.removeEventListener('mouseup',onUp);
         fd.x=parseFloat(((ev.clientX-rect.left)/rect.width*100).toFixed(1));
         fd.y=parseFloat((ev.clientY-rect.top+wrap.scrollTop).toFixed(0));
-        var cIdx=cases.findIndex(function(x){return x.id===caseId;});
-        if(cIdx>=0){
-          var fIdx=cases[cIdx].freeDecos.findIndex(function(f){return f.id===fd.id;});
-          if(fIdx>=0){
-            cases[cIdx].freeDecos[fIdx].x=fd.x;
-            cases[cIdx].freeDecos[fIdx].y=fd.y;
-          }
+        var cSave2=cases.find(function(x){return x.id===caseId;});
+        if(cSave2&&cSave2.freeDecos){
+          var fSave2=cSave2.freeDecos.find(function(f){return f.id===fd.id;});
+          if(fSave2){fSave2.x=fd.x;fSave2.y=fd.y;}
         }
         save();
+        showSaveBtn();
       }
       document.addEventListener('mousemove',onMove);
       document.addEventListener('mouseup',onUp,{once:true});
@@ -1375,6 +1368,30 @@ function addManually(){
   document.querySelectorAll('#modal-add .chip[data-v]').forEach(function(c){c.classList.toggle('active',c.dataset.v==='read');});
   document.getElementById('add-genre').value='Other';
   openModal('modal-add');
+}
+
+function saveDecoPositions(){
+  var c=cases[currentCaseIdx];
+  if(!c||!c.freeDecos)return;
+  // Sync positions from DOM to data
+  document.querySelectorAll('.free-deco').forEach(function(el){
+    var fdid=el.dataset.fdid;
+    var fd=c.freeDecos.find(function(f){return f.id===fdid;});
+    if(fd){
+      fd.x=parseFloat(el.style.left);
+      fd.y=parseFloat(el.style.top);
+    }
+  });
+  save();
+  // Hide save button
+  var btn=document.getElementById('save-decos-btn');
+  if(btn)btn.style.display='none';
+  toast('Layout saved! ✨');
+}
+
+function showSaveBtn(){
+  var btn=document.getElementById('save-decos-btn');
+  if(btn)btn.style.display='flex';
 }
 </script>
 
