@@ -365,7 +365,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
   <div class="modal">
     <div class="modal-handle"></div>
     <div id="book-modal-content"></div>
-    <button class="btn btn-outline" onclick="closeModal('modal-book')">Close</button>
+    <button class="btn btn-primary" onclick="closeModal('modal-book')">Save</button>
   </div>
 </div>
 
@@ -735,6 +735,8 @@ function editCurrentCase(){
   selStyle=c.styleIdx||0;
   selShelf=c.shelfIdx||0;
   selDecos=(c.shelfDecos||[]).map(function(d){return d.decoId;});
+  selBooksPerRow=c.booksPerRow||8;
+  selShelfAlign=c.shelfAlign||'left';
   document.getElementById('mc-name').value=c.name||'';
   document.getElementById('mc-emoji').value=c.emoji||'';
   document.getElementById('case-modal-title').textContent='Edit Bookcase';
@@ -1421,7 +1423,7 @@ function showSaveBtn(){
     <div class="modal-title">Add Decoration</div>
     <div style="font-size:12px;color:#7a5a3a;text-align:center;margin-bottom:12px">Tap to place · Drag to move · Double-tap to remove</div>
     <div id="deco-picker-grid" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-height:50vh;overflow-y:auto"></div>
-    <button class="btn btn-outline" style="margin-top:12px" onclick="closeModal('modal-deco')">Cancel</button>
+    <button class="btn btn-primary" style="margin-top:12px" onclick="closeModal('modal-deco')">Done</button>
   </div>
 </div>
 </body>
