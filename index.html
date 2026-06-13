@@ -947,7 +947,7 @@ function doSearch(){
   if(!q)return;
   var el=document.getElementById('search-results');
   el.innerHTML='<div style="text-align:center;padding:30px;color:#7a5a3a">Searching...</div>';
-  fetch('https://www.googleapis.com/books/v1/volumes?q='+encodeURIComponent(q)+'&maxResults=20&langRestrict=en')
+  fetch('https://www.googleapis.com/books/v1/volumes?q='+encodeURIComponent(q)+'&maxResults=20')
     .then(function(r){return r.json();})
     .then(function(d){
       _searchResults=(d.items||[]).map(function(item){
