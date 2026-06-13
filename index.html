@@ -947,20 +947,17 @@ function doSearch(){
   if(!q)return;
   var el=document.getElementById('search-results');
   el.innerHTML='<div style="text-align:center;padding:30px;color:#7a5a3a">Searching...</div>';
-  fetch('https://www.googleapis.com/books/v1/volumes?q='+encodeURIComponent(q)+'&maxResults=20')
+  fetch('https://openlibrary.org/search.json?q='+encodeURIComponent(q)+'&limit=20&fields=title,author_name,first_publish_year,cover_i,subject')
     .then(function(r){return r.json();})
     .then(function(d){
-      _searchResults=(d.items||[]).map(function(item){
-        var info=item.volumeInfo||{};
-        var cover=info.imageLinks?(info.imageLinks.thumbnail||info.imageLinks.smallThumbnail||null):null;
-        if(cover)cover=cover.replace('http://','https://');
+      _searchResults=(d.docs||[]).map(function(doc){
+        var cid=doc.cover_i;
         return {
-          title:info.title||'Unknown',
-          author:(info.authors||[]).join(', ')||'Unknown',
-          year:info.publishedDate?info.publishedDate.substring(0,4):'',
-          cover:cover,
-          genre:(info.categories||['Other'])[0]||'Other',
-          description:info.description||''
+          title:doc.title||'Unknown',
+          author:(doc.author_name||[]).join(', ')||'Unknown',
+          year:doc.first_publish_year?String(doc.first_publish_year):'',
+          cover:cid?'https://covers.openlibrary.org/b/id/'+cid+'-M.jpg':null,
+          genre:(doc.subject||['Other'])[0]||'Other'
         };
       });
       if(!_searchResults.length){
