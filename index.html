@@ -700,8 +700,12 @@ function jumpCase(i){currentCaseIdx=i;renderHome();}
 // Touch swipe
 (function(){
   var sx=0;
-  document.getElementById('bookcase-wrap').addEventListener('touchstart',function(e){sx=e.touches[0].clientX;},{passive:true});
+  document.getElementById('bookcase-wrap').addEventListener('touchstart',function(e){
+    if(e.target.closest('.free-deco'))return; // don't swipe when touching deco
+    sx=e.touches[0].clientX;
+  },{passive:true});
   document.getElementById('bookcase-wrap').addEventListener('touchend',function(e){
+    if(e.target.closest('.free-deco'))return; // don't swipe when touching deco
     var dx=e.changedTouches[0].clientX-sx;
     if(Math.abs(dx)>50){if(dx<0)nextCase();else prevCase();}
   });
@@ -835,7 +839,6 @@ function renderFreeDecos(caseId){
   var c=cases.find(function(x){return x.id===caseId;});
   var wrap=document.getElementById('bookcase-wrap');
   if(!wrap)return;
-  // Remove old free decos
   wrap.querySelectorAll('.free-deco').forEach(function(el){el.remove();});
   if(!c||!c.freeDecos||!c.freeDecos.length)return;
 
@@ -846,56 +849,77 @@ function renderFreeDecos(caseId){
     el.dataset.fdid=fd.id;
     el.style.left=(fd.x||50)+'%';
     el.style.top=(fd.y||100)+'px';
-    el.innerHTML='<img src="'+TWEMOJI+code+'.svg" draggable="false">';
+    el.innerHTML='<img src="'+TWEMOJI+code+'.svg" draggable="false" style="width:52px;height:52px;pointer-events:none">';
 
-    // Double tap to remove
-    var lastTap=0;
+    var isDragging=false;
+    var tapTimer=null;
+    var tapCount=0;
+
     el.addEventListener('touchstart',function(e){
-      var now=Date.now();
-      if(now-lastTap<350){
-        e.preventDefault();
+      // Count taps for double-tap delete
+      tapCount++;
+      if(tapCount===1){
+        tapTimer=setTimeout(function(){tapCount=0;},400);
+      } else if(tapCount>=2){
+        clearTimeout(tapTimer);
+        tapCount=0;
         if(confirm('Remove this decoration?')){
           removeFreeDeco(caseId,fd.id);
         }
-        lastTap=0;
         return;
       }
-      lastTap=now;
 
-      // Drag
-      e.stopPropagation();
+      // Start drag
       var self=this;
+      isDragging=false;
       var rect=wrap.getBoundingClientRect();
-      var t=e.touches[0];
-      var startX=t.clientX;
-      var startY=t.clientY;
-      var moved=false;
+      var startX=e.touches[0].clientX;
+      var startY=e.touches[0].clientY;
 
       function onMove(ev){
-        ev.preventDefault();
-        moved=true;
-        var t2=ev.touches[0];
-        var x=((t2.clientX-rect.left)/rect.width*100);
-        var y=t2.clientY-rect.top+wrap.scrollTop;
-        self.style.left=Math.max(5,Math.min(95,x))+'%';
-        self.style.top=Math.max(10,y)+'px';
+        var dx=Math.abs(ev.touches[0].clientX-startX);
+        var dy=Math.abs(ev.touches[0].clientY-startY);
+        if(dx>5||dy>5){
+          isDragging=true;
+          ev.preventDefault();
+          ev.stopPropagation();
+          var x=((ev.touches[0].clientX-rect.left)/rect.width*100);
+          var y=ev.touches[0].clientY-rect.top+wrap.scrollTop;
+          self.style.left=Math.max(5,Math.min(95,x))+'%';
+          self.style.top=Math.max(10,y)+'px';
+        }
       }
+
       function onEnd(ev){
         document.removeEventListener('touchmove',onMove);
         document.removeEventListener('touchend',onEnd);
-        if(!moved)return;
-        var t3=ev.changedTouches[0];
-        var fx=parseFloat(((t3.clientX-rect.left)/rect.width*100).toFixed(1));
-        var fy=parseFloat((t3.clientY-rect.top+wrap.scrollTop).toFixed(0));
-        fd.x=Math.max(5,Math.min(95,fx));
-        fd.y=Math.max(10,fy);
+        if(!isDragging)return;
+        // Save position
+        var t=ev.changedTouches[0];
+        fd.x=parseFloat(((t.clientX-rect.left)/rect.width*100).toFixed(1));
+        fd.y=parseFloat((t.clientY-rect.top+wrap.scrollTop).toFixed(0));
+        fd.x=Math.max(5,Math.min(95,fd.x));
+        fd.y=Math.max(10,fd.y);
+        // Update element position
+        self.style.left=fd.x+'%';
+        self.style.top=fd.y+'px';
+        // Save to localStorage
+        var cIdx=cases.findIndex(function(x){return x.id===caseId;});
+        if(cIdx>=0){
+          var fIdx=cases[cIdx].freeDecos.findIndex(function(f){return f.id===fd.id;});
+          if(fIdx>=0){
+            cases[cIdx].freeDecos[fIdx].x=fd.x;
+            cases[cIdx].freeDecos[fIdx].y=fd.y;
+          }
+        }
         save();
       }
+
       document.addEventListener('touchmove',onMove,{passive:false});
       document.addEventListener('touchend',onEnd,{once:true});
-    },{passive:false});
+    },{passive:true});
 
-    // Mouse drag (for desktop testing)
+    // Mouse drag for desktop
     el.addEventListener('mousedown',function(e){
       e.preventDefault();
       var self=this;
@@ -911,6 +935,14 @@ function renderFreeDecos(caseId){
         document.removeEventListener('mouseup',onUp);
         fd.x=parseFloat(((ev.clientX-rect.left)/rect.width*100).toFixed(1));
         fd.y=parseFloat((ev.clientY-rect.top+wrap.scrollTop).toFixed(0));
+        var cIdx=cases.findIndex(function(x){return x.id===caseId;});
+        if(cIdx>=0){
+          var fIdx=cases[cIdx].freeDecos.findIndex(function(f){return f.id===fd.id;});
+          if(fIdx>=0){
+            cases[cIdx].freeDecos[fIdx].x=fd.x;
+            cases[cIdx].freeDecos[fIdx].y=fd.y;
+          }
+        }
         save();
       }
       document.addEventListener('mousemove',onMove);
@@ -919,6 +951,9 @@ function renderFreeDecos(caseId){
 
     wrap.appendChild(el);
   });
+
+  // Make wrap relative for absolute positioning
+  wrap.style.position='relative';
 }
 
 
