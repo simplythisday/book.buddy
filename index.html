@@ -386,6 +386,7 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 
 <script>
 'use strict';
+var decoEditMode = false;
 
 // ─── DATA ────────────────────────────────────────────────────────────────────
 
@@ -809,6 +810,9 @@ function saveCase(){
 
 // ─── FREE DECOS ───────────────────────────────────────────────────────────────
 function openDecoPicker(){
+  decoEditMode=true;
+  showSaveBtn();
+  var c=cases[currentCaseIdx];if(c)renderFreeDecos(c.id);
   var read=getBooksRead();
   var el=document.getElementById('deco-picker-grid');
   el.innerHTML=ALL_DECOS.map(function(d){
@@ -857,7 +861,10 @@ function renderFreeDecos(caseId){
     var tapTimer=null;
     var tapCount=0;
 
+    // Only draggable in edit mode
+    el.style.cursor=decoEditMode?'grab':'default';
     el.addEventListener('touchstart',function(e){
+      if(!decoEditMode)return;
       // Count taps for double-tap delete
       tapCount++;
       if(tapCount===1){
@@ -923,6 +930,7 @@ function renderFreeDecos(caseId){
 
     // Mouse drag for desktop
     el.addEventListener('mousedown',function(e){
+      if(!decoEditMode)return;
       e.preventDefault();
       var self=this;
       var rect=wrap.getBoundingClientRect();
@@ -1387,8 +1395,11 @@ function saveDecoPositions(){
     if(fd){fd.x=parseFloat(el.style.left);fd.y=parseFloat(el.style.top);}
   });
   save();
+  decoEditMode=false;
   var btn=document.getElementById('save-decos-btn');
   if(btn)btn.style.display='none';
+  // Re-render decos as locked
+  renderFreeDecos(c.id);
   toast('Layout saved! ✨');
 }
 
