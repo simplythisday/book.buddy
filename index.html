@@ -134,6 +134,11 @@ html,body{height:100%;overflow:hidden;font-family:'Nunito',sans-serif;background
 .size-btn{flex:1;padding:8px;border-radius:10px;text-align:center;cursor:pointer;border:1.5px solid rgba(180,140,100,0.3);background:#fff;font-size:11px;font-weight:700;color:#5a3e28}
 .size-btn.active{border-color:#8b5a2b;background:rgba(139,90,43,0.08)}
 
+/* ── SHELF DECOS ─────────────────────────────────────── */
+.shelf-deco-slot{width:36px;align-self:flex-end;padding-bottom:4px;flex-shrink:0;cursor:pointer}
+.shelf-deco-slot img{width:36px;height:36px;object-fit:contain;display:block}
+.shelf-deco-drop{width:16px;align-self:stretch;display:flex;align-items:center;justify-content:center;opacity:0;cursor:pointer;font-size:14px;color:#fff;flex-shrink:0;border-radius:4px}
+.deco-edit-active .shelf-deco-drop{opacity:0.5;background:rgba(255,255,255,0.15)}
 /* ── FREE DECOS (draggable) ──────────────────────────────── */
 .free-deco{position:absolute;cursor:grab;touch-action:none;user-select:none;z-index:50;transform:translate(-50%,-50%);transition:filter .15s}
 .free-deco:active{cursor:grabbing;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.4));transform:translate(-50%,-50%) scale(1.1)}
@@ -580,35 +585,26 @@ function renderHome(){
   // Render books
   var caseBooks = books.filter(function(b){return b.caseId===c.id;});
   var BOOKS_PER_ROW = c.booksPerRow||8;
-  var SHELF_ALIGN = c.shelfAlign||'left';
-  var rows = [];
-  var row = [];
-  
-  // Merge books with deco positions
   var items = getShelfItems(c.id, caseBooks);
-  
-  var rowItems = [];
-  items.forEach(function(item, i){
-    rowItems.push(item);
-    if(rowItems.length === BOOKS_PER_ROW){
-      rows.push(rowItems);
-      rowItems = [];
-    }
-  });
-  if(rowItems.length || !rows.length) rows.push(rowItems);
+
+  // Split into rows of BOOKS_PER_ROW
+  var rows = [];
+  for(var i=0;i<Math.max(1,Math.ceil(items.length/BOOKS_PER_ROW));i++){
+    rows.push(items.slice(i*BOOKS_PER_ROW,(i+1)*BOOKS_PER_ROW));
+  }
 
   var html = '';
   rows.forEach(function(rowBks){
     html += '<div class="shelf-row">';
-    html += '<div class="shelf-books" style="justify-content:'+(SHELF_ALIGN==="right"?"flex-end":"flex-start")+'">';
+    html += '<div class="shelf-books">';
     if(!rowBks.length){
       html += '<div class="empty-shelf">Empty — add some books!</div>';
     }
-    rowBks.forEach(function(item){
+    if(decoEditMode) html += '<div class="shelf-deco-drop" onclick="placeShelfDeco(\''+c.id+'\',0)">+</div>';
+    rowBks.forEach(function(item, itemIdx){
       if(item.type==='deco'){
         var code = DECO_CODES[item.decoId]||'1f4ab';
-        html += '<div class="book-deco" data-iid="'+item.id+'" onclick="openDecoOpts(this.dataset.iid)" style="width:44px;align-self:flex-end;padding-bottom:4px;cursor:pointer;flex-shrink:0">'
-          +'<img src="'+TWEMOJI+code+'.svg" style="width:44px;height:44px;object-fit:contain;display:block" draggable="false"></div>';
+        html += '<div class="shelf-deco-slot" ondblclick="removeShelfDeco(\''+c.id+'\',\''+item.id+'\')"><img src="'+TWEMOJI+code+'.svg" draggable="false"></div>';
       } else {
         var b = item.book;
         if(!b) return;
@@ -634,13 +630,16 @@ function renderHome(){
           html += '<div class="book" data-bid="'+b.id+'" onclick="openBook(this.dataset.bid)" style="width:'+w+'px;height:'+h+'px;background:'+col+'">'+inner+'</div>';
         }
       }
+      if(decoEditMode) html += '<div class="shelf-deco-drop" onclick="placeShelfDeco(\''+c.id+'\','+(itemIdx+1)+')" >+</div>';
     });
     html += '</div>';
     html += '<div class="shelf-plank" style="background:'+sh.v+'"></div>';
     html += '</div>';
   });
 
-  document.getElementById('bookcase-inner').innerHTML = html;
+  var bi=document.getElementById('bookcase-inner');
+  bi.innerHTML=html;
+  if(decoEditMode)bi.classList.add('deco-edit-active');else bi.classList.remove('deco-edit-active');
 
   // Render free decos
   renderFreeDecos(c.id);
@@ -847,6 +846,7 @@ function openDecoPicker(){
 }
 
 function placeFreeDeco(decoId){
+  if(window._pendingShelfPos){placeShelfDecoAt(decoId);return;}
   closeModal('modal-deco');
   var c=cases[currentCaseIdx];
   if(!c)return;
@@ -1446,6 +1446,31 @@ function moveBook(id, dir){
   renderHome();
   openBook(id);
   toast(dir<0?'◀ Moved left':'Moved right ▶');
+}
+
+function placeShelfDeco(caseId, pos){
+  window._pendingShelfPos={caseId:caseId,pos:pos};
+  openDecoPicker();
+}
+
+function placeShelfDecoAt(decoId){
+  var p=window._pendingShelfPos;
+  if(!p)return;
+  var c=cases.find(function(x){return x.id===p.caseId;});
+  if(!c)return;
+  if(!c.shelfDecos)c.shelfDecos=[];
+  c.shelfDecos.push({id:'sd'+Date.now(),decoId:decoId,pos:p.pos});
+  window._pendingShelfPos=null;
+  save();renderHome();
+  toast('Decoration placed! 🌿');
+}
+
+function removeShelfDeco(caseId,iid){
+  if(!confirm('Remove this decoration?'))return;
+  var c=cases.find(function(x){return x.id===caseId;});
+  if(!c)return;
+  c.shelfDecos=(c.shelfDecos||[]).filter(function(d){return d.id!==iid;});
+  save();renderHome();
 }
 </script>
 
