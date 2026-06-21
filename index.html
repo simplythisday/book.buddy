@@ -622,7 +622,11 @@ function renderHome(){
         } else {
           inner = '<div class="book-spine-label">'+b.title+'</div>';
         }
-        html += '<div class="book" data-bid="'+b.id+'" onclick="openBook(this.dataset.bid)" style="width:'+w+'px;height:'+h+'px;background:'+col+'">'+inner+'</div>';
+        if(b.lyingDown){
+          html += '<div data-bid="'+b.id+'" onclick="openBook(this.dataset.bid)" style="width:'+h+'px;height:'+w+'px;background:'+col+';border-radius:2px;box-shadow:2px 0 6px rgba(0,0,0,0.4);flex-shrink:0;cursor:pointer;transform:rotate(90deg);transform-origin:center center;margin:0 '+(w/2-h/2)+'px">'+inner+'</div>';
+        } else {
+          html += '<div class="book" data-bid="'+b.id+'" onclick="openBook(this.dataset.bid)" style="width:'+w+'px;height:'+h+'px;background:'+col+'">'+inner+'</div>';
+        }
       }
     });
     html += '</div>';
@@ -1426,8 +1430,7 @@ function moveBook(id, dir){
   var pos = caseBooks.findIndex(function(x){return x.b.id===id;});
   if(pos<0)return;
   var newPos = pos+dir;
-  if(newPos<0||newPos>=caseBooks.length)return;
-  // Swap in main books array
+  if(newPos<0||newPos>=caseBooks.length){toast(dir<0?'Already at the start!':'Already at the end!');return;}
   var idxA = caseBooks[pos].i;
   var idxB = caseBooks[newPos].i;
   var temp = books[idxA];
@@ -1436,6 +1439,7 @@ function moveBook(id, dir){
   save();
   renderHome();
   openBook(id);
+  toast(dir<0?'◀ Moved left':'Moved right ▶');
 }
 </script>
 
