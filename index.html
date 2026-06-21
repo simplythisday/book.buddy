@@ -479,7 +479,7 @@ var ALL_DECOS = [
   {id:'kitsune',name:'Kitsune',req:80},{id:'pegasus',name:'Pegasus',req:80},
   {id:'kirin',name:'Kirin',req:80},{id:'tanuki',name:'Tanuki',req:80},
   {id:'galaxy',name:'Galaxy',req:100},{id:'phoenix2',name:'Phoenix II',req:100},
-  {id:'dragonface',name:'Gold Dragon',req:5},{id:'blackcat',name:'Black Cat',req:5},
+  {id:'dragonface',name:'Dragon Face',req:5},{id:'blackcat',name:'Black Cat',req:5},
   {id:'lion',name:'Lion',req:15},{id:'wolf',name:'Wolf',req:20},
   {id:'fullmoon',name:'Full Moon',req:25},{id:'sword',name:'Sword',req:35}
 ];
@@ -613,7 +613,7 @@ function renderHome(){
         var b = item.book;
         if(!b) return;
         var h,w;
-        if(b.lyingDown){w=b.bookSize==='S'?70:b.bookSize==='L'?120:95;h=18;}
+        if(b.lyingDown){w=b.bookSize==='S'?90:b.bookSize==='L'?140:115;h=b.bookSize==='S'?20:b.bookSize==='L'?34:26;}
         else{h=b.bookSize==='S'?90:b.bookSize==='L'?140:115;w=b.bookSize==='S'?20:b.bookSize==='L'?34:26;}
         var col = b.spineColor||SPINE_COLORS[0];
         var inner = '';
@@ -720,7 +720,7 @@ function jumpCase(i){currentCaseIdx=i;renderHome();}
 
 // ─── CASE EDITOR ─────────────────────────────────────────────────────────────
 function openNewCase(){
-  editingCaseId=null;selStyle=0;selShelf=0;selDecos=[];
+  editingCaseId=null;selStyle=0;selShelf=0;selDecos=[];selBooksPerRow=8;selShelfAlign='left';
   document.getElementById('mc-name').value='';
   document.getElementById('mc-emoji').value='';
   document.getElementById('case-modal-title').textContent='New Bookcase';
@@ -1143,6 +1143,10 @@ function openBook(id){
     +'<div class="stars" style="margin-bottom:16px">'
     +[1,2,3,4,5].map(function(n){return '<span class="star'+(b.rating>=n?' active':'')+'" onclick="updateBookRating(\''+b.id+'\','+n+')">★</span>';}).join('')
     +'</div>'
+    +'<div style="display:flex;gap:8px;margin-top:8px">'
+    +'<button class="btn" style="flex:1;background:rgba(139,90,43,0.1);color:#8b5a2b;border:1.5px solid rgba(139,90,43,0.2)" onclick="moveBook(\''+b.id+'\',-1)">◀ Move Left</button>'
+    +'<button class="btn" style="flex:1;background:rgba(139,90,43,0.1);color:#8b5a2b;border:1.5px solid rgba(139,90,43,0.2)" onclick="moveBook(\''+b.id+'\',1)">Move Right ▶</button>'
+    +'</div>'
     +'<button class="btn" style="background:rgba(220,50,50,0.1);color:#c03030;border:1.5px solid rgba(220,50,50,0.2);margin-top:8px" onclick="deleteBook(\''+b.id+'\')">Remove 🗑️</button>';
 
   document.getElementById('book-modal-content').innerHTML=html;
@@ -1413,6 +1417,25 @@ function saveDecoPositions(){
 function showSaveBtn(){
   var btn=document.getElementById('save-decos-btn');
   if(btn)btn.style.display='flex';
+}
+
+function moveBook(id, dir){
+  var caseId = cases[currentCaseIdx]?cases[currentCaseIdx].id:null;
+  if(!caseId)return;
+  var caseBooks = books.map(function(b,i){return {b:b,i:i};}).filter(function(x){return x.b.caseId===caseId;});
+  var pos = caseBooks.findIndex(function(x){return x.b.id===id;});
+  if(pos<0)return;
+  var newPos = pos+dir;
+  if(newPos<0||newPos>=caseBooks.length)return;
+  // Swap in main books array
+  var idxA = caseBooks[pos].i;
+  var idxB = caseBooks[newPos].i;
+  var temp = books[idxA];
+  books[idxA] = books[idxB];
+  books[idxB] = temp;
+  save();
+  renderHome();
+  openBook(id);
 }
 </script>
 
